@@ -18,13 +18,13 @@
   <meta name="theme-color" content="#2196f3">
   <meta name="format-detection" content="telephone=no">
   <meta name="msapplication-tap-highlight" content="no">
-  <title>My App</title>
+  <title>turApp</title>
 
   <link rel="stylesheet" href="framework7/css/framework7.min.css">
   <link rel="stylesheet" href="css/icons.css">
   <link rel="stylesheet" href="css/app.css">
 </head>
-<body>
+<body class="color-theme-red">
   <div id="app">
     <!-- Status bar overlay for fullscreen mode-->
     <div class="statusbar"></div>
@@ -87,14 +87,14 @@
         <div class="page" data-name="home">
           <!-- Top Navbar -->
           <div class="navbar">
-            <div class="navbar-inner">
+            <div class="navbar-inner sliding">
               <div class="left">
                 <!--<a href="#" class="link icon-only panel-open" data-panel="left">-->
                   <!--<i class="icon f7-icons ios-only">menu</i>-->
                   <!--<i class="icon material-icons md-only">menu</i>-->
                 <!--</a>-->
               </div>
-              <div class="title sliding">Home</div>
+              <div class="title sliding">Senderos</div>
               <div class="right">
                 <!--<a href="#" class="link icon-only panel-open" data-panel="right">-->
                   <!--<i class="icon f7-icons ios-only">menu</i>-->
@@ -103,6 +103,18 @@
               </div>
             </div>
           </div>
+
+          <div class="searchbar-backdrop"></div>
+          <form class="searchbar">
+            <div class="searchbar-inner">
+              <div class="searchbar-input-wrap">
+                <input type="search" placeholder="Buscar camino">
+                <i class="searchbar-icon"></i>
+                <span class="input-clear-button"></span>
+              </div>
+              <span class="searchbar-disable-button">Cancel</span>
+            </div>
+          </form>
 
           <!-- Scrollable page content-->
           <div class="page-content">
@@ -180,66 +192,66 @@
       </div>
     </div>
 
-    <!-- Popup -->
-    <div class="popup" id="my-popup">
-      <div class="view">
-        <div class="page">
-          <div class="navbar">
-            <div class="navbar-inner">
-              <div class="title">Popup</div>
-              <div class="right">
-                <a href="#" class="link popup-close">Close</a>
-              </div>
-            </div>
-          </div>
-          <div class="page-content">
-            <div class="block">
-              <p>Popup content goes here.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!--&lt;!&ndash; Popup &ndash;&gt;-->
+    <!--<div class="popup" id="my-popup">-->
+      <!--<div class="view">-->
+        <!--<div class="page">-->
+          <!--<div class="navbar">-->
+            <!--<div class="navbar-inner">-->
+              <!--<div class="title">Popup</div>-->
+              <!--<div class="right">-->
+                <!--<a href="#" class="link popup-close">Close</a>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="page-content">-->
+            <!--<div class="block">-->
+              <!--<p>Popup content goes here.</p>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
 
-    <!-- Login Screen -->
-    <div class="login-screen" id="my-login-screen">
-      <div class="view">
-        <div class="page">
-          <div class="page-content login-screen-content">
-            <div class="login-screen-title">Login</div>
-            <div class="list">
-              <ul>
-                <li class="item-content item-input">
-                  <div class="item-inner">
-                    <div class="item-title item-label">Username</div>
-                    <div class="item-input-wrap">
-                      <input type="text" name="username" placeholder="Your username">
-                    </div>
-                  </div>
-                </li>
-                <li class="item-content item-input">
-                  <div class="item-inner">
-                    <div class="item-title item-label">Password</div>
-                    <div class="item-input-wrap">
-                      <input type="password" name="password" placeholder="Your password">
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="list">
-              <ul>
-                <li>
-                  <a href="#" class="item-link list-button login-button">Sign In</a>
-                </li>
-              </ul>
-              <div class="block-footer">Some text about login information.<br>Click "Sign In" to close Login Screen</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <!--&lt;!&ndash; Login Screen &ndash;&gt;-->
+    <!--<div class="login-screen" id="my-login-screen">-->
+      <!--<div class="view">-->
+        <!--<div class="page">-->
+          <!--<div class="page-content login-screen-content">-->
+            <!--<div class="login-screen-title">Login</div>-->
+            <!--<div class="list">-->
+              <!--<ul>-->
+                <!--<li class="item-content item-input">-->
+                  <!--<div class="item-inner">-->
+                    <!--<div class="item-title item-label">Username</div>-->
+                    <!--<div class="item-input-wrap">-->
+                      <!--<input type="text" name="username" placeholder="Your username">-->
+                    <!--</div>-->
+                  <!--</div>-->
+                <!--</li>-->
+                <!--<li class="item-content item-input">-->
+                  <!--<div class="item-inner">-->
+                    <!--<div class="item-title item-label">Password</div>-->
+                    <!--<div class="item-input-wrap">-->
+                      <!--<input type="password" name="password" placeholder="Your password">-->
+                    <!--</div>-->
+                  <!--</div>-->
+                <!--</li>-->
+              <!--</ul>-->
+            <!--</div>-->
+            <!--<div class="list">-->
+              <!--<ul>-->
+                <!--<li>-->
+                  <!--<a href="#" class="item-link list-button login-button">Sign In</a>-->
+                <!--</li>-->
+              <!--</ul>-->
+              <!--<div class="block-footer">Some text about login information.<br>Click "Sign In" to close Login Screen</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
   <!-- Cordova -->
   <!--
   <script src="cordova.js"></script>

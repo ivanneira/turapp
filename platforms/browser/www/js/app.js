@@ -48,11 +48,11 @@ var app  = new Framework7({
 var homeView = app.views.create('#view-home', {
   url: '/'
 });
-var catalogView = app.views.create('#view-catalog', {
-  url: '/catalog/'
+var noticiasView = app.views.create('#view-noticias', {
+  url: '/noticias/'
 });
-var settingsView = app.views.create('#view-settings', {
-  url: '/settings/'
+var climaView = app.views.create('#view-clima', {
+  url: '/clima/'
 });
 
 

@@ -98,6 +98,8 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <!-- Don't block any requests -->
+    <access origin="*" />
     <platform name="android">
         <allow-intent href="market:*" />
     </platform>

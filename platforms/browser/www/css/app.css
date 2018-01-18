@@ -5,3 +5,30 @@
 .ios .tabbar-labels .tab-link.tab-link-active .icon:not(.icon-ios-fill) {
   display: none;
 }
+
+
+/*noticias cards*/
+/*
+.demo-card-header-pic .card-header {
+  height: 40vw;
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+}
+
+.demo-card-header-pic .card-content-padding .date{
+  color: #8e8e93;
+}*/
+
+.K2FeedImage img{
+
+float: left;
+  padding: 1em;
+}
+
+.K2FeedIntroText {
+
+  padding: 1em;
+
+  color: #8e8e93;
+}

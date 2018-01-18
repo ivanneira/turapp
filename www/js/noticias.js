@@ -26,7 +26,7 @@ function getNoticias(xml){
     var item = items.iterateNext();
 
     while(item){
-        
+
 
         contenidos.push($(item).text());
 
@@ -40,18 +40,26 @@ function getNoticias(xml){
 //transforma el html en el template y lo muestra
 function showContenidos(htmlString){
 
+    //console.log(htmlString)
+/*
+    var backgroundImage = "background-image:url(http://lorempixel.com/1000/600/nature/3/)";
+
     var template =  '<div class="card demo-card-header-pic">'+
-                        '<div style="background-image:url(http://lorempixel.com/1000/600/nature/3/)" class="card-header align-items-flex-end">Journey To Mountains</div>'+
+                        '<div style="'+ backgroundImage +'" class="card-header align-items-flex-end">Journey To Mountains</div>'+
                             '<div class="card-content card-content-padding">'+
                                 '<p class="date">Posted on January 21, 2015</p>'+
                                 '<p>Quisque eget vestibulum nulla. Quisque quis dui quis ex ultricies efficitur vitae non felis. Phasellus quis nibh hendrerit...</p>'+
                             '</div>'+
-                        '<div class="card-footer"><a href="#" class="link">Like</a><a href="#" class="link">Read more</a></div>'+
-                    '</div>';
+                    '</div>';*/
+
+var header = "<div class=\"card demo-card-header-pic\">";
+var footer = "</div>";
 
     for(var index in htmlString){
 
-        $$("#feeds").append(template);
+        $("#feeds").append(header + htmlString[index] + footer);
+
+        //console.dir($(htmlString[index])[0]);
     }
 }
 

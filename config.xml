@@ -98,7 +98,6 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
-    <!-- Don't block any requests -->
     <access origin="*" />
     <platform name="android">
         <allow-intent href="market:*" />
@@ -107,4 +106,5 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
+    <engine name="android" spec="~6.1.2" />
 </widget>

@@ -1,27 +1,37 @@
-var rssurl = 'https://sisanjuan.gob.ar/secciones/ministerio-de-turismo-y-cultura?format=feed';
+//var rssurl = 'https://sisanjuan.gob.ar/secciones/ministerio-de-turismo-y-cultura?format=json';
 
 
 $$(document).on('DOMContentLoaded', function(){
-
+    //descomentar para hacer la llamada ajax real
     //esta llamada de ajax tiene que estar dentro de esta funcion onReady para que funcione
-    $.ajax({
+/*    $.ajax({
         url: rssurl,
         success: function(feed) {
-            // console.log(feed);
             // console.log("--------------")
             getNoticias(feed);
         }
-    });
+    });*/
+
 
 });
 
 //objeto xmo
 var contenidos = [];
 
-//trata el xml y deja el html
-function getNoticias(xml){
+//console.log(typeof(noticias))
 
-    var items = xml.evaluate("//channel/item/description/text()", xml, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
+//var a = noticiasResult.category.children;
+
+console.log(noticiasResult)
+
+//getNoticias(noticiasResult);
+
+//trata el json
+function getNoticias(jsonResponse){
+
+
+
+/*    var items = xml.evaluate("//channel/item/description/text()", xml, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
 
     var item = items.iterateNext();
 
@@ -31,14 +41,14 @@ function getNoticias(xml){
         contenidos.push($(item).text());
 
         item = items.iterateNext();
-    }
+    }*/
 
-    showContenidos(contenidos)
+    showContenidos(jsonResponse)
 
 }
 
 //transforma el html en el template y lo muestra
-function showContenidos(htmlString){
+function showContenidos(jsonResponse){
 
     //console.log(htmlString)
 /*
@@ -55,9 +65,11 @@ function showContenidos(htmlString){
 var header = "<div class=\"card demo-card-header-pic\">";
 var footer = "</div>";
 
-    for(var index in htmlString){
+var template = "<div></div>";
 
-        $("#feeds").append(header + htmlString[index] + footer);
+    for(var index in jsonResponse){
+
+        $("#feeds").append(header + jsonResponse[index].title + footer);
 
         //console.dir($(htmlString[index])[0]);
     }

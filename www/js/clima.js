@@ -89,36 +89,35 @@ var query = "select * from weather.forecast where  u='c' AND woeid = 91863255";
 //API url
 var weatherURL = "https://query.yahooapis.com/v1/public/yql?q=";
 
+var weather;
 
+$$(document).on('DOMContentLoaded', function(){
 
+    $.ajax({
 
-$.ajax({
+        url: weatherURL + query.replace(" ","%20") + "&format=json",
+        success: function(data){
 
-    url: weatherURL + query.replace(" ","%20") + "&format=json",
-    success: function(data){
+            weather = cleanWeather(data);
+            console.log(weather)
+        }
 
-        console.log(data)
-        cleanWeather(data)
-    }
+    });
+});
 
-})
 
 function cleanWeather(data){
 
-    var weather = {
+    var weatherData = {
 
         'temp': data.query.results.channel.item.condition.temp,
         'code': yahooCodes[data.query.results.channel.item.condition.code],
 		'humidity': data.query.results.channel.atmosphere.humidity,
 		'visibility': data.query.results.channel.atmosphere.visibility,
 		'forecast': cleanForecast(data.query.results.channel.item.forecast)
-    }
+    };
 
-
-
-
-    console.log(weather)
-
+    return weatherData;
 }
 
 function cleanForecast(forecast){
@@ -127,7 +126,7 @@ function cleanForecast(forecast){
 
 	for (var i = 0; i < forecast.length ; i++){
 
-		var insert = {
+        result[i] = {
 
 			'code':yahooCodes[forecast[i].code],
 			'min':forecast[i].low,
@@ -135,7 +134,6 @@ function cleanForecast(forecast){
 			'day': daysOfTheWeek[forecast[i].day]
 		};
 
-		result[i] = insert;
 	}
 
 	return result;

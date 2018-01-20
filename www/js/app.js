@@ -47,7 +47,7 @@ var app  = new Framework7({
 
 // Init/Create views
 var homeView = app.views.create('#view-home', {
-  url: '/'
+    url: '/'
 });
 var noticiasView = app.views.create('#view-noticias', {
   url: '/noticias/'
@@ -55,6 +55,7 @@ var noticiasView = app.views.create('#view-noticias', {
 var climaView = app.views.create('#view-clima', {
   url: '/clima/'
 });
+
 
 
 // // Login Screen Demo

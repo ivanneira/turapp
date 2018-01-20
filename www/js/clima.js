@@ -68,6 +68,17 @@ var yahooCodes = [
 
 yahooCodes[3200] = 	"Descripción no disponible";
 
+var daysOfTheWeek = {
+
+	'Mon': 'Lunes',
+	'Tue': 'Martes',
+	'Wed': 'Miércoles',
+	'Thu': 'Jueves',
+	'Fri': 'Viernes',
+	'Sat': 'Sábado',
+	'Sun': 'Domingo'
+};
+
 
 //Consumer Key
 var clientID = "dj0yJmk9NjNmRmEyU09MYkZJJmQ9WVdrOVFYSmpkMlUyTjJVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD1mYw--";
@@ -97,12 +108,36 @@ function cleanWeather(data){
     var weather = {
 
         'temp': data.query.results.channel.item.condition.temp,
-        'code': yahooCodes[data.query.results.channel.item.condition.code]
+        'code': yahooCodes[data.query.results.channel.item.condition.code],
+		'humidity': data.query.results.channel.atmosphere.humidity,
+		'visibility': data.query.results.channel.atmosphere.visibility,
+		'forecast': cleanForecast(data.query.results.channel.item.forecast)
     }
 
 
 
 
     console.log(weather)
+
+}
+
+function cleanForecast(forecast){
+
+	var result = [{}];
+
+	for (var i = 0; i < forecast.length ; i++){
+
+		var insert = {
+
+			'code':yahooCodes[forecast[i].code],
+			'min':forecast[i].low,
+			'max':forecast[i].high,
+			'day': daysOfTheWeek[forecast[i].day]
+		};
+
+		result[i] = insert;
+	}
+
+	return result;
 
 }

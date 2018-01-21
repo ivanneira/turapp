@@ -22,7 +22,6 @@ console.log(noticiasResult)
 function showContenidos(jsonResponse){
 
 
-
     for ( var i = 0 ; i < jsonResponse.titles.length ; i++){
 
         var template =  '<div class="card demo-card-header-pic">' +

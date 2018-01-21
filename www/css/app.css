@@ -17,3 +17,9 @@
 .demo-card-header-pic .card-content-padding .date{
   color: #8e8e93;
 }
+
+#mapid {
+
+  height:200px;
+  width:200px;
+}

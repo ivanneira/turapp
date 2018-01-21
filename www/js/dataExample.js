@@ -8649,6 +8649,7 @@ var noticias = {
 
 
 var noticiasResult = clean(noticias);
+console.log(noticias)
 
 
 

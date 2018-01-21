@@ -8,12 +8,12 @@ function onPopUpOpen(){
 
 
 
-    setTimeout(function(){ $("#mapid").addClass("mapid"); }, 3000);
+    //setTimeout(function(){ $("#mapid").addClass("mapid"); }, 3000);
 
 }
 
 function onPopUpClose(){
 
-    $$("#senderoContainer").empty();
+    //$$("#senderoContainer").empty();
 
 }

@@ -74,6 +74,10 @@ $$('.popup-senderos').on('popup:open', function (e, popup) {
     onPopUpOpen();
 });
 
+$$('.popup-senderos').on('popup:close', function (e, popup) {
+    onPopUpClose();
+});
+
 // // Login Screen Demo
 // $$('#my-login-screen .login-button').on('click', function () {
 //   var username = $$('#my-login-screen [name="username"]').val();

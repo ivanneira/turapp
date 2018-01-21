@@ -1,6 +1,12 @@
 function onPopUpOpen(){
 
-    console.log("metan todo lo de senderos en esta función")
+    $$("#senderoContainer").append("<p class='text-color-black'>Este contenido se crea y destruye dinámicamente cabeza</p>")
 
+
+}
+
+function onPopUpClose(){
+
+    $$("#senderoContainer").empty();
 
 }

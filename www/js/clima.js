@@ -99,7 +99,7 @@ $$(document).on('DOMContentLoaded', function(){
         success: function(data){
 
             weather = cleanWeather(data);
-            console.log(weather)
+            fillClima(weather)
         }
 
     });
@@ -114,7 +114,8 @@ function cleanWeather(data){
         'code': yahooCodes[data.query.results.channel.item.condition.code],
 		'humidity': data.query.results.channel.atmosphere.humidity,
 		'visibility': data.query.results.channel.atmosphere.visibility,
-		'forecast': cleanForecast(data.query.results.channel.item.forecast)
+		'forecast': cleanForecast(data.query.results.channel.item.forecast),
+		'image': "http://l.yimg.com/a/i/us/we/52/"+ data.query.results.channel.item.condition.code +".gif"
     };
 
     return weatherData;
@@ -138,4 +139,13 @@ function cleanForecast(forecast){
 
 	return result;
 
+}
+
+function fillClima(data){
+
+	$$("#climaImage")
+		.css('background-image','url(' + data.image + ')')
+		.text(data.code);
+	$$("#temperatura").text(data.temp + "ºC");
+	$$("#climaFooter").text("humedad: " + data.humidity + "% - " + "visibilidad: " + data.visibility + "km");
 }

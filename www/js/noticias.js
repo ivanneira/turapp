@@ -27,7 +27,7 @@ function showContenidos(jsonResponse){
     for ( var i = 0 ; i < jsonResponse.titles.length ; i++){
 
         var template =  '<div class="card demo-card-header-pic noticia" data-noticiaid="' + [i] + '">' +
-                        '  <div style="background-image:url('+ jsonResponse.image[i]  +')" data-background="'+ jsonResponse.image[i]  +'" class="card-header align-items-flex-end lazy lazy-fade-in"></div>' +
+                        '  <div style="background-image:url('+ jsonResponse.image[i]  +')" data-background="'+ jsonResponse.image[i]  +'" class="card-header align-items-flex-end"></div>' +
                         '  <div class="card-content card-content-padding">' +
                         '    <p class="date">' + jsonResponse.created[i] + '</p>' +
                         '    <p>' + jsonResponse.titles[i] + '</p>' +

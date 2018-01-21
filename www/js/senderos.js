@@ -1,5 +1,5 @@
 function onPopUpOpen(){
-
+    //seba trolo
     //el id del sendero llega como variable global, va cambiando según el atributo data-senderoid del tag a
     console.log("El id del sendero es " + senderoID);
 

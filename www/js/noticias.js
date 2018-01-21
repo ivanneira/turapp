@@ -13,6 +13,8 @@ $$(document).on('DOMContentLoaded', function(){
     });*/
     //showContenidos(noticiasResult)
 
+
+
 });
 
 console.log(noticiasResult)
@@ -24,13 +26,40 @@ function showContenidos(jsonResponse){
 
     for ( var i = 0 ; i < jsonResponse.titles.length ; i++){
 
-        var template =  '<div class="card demo-card-header-pic">' +
+        var template =  '<div class="card demo-card-header-pic noticia" data-noticiaid="' + [i] + '">' +
                         '  <div style="background-image:url('+ jsonResponse.image[i]  +')" data-background="'+ jsonResponse.image[i]  +'" class="card-header align-items-flex-end lazy lazy-fade-in"></div>' +
                         '  <div class="card-content card-content-padding">' +
-                        '    <p class="date">Posted on January 21, 2015</p>' +
+                        '    <p class="date">' + jsonResponse.created[i] + '</p>' +
                         '    <p>' + jsonResponse.titles[i] + '</p>' +
                         '  </div>';
 
         $$("#feeds").append(template);
     }
+
+    $$(".noticia").click(function(){
+        app.popup.open('.popup-noticias')
+        noticiaID = $(this).data().noticiaid;
+    });
+
+}
+
+function onPopUpNoticiasOpen(){
+
+    //console.log(noticiaID)
+
+    var template =  '<div class="card demo-card-header-pic">' +
+                    '<div style="background-image:url('+ noticiasResult.image[noticiaID] +')" class="card-header align-items-flex-end">'+ noticiasResult.titles[noticiaID ]+'</div>' +
+                    '<div class="card-content card-content-padding">' +
+                    '<p class="date">'+ "Creado en " + noticiasResult.created[noticiaID] +'</p>' +
+                    '<div class="text-color-gray">'+ noticiasResult.fulltext[noticiaID] + '</div>' +
+                    ' </div>';
+
+
+    $$("#noticiaContainer").append(template);
+}
+
+function onPopUpNoticiasClose(){
+
+    $$("#noticiaContainer").empty();
+
 }

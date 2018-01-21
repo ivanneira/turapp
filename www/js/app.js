@@ -64,7 +64,9 @@ app.on('pageAfterIn', function(tab){
     }
 });
 
-//variable global con el id de sendero que corresponde
+//Eventos para popup de senderos
+
+//variable global con el id de sendero
 var senderoID = 0;
 
 $$(".sendero").click(function(){
@@ -78,6 +80,21 @@ $$('.popup-senderos').on('popup:opened', function (e, popup) {
 
 $$('.popup-senderos').on('popup:close', function (e, popup) {
     onPopUpClose();
+});
+
+//Eventos para popup de noticias
+
+//variable global con el id de sendero
+var noticiaID = -1;
+
+
+$$('.popup-noticias').on('popup:opened', function (e, popup) {
+
+    onPopUpNoticiasOpen();
+});
+
+$$('.popup-noticias').on('popup:close', function (e, popup) {
+    onPopUpNoticiasClose();
 });
 
 // // Login Screen Demo

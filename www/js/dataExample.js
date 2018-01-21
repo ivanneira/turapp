@@ -8649,7 +8649,7 @@ var noticias = {
 
 
 var noticiasResult = clean(noticias);
-console.log(noticias)
+//console.log(noticias.items)
 
 
 
@@ -8660,28 +8660,23 @@ function clean(data) {
     var titles =[];
     var fulltext = [];
     var image = [];
+    var created = [];
 
 
    for( var i = 0 ; i < items.length ; i++){
-        //esto no anda
+
         titles[i] = items[i]['title'];
         fulltext[i] = items[i]['fulltext'];
         image[i] = "https://sisanjuan.gob.ar" + items[i]['image'];
-        //esto si
-        //console.log(childrens[i]['title'])
-    }
-/*
-console.dir(items)
-    for(var index in items){
+        created[i] = items[i]['created'].substring(0, 10);
 
-        //titles[index].push(items[index].title);
     }
-*/
 
     return {
         'titles': titles,
         'fulltext': fulltext,
-        'image': image
+        'image': image,
+        'created': created
     };
 
 }

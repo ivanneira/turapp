@@ -1,6 +1,6 @@
-function onPopUpInit(){
+function onPopUpOpen(){
 
-    console.log("contenido dinámico va aca")
+    console.log("metan todo lo de senderos en esta función")
 
 
 }

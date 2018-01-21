@@ -21,15 +21,17 @@ console.log(noticiasResult)
 //transforma el html en el template y lo muestra
 function showContenidos(jsonResponse){
 
-    console.log("func showContenidos");
-
-    var header = "<div class=\"card demo-card-header-pic\">";
-    var footer = "</div>";
-
-    var template = "<div></div>";
-
-    for ( var i = 0 ; i < jsonResponse.title ; i++){
 
 
+    for ( var i = 0 ; i < jsonResponse.titles.length ; i++){
+
+        var template =  '<div class="card demo-card-header-pic">' +
+                        '  <div style="background-image:url('+ jsonResponse.image[i]  +')" data-background="'+ jsonResponse.image[i]  +'" class="card-header align-items-flex-end lazy lazy-fade-in"></div>' +
+                        '  <div class="card-content card-content-padding">' +
+                        '    <p class="date">Posted on January 21, 2015</p>' +
+                        '    <p>' + jsonResponse.titles[i] + '</p>' +
+                        '  </div>';
+
+        $$("#feeds").append(template);
     }
 }

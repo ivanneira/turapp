@@ -8665,7 +8665,7 @@ function clean(data) {
         //esto no anda
         titles[i] = items[i]['title'];
         fulltext[i] = items[i]['fulltext'];
-        image[i] = items[i]['image'];
+        image[i] = "https://sisanjuan.gob.ar" + items[i]['image'];
         //esto si
         //console.log(childrens[i]['title'])
     }

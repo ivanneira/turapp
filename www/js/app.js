@@ -57,9 +57,9 @@ var climaView = app.views.create('#view-clima', {
 });
 
 
-app.on('pageInit', function(tab){
+app.on('pageAfterIn', function(tab){
 
-    //console.log(tab)
+
 
     if(tab.name == "noticias"){
 

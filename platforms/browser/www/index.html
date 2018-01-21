@@ -138,7 +138,7 @@
 
               <div class="page-content">
                 <div id="senderoContainer">
-                  <div id="mapid"></div>
+
                     <!--contenido dinámico, al abrir el popup se gatilla un evento que ejecuta la función onPopUpOpen que se encuentra declarado en senderos.js-->
                 </div>
               </div>
@@ -148,7 +148,8 @@
 
           <!-- Scrollable page content-->
           <div class="page-content">
-            <p><a href="#" data-popup=".popup-senderos" class="popup-open">Quebrada de Zonda</a></p>
+            <!--este tag tiene un data-senderoid que especifica el id del sendero a mostrar, lo guarda en el evento click en una variable global-->
+            <p><a href="#" data-senderoid="12" data-popup=".popup-senderos" class="popup-open sendero">Quebrada de Zonda</a></p>
 
           </div>
         </div>

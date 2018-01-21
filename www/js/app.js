@@ -56,21 +56,23 @@ var climaView = app.views.create('#view-clima', {
   url: '/clima/'
 });
 
-
 app.on('pageAfterIn', function(tab){
-
-
 
     if(tab.name == "noticias"){
 
         showContenidos(noticiasResult)
     }
-
-
 });
 
+//variable global con el id de sendero
+var senderoID = 0;
 
-$$('.popup-senderos').on('popup:open', function (e, popup) {
+$$(".sendero").click(function(){
+    senderoID = $(this).data().senderoid;
+});
+
+$$('.popup-senderos').on('popup:opened', function (e, popup) {
+
     onPopUpOpen();
 });
 

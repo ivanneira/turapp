@@ -64,7 +64,7 @@ app.on('pageAfterIn', function(tab){
     }
 });
 
-//variable global con el id de sendero
+//variable global con el id de sendero que corresponde
 var senderoID = 0;
 
 $$(".sendero").click(function(){

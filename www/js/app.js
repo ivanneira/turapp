@@ -57,6 +57,25 @@ var climaView = app.views.create('#view-clima', {
 });
 
 
+app.on('pageInit', function(tab){
+
+    //console.log(tab)
+
+    if(tab.name == "noticias"){
+
+        showContenidos(noticiasResult)
+    }
+
+
+});
+
+
+$$('.popup-senderos').on('popup:open', function (e, popup) {
+    console.log('About popup open');
+});
+$$('.popup-senderos').on('popup:opened', function (e, popup) {
+    console.log('About popup opened');
+});
 
 // // Login Screen Demo
 // $$('#my-login-screen .login-button').on('click', function () {

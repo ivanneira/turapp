@@ -1,8 +1,4 @@
 routes = [
-  {
-    path: '/',
-    url: './senderos.html',
-  },
   // {
   //   path: '/about/',
   //   url: './pages/about.html',

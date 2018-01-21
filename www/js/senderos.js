@@ -1,6 +1,6 @@
-$$(document).on('DOMContentLoaded', function(){
+function onPopUpInit(){
+
+    console.log("contenido dinámico va aca")
 
 
-    console.log("vamos a hacer pichí?")
-
-});
+}

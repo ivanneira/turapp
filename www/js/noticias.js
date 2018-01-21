@@ -11,7 +11,7 @@ $$(document).on('DOMContentLoaded', function(){
             getNoticias(feed);
         }
     });*/
-    showContenidos(noticiasResult)
+    //showContenidos(noticiasResult)
 
 });
 
@@ -21,16 +21,15 @@ console.log(noticiasResult)
 //transforma el html en el template y lo muestra
 function showContenidos(jsonResponse){
 
+    console.log("func showContenidos");
 
-var header = "<div class=\"card demo-card-header-pic\">";
-var footer = "</div>";
+    var header = "<div class=\"card demo-card-header-pic\">";
+    var footer = "</div>";
 
-var template = "<div></div>";
+    var template = "<div></div>";
 
-    for(var index in jsonResponse){
+    for ( var i = 0 ; i < jsonResponse.title ; i++){
 
-        $("#feeds").append(jsonResponse[index].title);
 
-        //console.dir($(htmlString[index])[0]);
     }
 }

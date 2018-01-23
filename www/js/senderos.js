@@ -11,7 +11,7 @@ function onPopUpOpen(){
     $$("#senderoContainer").append(mapTemplate);
 
     var mymap =  L.map('mapid').setView([-31.54754175668209, -68.67658624939143], 16);
-    var x =  L.tileLayer('mapas/quebradaZonda/{z}/{x}/{y}.png',{    maxZoom: 18, minZoom:15  }).addTo(mymap);
+    var x =  L.tileLayer('mapas/quebradaZonda/{z}/{x}/{y}.jpg',{    maxZoom: 18, minZoom:15  }).addTo(mymap);
 
 
     //Traer desde API por primera vez luego sqlite.

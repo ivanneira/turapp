@@ -69,8 +69,9 @@ app.on('pageAfterIn', function(tab){
 //variable global con el id de sendero
 var senderoID = 0;
 
-$$(".sendero").click(function(){
+$$(".senderoCard").click(function(){
     senderoID = $(this).data().senderoid;
+    app.popup.open('.popup-senderos')
 });
 
 $$('.popup-senderos').on('popup:opened', function (e, popup) {

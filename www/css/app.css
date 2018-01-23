@@ -28,3 +28,9 @@
 
   background-repeat: no-repeat;
 }
+
+.titulonoticia {
+  font-weight: bold;
+  font-size: 19px !important;
+  text-shadow: 2px 2px 5px #000000;
+}

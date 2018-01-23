@@ -1,6 +1,7 @@
 //var rssurl = 'https://sisanjuan.gob.ar/secciones/ministerio-de-turismo-y-cultura?format=json';
 
 
+
 $$(document).on('DOMContentLoaded', function(){
     //descomentar para hacer la llamada ajax real
     //esta llamada de ajax tiene que estar dentro de esta funcion onReady para que funcione
@@ -48,7 +49,7 @@ function onPopUpNoticiasOpen(){
     //console.log(noticiaID)
 
     var template =  '<div class="card demo-card-header-pic">' +
-                    '<div style="background-image:url('+ noticiasResult.image[noticiaID] +')" class="card-header align-items-flex-end">'+ noticiasResult.titles[noticiaID ]+'</div>' +
+                    '<div style="background-image:url('+ noticiasResult.image[noticiaID] +')" class="card-header align-items-flex-end titulonoticia">'+ noticiasResult.titles[noticiaID ]+'</div>' +
                     '<div class="card-content card-content-padding">' +
                     '<p class="date">'+ "Creado en " + noticiasResult.created[noticiaID] +'</p>' +
                     '<div class="text-color-gray">'+ noticiasResult.fulltext[noticiaID] + '</div>' +

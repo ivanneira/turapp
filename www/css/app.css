@@ -58,10 +58,13 @@ colores gopro
 
 .climaicon {
 
-  margin-left: 10px !important;
+/*  margin-left: 10px !important;
   height: 20vh;
   background-repeat: no-repeat;
-  background-size:contain;
+  background-size:contain;*/
+
+  height: 85px;
+  color: #f00;
 }
 
 .titulonoticia {

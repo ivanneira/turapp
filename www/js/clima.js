@@ -111,7 +111,8 @@ function cleanWeather(data){
     var weatherData = {
 
         'temp': data.query.results.channel.item.condition.temp,
-        'code': yahooCodes[data.query.results.channel.item.condition.code],
+		'code': data.query.results.channel.item.condition.code,
+        'codeText': yahooCodes[data.query.results.channel.item.condition.code],
 		'humidity': data.query.results.channel.atmosphere.humidity,
 		'visibility': data.query.results.channel.atmosphere.visibility,
 		'forecast': cleanForecast(data.query.results.channel.item.forecast),
@@ -142,9 +143,8 @@ function cleanForecast(forecast){
 }
 
 function fillClima(data){
-
-	$$("#climaImage").css('background-image','url(' + data.image + ')');
-    $$("#climaText").text(data.code);
+	$$("#climaImage").append('<img class="climaicon" src="img/'+ data.code +'.svg"></img>');
+    $$("#climaText").text(data.codeText);
 	$$("#temperatura").text(data.temp + "ºC");
 	$$("#climaFooter").text("humedad: " + data.humidity + "% - " + "visibilidad: " + data.visibility + "km");
 }

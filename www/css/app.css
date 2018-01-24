@@ -15,9 +15,6 @@ colores gopro
 
 */
 
-.color-custom { color: #ff0000 !important;}
-
-
 .page, .popup{
   background-color: #222222 !important;
 }
@@ -64,7 +61,7 @@ colores gopro
   background-size:contain;*/
 
   height: 85px;
-  color: #f00;
+  fill: #00AEEF;
 }
 
 .titulonoticia {

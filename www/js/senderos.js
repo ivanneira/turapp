@@ -4,9 +4,9 @@ function onPopUpOpen(){
     console.log("El id del sendero es " + senderoID);
 
     var mapTemplate = '<div class="card">'+
-                      '     <div class="card-header text-color-gray">Mapa del sendero</div>'+
+                      '     <div class="card-header mapaheader">Mapa del sendero</div>'+
                       '     <div id ="mapid" class="card-content card-content-padding"></div>'+
-                      '<div class="card-footer text-color-gray">algunos detalles del mapa</div>';
+                      '<div class="card-footer mapafooter">algunos detalles del mapa</div>';
 
     $$("#senderoContainer").append(mapTemplate);
 

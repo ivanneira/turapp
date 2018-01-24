@@ -52,7 +52,7 @@ function onPopUpNoticiasOpen(){
                     '<div style="background-image:url('+ noticiasResult.image[noticiaID] +')" class="card-header align-items-flex-end titulonoticia">'+ noticiasResult.titles[noticiaID ]+'</div>' +
                     '<div class="card-content card-content-padding">' +
                     '<p class="date">'+ "Creado en " + noticiasResult.created[noticiaID] +'</p>' +
-                    '<div class="text-color-gray">'+ noticiasResult.fulltext[noticiaID] + '</div>' +
+                    '<div>'+ noticiasResult.fulltext[noticiaID] + '</div>' +
                     ' </div>';
 
 

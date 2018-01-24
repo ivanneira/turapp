@@ -143,9 +143,8 @@ function cleanForecast(forecast){
 
 function fillClima(data){
 
-	$$("#climaImage")
-		.css('background-image','url(' + data.image + ')')
-		.text(data.code);
+	$$("#climaImage").css('background-image','url(' + data.image + ')');
+    $$("#climaText").text(data.code);
 	$$("#temperatura").text(data.temp + "ºC");
 	$$("#climaFooter").text("humedad: " + data.humidity + "% - " + "visibilidad: " + data.visibility + "km");
 }

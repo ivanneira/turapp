@@ -6,15 +6,35 @@
   display: none;
 }
 
-.page-content{
-  background-color: #fff;
 
+/*
+colores gopro
+
+00AEEF
+005DAC
+
+*/
+
+.color-custom { color: #ff0000 !important;}
+
+
+.page, .popup{
+  background-color: #222222 !important;
 }
 
-.card-content{
-  background-color: #5ebbae;
+.navbar {
+  background-color: #005DAC !important;
 }
 
+.toolbar {
+
+  background-color: #005DAC !important;
+}
+
+.card {
+  color: white;
+  background-color: #005DAC;
+}
 /*noticias cards*/
 .demo-card-header-pic .card-header {
   height: 40vw;
@@ -27,7 +47,7 @@
 }
 
 .date {
-  color: #000 !important;
+  color: #fff !important;
   font-weight: bold !important;
 }
 #mapid {
@@ -38,11 +58,30 @@
 
 .climaicon {
 
+  margin-left: 10px !important;
+  height: 20vh;
   background-repeat: no-repeat;
+  background-size:contain;
 }
 
 .titulonoticia {
+  height: 80vh;
   font-weight: bold;
   font-size: 19px !important;
   text-shadow: 2px 2px 5px #000000;
+}
+
+.climacard {
+  background-color: #fff;
+
+}
+
+.climatemperatura {
+
+  font-size: 50px;
+  color: #0a6ebd;
+}
+
+#climaText {
+
 }

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "cordova-android": "^7.0.0",
-    "cordova-browser": "^5.0.3"
+    "cordova-browser": "^5.0.3",
+    "cordova-plugin-cache": "git+https://github.com/moderna/cordova-plugin-cache.git"
   }
 }

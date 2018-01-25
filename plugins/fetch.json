@@ -1,10 +1,18 @@
 {
-    "cordova-plugin-whitelist": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-whitelist@1"
-        },
-        "is_top_level": true,
-        "variables": {}
-    }
+  "cordova-plugin-whitelist": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-whitelist@1"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "at.modalog.cordova.plugin.cache": {
+    "source": {
+      "type": "registry",
+      "id": "https://github.com/moderna/cordova-plugin-cache.git"
+    },
+    "is_top_level": true,
+    "variables": {}
+  }
 }

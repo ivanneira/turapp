@@ -16,21 +16,32 @@ colores gopro
 */
 
 .page, .popup{
-  background-color: #222222 !important;
+  background-color: #f2f2f2 !important;
+
+}
+
+p {
+
+  color: #001821 !important;
+}
+
+.tab-link-highlight {
+
+  background-color: #d83559 !important;
 }
 
 .navbar {
-  background-color: #005DAC !important;
+  background-color: #55b9a1 !important;
 }
 
 .toolbar {
 
-  background-color: #005DAC !important;
+  background-color: #55b9a1 !important;
 }
 
 .card {
-  color: white;
-  background-color: #005DAC;
+  color: #000;
+  background-color: #fff;
 }
 /*noticias cards*/
 .demo-card-header-pic .card-header {
@@ -39,12 +50,12 @@ colores gopro
   background-position: center;
   color: #fff;
 }
-.demo-card-header-pic .card-content-padding .date{
+.demo-card-header-pic .card-content-padding {
   color: #8e8e93;
 }
 
 .date {
-  color: #fff !important;
+  color: #001821 !important;
   font-weight: bold !important;
 }
 #mapid {
@@ -65,10 +76,10 @@ colores gopro
 }
 
 .titulonoticia {
-  height: 80vh;
+  color: #d83559 !important;
   font-weight: bold;
-  font-size: 19px !important;
-  text-shadow: 2px 2px 5px #000000;
+  font-size: 26px !important;
+  /*text-shadow: 2px 2px 5px #000000;*/
 }
 
 .climacard {
@@ -83,5 +94,9 @@ colores gopro
 }
 
 #climaText {
+
+}
+
+.tab-link {
 
 }

@@ -49,11 +49,12 @@ function onPopUpNoticiasOpen(){
     //console.log(noticiaID)
 
     var template =  '<div class="card demo-card-header-pic">' +
-                    '<div style="background-image:url('+ noticiasResult.image[noticiaID] +')" class="card-header align-items-flex-end titulonoticia">'+ noticiasResult.titles[noticiaID ]+'</div>' +
+                    '<div style="background-image:url('+ noticiasResult.image[noticiaID] +')" class="card-header align-items-flex-end"></div>' +
                     '<div class="card-content card-content-padding">' +
+                    '<p class="titulonoticia">' + noticiasResult.titles[noticiaID]+ '</p>' +
                     '<p class="date">'+ "Creado en " + noticiasResult.created[noticiaID] +'</p>' +
                     '<div>'+ noticiasResult.fulltext[noticiaID] + '</div>' +
-                    ' </div>';
+                    '</div>';
 
 
     $$("#noticiaContainer").append(template);

@@ -116,7 +116,7 @@ function cleanWeather(data){
 		'humidity': data.query.results.channel.atmosphere.humidity,
 		'visibility': data.query.results.channel.atmosphere.visibility,
 		'forecast': cleanForecast(data.query.results.channel.item.forecast),
-		'image': "http://l.yimg.com/a/i/us/we/52/"+ data.query.results.channel.item.condition.code +".gif"
+		//'image': "http://l.yimg.com/a/i/us/we/52/"+ data.query.results.channel.item.condition.code +".gif"
     };
 
     return weatherData;

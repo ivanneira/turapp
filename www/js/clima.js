@@ -136,7 +136,6 @@ function cleanWeather(data){
 function cleanForecast(forecast){
 
 	var result = [{}];
-	console.log(forecast)
 
 	for (var i = 0; i < forecast.length ; i++){
 

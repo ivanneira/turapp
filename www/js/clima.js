@@ -79,6 +79,17 @@ var daysOfTheWeek = {
 	'Sun': 'Domingo'
 };
 
+var shortDaysOfTheWeek = {
+
+    'Mon': 'LU',
+    'Tue': 'MA',
+    'Wed': 'MI',
+    'Thu': 'JU',
+    'Fri': 'VI',
+    'Sat': 'SA',
+    'Sun': 'DO'
+};
+
 
 //Consumer Key
 var clientID = "dj0yJmk9NjNmRmEyU09MYkZJJmQ9WVdrOVFYSmpkMlUyTjJVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD1mYw--";
@@ -125,15 +136,16 @@ function cleanWeather(data){
 function cleanForecast(forecast){
 
 	var result = [{}];
+	console.log(forecast)
 
 	for (var i = 0; i < forecast.length ; i++){
 
         result[i] = {
 
-			'code':yahooCodes[forecast[i].code],
-			'min':forecast[i].low,
-			'max':forecast[i].high,
-			'day': daysOfTheWeek[forecast[i].day]
+			'code': forecast[i].code,
+			'min': forecast[i].low,
+			'max': forecast[i].high,
+			'day': forecast[i].day
 		};
 
 	}
@@ -145,6 +157,15 @@ function cleanForecast(forecast){
 function fillClima(data){
 	$$("#climaImage").append('<img class="climaicon" src="img/'+ data.code +'.svg"></img>');
     $$("#climaText").text(data.codeText);
-	$$("#temperatura").text(data.temp + "ºC");
+	$$("#temperatura").text(data.temp + "º");
 	$$("#climaFooter").text("humedad: " + data.humidity + "% - " + "visibilidad: " + data.visibility + "km");
+
+	var forecastArray =  data.forecast
+
+	for(var index in forecastArray){
+
+		$$("#fDay"+ index).text(shortDaysOfTheWeek[forecastArray[index].day]);
+        $$("#fImg"+ index).append('<img src="img/'+ forecastArray[index].code +'.svg"></img>');
+        $$("#fMM"+ index).text(forecastArray[index].min + "\n" + forecastArray[index].max);
+	}
 }

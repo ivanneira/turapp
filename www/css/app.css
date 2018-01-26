@@ -6,7 +6,6 @@
   display: none;
 }
 
-
 @font-face {
   font-family: 'Nunito';
   src: url("../fonts/Nunito-Regular.ttf");
@@ -18,6 +17,10 @@
   src: url("../fonts/Nunito-Bold.ttf");
 }
 
+#temperatura {
+  margin: 10px;
+  color: #001821;
+}
 
 .page, .popup{
   background-color: #f2f2f2 !important;
@@ -70,12 +73,7 @@ p {
 
 .climaicon {
 
-/*  margin-left: 10px !important;
-  height: 20vh;
-  background-repeat: no-repeat;
-  background-size:contain;*/
-
-  height: 85px;
+  margin: 10px;
   fill: #00AEEF;
 }
 
@@ -99,9 +97,13 @@ p {
 }
 
 #climaText {
-
+  color: #001821 !important;
+  font-family: 'Nunito' !important;
+  font-weight: bold;
+  text-align: center;
 }
 
-.tab-link {
+.cardClima {
 
+  text-align: center !important;
 }

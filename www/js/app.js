@@ -62,6 +62,9 @@ app.on('pageAfterIn', function(tab){
 
         showContenidos(noticiasResult)
     }
+
+
+
 });
 
 //Eventos para popup de senderos

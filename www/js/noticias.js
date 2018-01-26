@@ -18,8 +18,9 @@ $$(document).on('DOMContentLoaded', function(){
 
 });
 
-console.log(noticiasResult)
+//console.log(noticiasResult)
 
+console.log("noticiasResult")
 
 //transforma el html en el template y lo muestra
 function showContenidos(jsonResponse){

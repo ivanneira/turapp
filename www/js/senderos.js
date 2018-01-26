@@ -1,3 +1,52 @@
+var senderosAPI = "http://200.85.158.85/plesk-site-preview/turapp.com/api/SenderosAPI";
+var senderosResult = [];
+
+$$(document).on('DOMContentLoaded', function(){
+    //descomentar para hacer la llamada ajax real
+    //esta llamada de ajax tiene que estar dentro de esta funcion onReady para que funcione
+        $.ajax({
+     url: senderosAPI,
+     success: function(feed) {
+      console.log("--------------")
+     //getNoticias(feed);
+     console.dir(feed);
+      senderosResult = feed;
+         loadSenderos();
+     }
+     });
+    //showContenidos(noticiasResult)
+
+
+    console.log("senderos");
+
+});
+
+
+function loadSenderos(){
+
+    for(var i=0;i<senderosResult.Senderos.length;i++)
+    {
+          var tmp= '<div class="card demo-card-header-pic senderoCard" data-senderoid="'+senderosResult.Senderos[i].ID+'">'+
+                        '<div class="card-header align-items-flex-end"></div>'+
+                        '<div class="card-content card-content-padding">'+
+                        '<p class="titulonoticia">'+senderosResult.Senderos[i].Nombre+'</p>'+
+                        '<p class="date">Destacado</p>'+
+                        '<p>'+senderosResult.Senderos[i].Descripcion+'</p>'+
+                        '</div>'+
+                    '</div>';
+
+        $$("#senderosResultDiv").append(tmp);
+    }
+
+    $$(".senderoCard").click(function(){
+        app.popup.open('.popup-senderos')
+        senderoID = $(this).data().senderoid;
+    });
+
+}
+
+
+
 function onPopUpOpen(){
     //seba trolo
     //el id del sendero llega como variable global, va cambiando según el atributo data-senderoid del tag a

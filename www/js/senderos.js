@@ -2,23 +2,9 @@
 var senderosResult = [];
 
 $$(document).on('DOMContentLoaded', function(){
-    //descomentar para hacer la llamada ajax real
-    //esta llamada de ajax tiene que estar dentro de esta funcion onReady para que funcione
-        $.ajax({
-     url: senderosAPI,
-     success: function(feed) {
-      console.log("--------------")
-     //getNoticias(feed);
-     console.dir(feed);
-      senderosResult = feed;
-         loadSenderos();
-     }
-     });
-    //showContenidos(noticiasResult)
-
 
     console.log("senderos");
-
+    loadSenderos();
 
 });
 

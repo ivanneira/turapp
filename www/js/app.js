@@ -18,7 +18,7 @@ var optionsGPS = {
 };
 
 //AJAX timeout
-var timeOut = 6000;
+var timeOut = 30000;
 
 // Framework7 App main instance
 var app  = new Framework7({
@@ -355,7 +355,7 @@ function syncSenderos()
             });
         },
         error: function () {
-            window.plugins.toast.show(ErrorAjax,"3000","bottom");
+            //window.plugins.toast.show(ErrorAjax,"3000","bottom");
         }
 
     });

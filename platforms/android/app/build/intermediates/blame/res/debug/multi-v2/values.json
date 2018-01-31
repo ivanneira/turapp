@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Sistemas\\turapp\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+            "outputFile": "D:\\Sistemas\\GitHubOficial\\turapp\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
             "map": [
                 {
-                    "source": "D:\\Sistemas\\turapp\\platforms\\android\\app\\src\\main\\res\\values\\strings.xml",
+                    "source": "D:\\Sistemas\\GitHubOficial\\turapp\\platforms\\android\\app\\src\\main\\res\\values\\strings.xml",
                     "from": {
                         "startLines": "4,2,3",
                         "startColumns": "4,4,4",

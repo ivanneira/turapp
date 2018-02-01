@@ -145,7 +145,7 @@ $$('.popup-noticias').on('popup:close', function (e, popup) {
 function onDeviceReady() {
 
 
-    DownloadFile('https://dbr.fm/wp-content/uploads/2015/12/Tiesto-Take-Me-Home-Remix.jpg',"","tiesto")
+    DownloadFile('http://200.85.158.85/plesk-site-preview/turapp.com/Content/MapResource/quebradaZonda.zip',"","quebradaZonda")
     //alert(checkInternet());
     //document.addEventListener("backbutton", onBackKeyDown, false);
 
@@ -222,6 +222,7 @@ function filetransfer(download_link, fp) {
         var percent =  result.loaded / result.total * 100;
         percent = Math.round(percent);
         console.log('Downloaded:  ' + percent + '%');
+        window.plugins.toast.show("Progreso: "+ percent + "%","500","bottom");
     };
 
 // File download function with URL and local path

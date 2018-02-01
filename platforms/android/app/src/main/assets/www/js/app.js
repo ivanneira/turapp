@@ -212,8 +212,18 @@ function download(URL, Folder_Name, File_Name) {
     }
 }
 
+
+
+
 function filetransfer(download_link, fp) {
     var fileTransfer = new FileTransfer();
+
+    fileTransfer.onprogress = function(result){
+        var percent =  result.loaded / result.total * 100;
+        percent = Math.round(percent);
+        console.log('Downloaded:  ' + percent + '%');
+    };
+
 // File download function with URL and local path
     fileTransfer.download(download_link, fp,
         function (entry) {

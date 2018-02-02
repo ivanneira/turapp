@@ -145,7 +145,7 @@ $$('.popup-noticias').on('popup:close', function (e, popup) {
 function onDeviceReady() {
 
 
-    DownloadFile('http://200.85.158.85/plesk-site-preview/turapp.com/Content/MapResource/quebradaZonda.zip',"","quebradaZonda")
+
     //alert(checkInternet());
     //document.addEventListener("backbutton", onBackKeyDown, false);
 
@@ -174,16 +174,17 @@ function DownloadFile(URL, Folder_Name, File_Name) {
         if (networkState == Connection.NONE) {
             return;
         } else {
-            download(URL, Folder_Name, File_Name); //If available download function call
+           return download(URL, Folder_Name, File_Name); //If available download function call
         }
     }
 }
 
 function download(URL, Folder_Name, File_Name) {
 //step to request a file system
+
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);
 
-    function fileSystemSuccess(fileSystem) {
+     function fileSystemSuccess(fileSystem) {
         var download_link = encodeURI(URL);
         ext = download_link.substr(download_link.lastIndexOf('.') + 1); //Get extension of URL
 
@@ -194,21 +195,23 @@ function download(URL, Folder_Name, File_Name) {
 
         fp = fp + "/" + Folder_Name + "/" + File_Name + "." + ext; // fullpath and name of the file which we want to give
         // download function call
-        filetransfer(download_link, fp);
+        return filetransfer(download_link, fp);
     }
 
-    function onDirectorySuccess(parent) {
+     function onDirectorySuccess(parent) {
         // Directory created successfuly
     }
 
     function onDirectoryFail(error) {
         //Error while creating directory
-        alert("Unable to create new directory: " + error.code);
+        //alert("Unable to create new directory: " + error.code);
+        return "Unable to create new directory: " + error.code
     }
 
     function fileSystemFail(evt) {
         //Unable to access file system
-        alert(evt.target.error.code);
+        //alert(evt.target.error.code);
+        return evt.target.error.code
     }
 }
 
@@ -218,22 +221,25 @@ function download(URL, Folder_Name, File_Name) {
 function filetransfer(download_link, fp) {
     var fileTransfer = new FileTransfer();
 
-    fileTransfer.onprogress = function(result){
+     fileTransfer.onprogress = function(result){
         var percent =  result.loaded / result.total * 100;
         percent = Math.round(percent);
         console.log('Downloaded:  ' + percent + '%');
-        window.plugins.toast.show("Progreso: "+ percent + "%","500","bottom");
+        window.plugins.toast.show("Progreso: "+ percent + "%","50","bottom");
     };
 
 // File download function with URL and local path
-    fileTransfer.download(download_link, fp,
+     return fileTransfer.download(download_link, fp,
         function (entry) {
-            //alert("download complete: " + entry.toURL());
-            $$("#view-home").append("<img src='"+entry.toURL()+"'>")
+            alert("download complete: " + entry.toURL());
+            //$$("#view-home").append("<img src='"+entry.toURL()+"'>")
+            console.log("complete")
+            return entry.toURL();
         },
-        function (error) {
+         function (error) {
             //Download abort errors or download failed errors
-            alert("download error source " + error.source);
+            //alert("download error source " + error.source);
+            return "download error source " + error.source;
             //alert("download error target " + error.target);
             //alert("upload error code" + error.code);
         }
@@ -302,9 +308,6 @@ function Database(db) {
 
 }
 
-
-
-
 function getSenderosPuntosDB(id)
 {
     db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
@@ -333,11 +336,13 @@ function syncSenderos()
             var strDelSQL = "delete from Senderos;";
             var strDelSQL2 = "delete from SenderoPuntoElevacion;";
 
-
             var strSQL = "INSERT INTO Senderos (ID, Nombre,Imglocation, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima) VALUES ";
             var strSQL2 = "INSERT INTO SenderoPuntoElevacion (ID, IDSendero, Latitud, Longitud, Altura) VALUES ";
             for(var i=0;i<response.Senderos.length;i++) {
-                strSQL = strSQL + "(" + response.Senderos[i].ID + ",'" + response.Senderos[i].Nombre + "','http://i46.tinypic.com/33m0jdv.png','"+response.Senderos[i].Descripcion+"','"+response.Senderos[i].LugarInicio+"','"+response.Senderos[i].LugarFin+"','"+response.Senderos[i].Distancia+"','"+response.Senderos[i].Desnivel+"','"+response.Senderos[i].DuracionTotal+"','"+response.Senderos[i].AlturaMaxima+"'),"
+                var j = DownloadFile('http://staticf5a.lavozdelinterior.com.ar/sites/default/files/styles/landscape_1020_560/public/articulo_patrocinado/Ruta_60_Argentina1_0.jpg',"",response.Senderos[i].ID)
+                console.log(i);
+                console.dir(j);
+                strSQL = strSQL + "(" + response.Senderos[i].ID + ",'" + response.Senderos[i].Nombre + "','"+response.Senderos[i].ID+".jpg','"+response.Senderos[i].Descripcion+"','"+response.Senderos[i].LugarInicio+"','"+response.Senderos[i].LugarFin+"','"+response.Senderos[i].Distancia+"','"+response.Senderos[i].Desnivel+"','"+response.Senderos[i].DuracionTotal+"','"+response.Senderos[i].AlturaMaxima+"'),"
                 for(var x=0; x<response.Senderos[i].SenderoPuntoElevacion.length;x++)
                 {
                     strSQL2 = strSQL2 + "(" + x + ","+response.Senderos[i].ID+", '"+response.Senderos[i].SenderoPuntoElevacion[x].Latitud+"','"+response.Senderos[i].SenderoPuntoElevacion[x].Longitud+"','"+response.Senderos[i].SenderoPuntoElevacion[x].Altura+"'),"
@@ -349,7 +354,7 @@ function syncSenderos()
 
             strSQL2 = strSQL2.slice(0,-1);
             strSQL2 = strSQL2 + ";";
-            console.dir(strSQL2);
+
 
             //Si Hay internet Sincronizo senderos limpiando la tabla.
 

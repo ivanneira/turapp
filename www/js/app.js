@@ -413,3 +413,44 @@ function checkInternet() //devuelve 0 si no hay conexion , 1 si hay conexion.
         }
 
 }
+
+//*************
+//    Unzip
+//*************
+//var PathToFileInString  = cordova.file.externalRootDirectory+"HereIsMyFolder",
+//    PathToResultZip     = cordova.file.externalRootDirectory;
+//JJzip.zip(PathToFileInString, {target:PathToResultZip,name:"SuperZip"},function(data){
+//    /* Wow everiting goes good, but just in case verify data.success*/
+//},function(error){
+//    /* Wow something goes wrong, check the error.message */
+//})
+
+//*************
+//     Zip
+//*************
+//var PathToFileInString  = cordova.file.externalRootDirectory+"HereIsMyFile.zip",
+//    PathToResultZip     = cordova.file.externalRootDirectory;
+//JJzip.unzip(PathToFileInString, {target:PathToResultZip},function(data){
+//    /* Wow everything goes good, but just in case verify data.success */
+//},function(error){
+//    /* Wow something goes wrong, check the error.message */
+//})
+
+
+//*************
+//     Delete File.
+//*************
+//var path = "file:///storage/emulated/0";
+//var filename = "myfile.txt";
+
+//window.resolveLocalFileSystemURL(path, function(dir) {
+//    dir.getFile(filename, {create:false}, function(fileEntry) {
+//        fileEntry.remove(function(){
+//            // The file has been removed succesfully
+//        },function(error){
+//            // Error deleting the file
+//        },function(){
+//            // The file doesn't exist
+//        });
+//    });
+//});

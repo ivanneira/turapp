@@ -101,9 +101,21 @@ p {
   font-family: 'Nunito' !important;
   font-weight: bold;
   text-align: center;
+  font-size: 16px;
 }
 
 .cardClima {
 
   text-align: center !important;
+}
+
+#windDirection {
+
+  height: 2em;
+  width: 2em;
+}
+
+.chipClima{
+  width: 20em;
+
 }

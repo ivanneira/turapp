@@ -226,6 +226,14 @@ module.exports = [
     "id": "cordova-plugin-x-toast.tests",
     "file": "plugins/cordova-plugin-x-toast/test/tests.js",
     "pluginId": "cordova-plugin-x-toast"
+  },
+  {
+    "id": "com.jjdltc.cordova.plugin.zip.JJzip",
+    "file": "plugins/com.jjdltc.cordova.plugin.zip/www/JJzip.js",
+    "pluginId": "com.jjdltc.cordova.plugin.zip",
+    "clobbers": [
+      "JJzip"
+    ]
   }
 ];
 module.exports.metadata = 
@@ -236,7 +244,8 @@ module.exports.metadata =
   "cordova-plugin-file": "6.0.1",
   "cordova-plugin-file-transfer": "1.7.1",
   "cordova-sqlite-storage": "2.2.0",
-  "cordova-plugin-x-toast": "2.6.0"
+  "cordova-plugin-x-toast": "2.6.0",
+  "com.jjdltc.cordova.plugin.zip": "0.0.4"
 };
 // BOTTOM OF METADATA
 });

@@ -229,11 +229,12 @@ function filetransfer(download_link, fp) {
     };
 
 // File download function with URL and local path
-     return fileTransfer.download(download_link, fp,
+      fileTransfer.download(download_link, fp,
         function (entry) {
             alert("download complete: " + entry.toURL());
             //$$("#view-home").append("<img src='"+entry.toURL()+"'>")
             console.log("complete")
+            deleteFile(entry.toURL());
             return entry.toURL();
         },
          function (error) {
@@ -338,11 +339,17 @@ function syncSenderos()
 
             var strSQL = "INSERT INTO Senderos (ID, Nombre,Imglocation, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima) VALUES ";
             var strSQL2 = "INSERT INTO SenderoPuntoElevacion (ID, IDSendero, Latitud, Longitud, Altura) VALUES ";
+            var img = [];
+
+            img[0] = "https://www.cicloide.com/images/cicloide_pasos.jpg";
+            img[1] = "http://www.jachalmagazine.com.ar/wp-content/uploads/2016/10/00078291.jpg";
+            img[2] = "http://www.valledezonda.com/images/FincaSierrasAzules.jpg";
+            img[3] = "https://k26.kn3.net/taringa/3/4/4/1/5/8/4/andrew66mckana/AC8.jpg?9654"
+
             for(var i=0;i<response.Senderos.length;i++) {
-                var j = DownloadFile('http://staticf5a.lavozdelinterior.com.ar/sites/default/files/styles/landscape_1020_560/public/articulo_patrocinado/Ruta_60_Argentina1_0.jpg',"",response.Senderos[i].ID)
-                console.log(i);
-                console.dir(j);
-                strSQL = strSQL + "(" + response.Senderos[i].ID + ",'" + response.Senderos[i].Nombre + "','"+response.Senderos[i].ID+".jpg','"+response.Senderos[i].Descripcion+"','"+response.Senderos[i].LugarInicio+"','"+response.Senderos[i].LugarFin+"','"+response.Senderos[i].Distancia+"','"+response.Senderos[i].Desnivel+"','"+response.Senderos[i].DuracionTotal+"','"+response.Senderos[i].AlturaMaxima+"'),"
+                //var j = DownloadFile('http://staticf5a.lavozdelinterior.com.ar/sites/default/files/styles/landscape_1020_560/public/articulo_patrocinado/Ruta_60_Argentina1_0.jpg',"",response.Senderos[i].ID)
+
+                strSQL = strSQL + "(" + response.Senderos[i].ID + ",'" + response.Senderos[i].Nombre + "','"+img[i]+"','"+response.Senderos[i].Descripcion+"','"+response.Senderos[i].LugarInicio+"','"+response.Senderos[i].LugarFin+"','"+response.Senderos[i].Distancia+"','"+response.Senderos[i].Desnivel+"','"+response.Senderos[i].DuracionTotal+"','"+response.Senderos[i].AlturaMaxima+"'),"
                 for(var x=0; x<response.Senderos[i].SenderoPuntoElevacion.length;x++)
                 {
                     strSQL2 = strSQL2 + "(" + x + ","+response.Senderos[i].ID+", '"+response.Senderos[i].SenderoPuntoElevacion[x].Latitud+"','"+response.Senderos[i].SenderoPuntoElevacion[x].Longitud+"','"+response.Senderos[i].SenderoPuntoElevacion[x].Altura+"'),"
@@ -454,3 +461,33 @@ function checkInternet() //devuelve 0 si no hay conexion , 1 si hay conexion.
 //        });
 //    });
 //});
+
+
+function deleteFile(source)
+{
+
+    var filename = source.substring(source.lastIndexOf('/')+1);
+    var ext = source.substring(source.lastIndexOf('/')+1).length+1;
+    var path = source.substring(0,source.length-ext);
+
+    console.log("deleeeeeeeeeeete");
+    console.log(path);
+    console.log(filename);
+    console.log("deleeeeeeeeeeete");
+
+    window.resolveLocalFileSystemURL(path, function(dir) {
+    dir.getFile(filename, {create:false}, function(fileEntry) {
+        fileEntry.remove(function(){
+            // The file has been removed succesfully
+            console.log("file removed ok.")
+        },function(error){
+            // Error deleting the file
+            console.log("error removing file.")
+        },function(){
+            // The file doesn't exist
+            console.log("file doesn't exist.")
+        });
+    });
+});
+
+}

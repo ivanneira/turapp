@@ -5,6 +5,7 @@ var ErrorAjax = "Debes tener una conexión activa.";
 var conn ="";
 var isOffline = 'onLine' in navigator && !navigator.onLine;
 
+var internet = 0;
 // Dom7
 var $$ = Dom7;
 
@@ -147,6 +148,7 @@ function onDeviceReady() {
 
 
 
+    internet = checkInternet();
     //alert(checkInternet());
     //document.addEventListener("backbutton", onBackKeyDown, false);
 
@@ -258,12 +260,12 @@ function onResume() {
 
 function online()
 {
-    checkInternet()
+    internet = checkInternet()
 }
 
 function offline()
 {
-    checkInternet()
+    internet = checkInternet()
 }
 
 function onBackKeyDown() {
@@ -415,6 +417,7 @@ function checkInternet() //devuelve 0 si no hay conexion , 1 si hay conexion.
                 return 1;
             }
         }
+        return 0;
 
 }
 

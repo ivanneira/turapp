@@ -1,4 +1,4 @@
-#Tue Feb 06 09:28:40 GMT-03:00 2018
+#Tue Feb 06 09:56:00 GMT-03:00 2018
 base.0=D\:\\Sistemas\\GitHubOficial\\turapp\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
 renamed.0=classes.dex
 file.0=D\:\\Sistemas\\GitHubOficial\\turapp\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0\\classes.dex

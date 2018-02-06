@@ -11,7 +11,7 @@ $$(document).on('DOMContentLoaded', function(){
 
 function loadSenderos(){
 
-    if(checkInternet() == 0) {
+    if(internet == 0) {
         console.log("Sin internet");
         db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
@@ -79,6 +79,7 @@ function loadSenderos(){
 
 function onPopUpOpen(){
 
+
     //el id del sendero llega como variable global, va cambiando según el atributo data-senderoid del tag a
     console.log("El id del sendero es " + senderoID);
 
@@ -92,7 +93,13 @@ function onPopUpOpen(){
 
     var plArray = [];
 
-    if(checkInternet() == 0) {
+    internet = checkInternet();
+
+    console.log("Internet: " + internet);
+
+
+    if(internet == 0) {
+
         db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
         db.executeSql('SELECT Latitud, Longitud FROM SenderoPuntoElevacion where IDSendero=' + senderoID + ' order by ID asc', [], function (rs) {

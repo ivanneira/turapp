@@ -171,6 +171,6 @@ function fillClima(data){
 
 		$$("#fDay"+ index).text(shortDaysOfTheWeek[forecastArray[index].day]);
         $$("#fImg"+ index).append('<img src="img/'+ forecastArray[index].code +'.svg"></img>');
-        $$("#fMM"+ index).text("↓"+forecastArray[index].min + " ↑" + forecastArray[index].max);
+        $$("#fMM"+ index).text("↓"+forecastArray[index].min + "º ↑" + forecastArray[index].max + "º");
 	}
 }

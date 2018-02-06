@@ -154,7 +154,7 @@ function onDeviceReady() {
 
     internet = checkInternet();
     //alert(checkInternet());
-    //document.addEventListener("backbutton", onBackKeyDown, false);
+    document.addEventListener("backbutton", onBackKeyDown, false);
 
     //FORZADO DE ACTIVACION DE GPS EN LAS PLATAFORMAS
     //requestPermissionGPS();
@@ -272,20 +272,15 @@ function offline()
     internet = checkInternet()
 }
 
+
 function onBackKeyDown() {
-    var page=app;
-    console.dir(app);
-
-    if(page.name=="index"){
-        app.confirm('¿Quiere salir de la aplicación?', 'Salir',function () {
-            navigator.app.clearHistory(); navigator.app.exitApp();
-        });
+    if ($$('.modal-in').length > 0) {
+        app.popup.close();
+		return false;
+        }else{
+            navigator.app.clearHistory(); navigator.app.exitApp(); 
+        return true;
     }
-    else{
-        page.router.back();
-    }
-
-
 }
 
 function Database(db) {

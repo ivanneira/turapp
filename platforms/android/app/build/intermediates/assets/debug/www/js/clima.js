@@ -127,6 +127,8 @@ function cleanWeather(data){
 		'humidity': data.query.results.channel.atmosphere.humidity,
 		'visibility': data.query.results.channel.atmosphere.visibility,
 		'forecast': cleanForecast(data.query.results.channel.item.forecast),
+		'windSpeed': data.query.results.channel.wind.speed,
+		'windDirection': data.query.results.channel.wind.direction,
 		//'image': "http://l.yimg.com/a/i/us/we/52/"+ data.query.results.channel.item.condition.code +".gif"
     };
 
@@ -157,7 +159,11 @@ function fillClima(data){
 	$$("#climaImage").append('<img class="climaicon" src="img/'+ data.code +'.svg"></img>');
     $$("#climaText").text(data.codeText);
 	$$("#temperatura").text(data.temp + "º");
-	$$("#climaFooter").text("humedad: " + data.humidity + "% - " + "visibilidad: " + data.visibility + "km");
+	//$$("#climaFooter").text("humedad: " + data.humidity + "% - " + "visibilidad: " + data.visibility + " km");
+	$$("#humedad").text("Humedad: " + data.humidity + "%");
+	$$("#visibilidad").text("Visibilidad: " + data.visibility + " km");
+	$$("#windDirection").css("transform", "rotate(" + data.windDirection + "deg)");
+	$$("#windSpeed").text("Viento: " + data.windSpeed + " km/h");
 
 	var forecastArray =  data.forecast
 
@@ -165,6 +171,6 @@ function fillClima(data){
 
 		$$("#fDay"+ index).text(shortDaysOfTheWeek[forecastArray[index].day]);
         $$("#fImg"+ index).append('<img src="img/'+ forecastArray[index].code +'.svg"></img>');
-        $$("#fMM"+ index).text(forecastArray[index].min + "\n" + forecastArray[index].max);
+        $$("#fMM"+ index).text("↓"+forecastArray[index].min + "º ↑" + forecastArray[index].max + "º");
 	}
 }

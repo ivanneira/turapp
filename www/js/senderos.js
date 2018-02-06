@@ -2,44 +2,76 @@
 var senderosResult = [];
 
 $$(document).on('DOMContentLoaded', function(){
-
-    console.log("senderos");
     loadSenderos();
-
 });
 
 
+//Funcion que se ejecuta al cargar la vista senderos..
+//Consulta si hay internet, y consume recursos desde la web, caso contrario utiliza la bd y los recursos descargados previamente.
+
 function loadSenderos(){
 
-    db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
+    if(checkInternet() == 0) {
+        console.log("Sin internet");
+        db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
-    db.executeSql('SELECT * FROM Senderos  order by Nombre asc', [], function(rs) {
-        for(var i=0;i<rs.rows.length;i++)
-        {
-            var tmp= '<div class="card demo-card-header-pic senderoCard" data-senderoid="'+rs.rows.item(i).ID+'">'+
-                '<div class="card-header align-items-flex-end"><img src="'+rs.rows.item(i).Imglocation+'" width="100%" height="100px"> </div>'+
-                '<div class="card-content card-content-padding">'+
-                '<p class="titulonoticia">'+rs.rows.item(i).Nombre+'</p>'+
-                '<p class="date">Destacado</p>'+
-                '<p>'+rs.rows.item(i).Descripcion+'</p>'+
-                '</div>'+
-                '</div>';
+        db.executeSql('SELECT * FROM Senderos  ORDER BY Nombre ASC', [], function (rs) {
+            for (var i = 0; i < rs.rows.length; i++) {
+                var tmp = '<div class="card demo-card-header-pic senderoCard" data-senderoid="' + rs.rows.item(i).ID + '">' +
+                    '<div class="card-header align-items-flex-end"><img src="' + rs.rows.item(i).Imglocation + '" width="100%" height="200px"> </div>' +
+                    '<div class="card-content card-content-padding">' +
+                    '<p class="titulonoticia">' + rs.rows.item(i).Nombre + '</p>' +
+                    '<p class="date">Destacado</p>' +
+                    '<p>' + rs.rows.item(i).Descripcion + '</p>' +
+                    '</div>' +
+                    '</div>';
 
-            $$("#senderosResultDiv").append(tmp);
-        }
+                $$("#senderosResultDiv").append(tmp);
+            }
 
-        $$(".senderoCard").click(function(){
-            app.popup.open('.popup-senderos')
-            senderoID = $(this).data().senderoid;
+
+            $$(".senderoCard").click(function () {
+                app.popup.open('.popup-senderos')
+                senderoID = $(this).data().senderoid;
+            });
+
+        }, function (error) {
+            console.log('SELECT SQL statement ERROR: ' + error.message);
+        });
+    }
+    else
+    {
+        console.log("Con internet");
+        $.ajax({
+            url: senderosAPI,
+            cache: false,
+            type: 'get',
+            timeout: timeOut,
+            dataType: "json",
+            success: function (response) {
+                for (var i = 0; i < response.Senderos.length; i++) {
+                    var tmp = '<div class="card demo-card-header-pic senderoCard" data-senderoid="' + response.Senderos[i].ID + '">' +
+                        '<div class="card-header align-items-flex-end"><img src="' + RecursoWeb + response.Senderos[i].RutaImagen + '" width="100%" height="100px"> </div>' +
+                        '<div class="card-content card-content-padding">' +
+                        '<p class="titulonoticia">' + response.Senderos[i].Nombre + '</p>' +
+                        '<p class="date">Destacado</p>' +
+                        '<p>' + response.Senderos[i].Descripcion + '</p>' +
+                        '</div>' +
+                        '</div>';
+
+                    $$("#senderosResultDiv").append(tmp);
+
+                }
+                $$(".senderoCard").click(function () {
+                    app.popup.open('.popup-senderos')
+                    senderoID = $(this).data().senderoid;
+                });
+            },
+            error: function(){
+            }
         });
 
-    }, function(error) {
-        console.log('SELECT SQL statement ERROR: ' + error.message);
-    });
-
-
-
-
+    }
 
 }
 

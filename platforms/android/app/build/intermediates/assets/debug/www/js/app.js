@@ -1,5 +1,6 @@
 //Variables
 var senderosAPI = "http://200.85.158.85/plesk-site-preview/turapp.com/api/SenderosAPI";
+var RecursoWeb = "http://200.85.158.85/plesk-site-preview/turapp.com";
 var ErrorAjax = "Debes tener una conexión activa.";
 var conn ="";
 var isOffline = 'onLine' in navigator && !navigator.onLine;
@@ -163,7 +164,7 @@ function onDeviceReady() {
 
 };
 //First step check parameters mismatch and checking network connection if available call    download function
-function DownloadFile(URL, Folder_Name, File_Name) {
+function DownloadFile(URL, Folder_Name, File_Name,id,filetype) {
 //Parameters mismatch check
     if (URL == null && Folder_Name == null && File_Name == null) {
         return;
@@ -174,12 +175,12 @@ function DownloadFile(URL, Folder_Name, File_Name) {
         if (networkState == Connection.NONE) {
             return;
         } else {
-           return download(URL, Folder_Name, File_Name); //If available download function call
+           return download(URL, Folder_Name, File_Name,id,filetype); //If available download function call
         }
     }
 }
 
-function download(URL, Folder_Name, File_Name) {
+function download(URL, Folder_Name, File_Name,id,filetype) {
 //step to request a file system
 
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);
@@ -195,7 +196,7 @@ function download(URL, Folder_Name, File_Name) {
 
         fp = fp + "/" + Folder_Name + "/" + File_Name + "." + ext; // fullpath and name of the file which we want to give
         // download function call
-        return filetransfer(download_link, fp);
+        return filetransfer(download_link, fp,id,filetype);
     }
 
      function onDirectorySuccess(parent) {
@@ -218,7 +219,7 @@ function download(URL, Folder_Name, File_Name) {
 
 
 
-function filetransfer(download_link, fp) {
+function filetransfer(download_link, fp,id,filetype) {
     var fileTransfer = new FileTransfer();
 
      fileTransfer.onprogress = function(result){
@@ -234,8 +235,8 @@ function filetransfer(download_link, fp) {
             alert("download complete: " + entry.toURL());
             //$$("#view-home").append("<img src='"+entry.toURL()+"'>")
             console.log("complete")
-            deleteFile(entry.toURL());
-            return entry.toURL();
+            UpdateFilePathDB(entry.toURL(),id,filetype)
+            entry.toURL();
         },
          function (error) {
             //Download abort errors or download failed errors
@@ -286,25 +287,27 @@ function Database(db) {
 
     //Creo la tabla Senderos
     db.sqlBatch([
-        'CREATE TABLE IF NOT EXISTS Senderos ( ID, Nombre,Imglocation, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima)',
+        'CREATE TABLE IF NOT EXISTS Senderos ( ID, Nombre,Imglocation,RutZipMapa, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima)',
     ], function () {
         console.log('Tabla Senderos OK');
+        //Creo la tabla SenderoPuntoElevacion
+        db.sqlBatch([
+            'CREATE TABLE IF NOT EXISTS SenderoPuntoElevacion ( ID, IDSendero, Latitud,Longitud,Altura)',
+        ], function () {
+            console.log('Tabla SenderoPuntoElevacion OK');
+            syncSenderos()
+            //db.close()
+        }, function (error) {
+            //console.log('SQL batch ERROR: ' + error.message);
+        });
     }, function (error) {
         //console.log('SQL batch ERROR: ' + error.message);
     });
 
-    //Creo la tabla SenderoPuntoElevacion
-    db.sqlBatch([
-        'CREATE TABLE IF NOT EXISTS SenderoPuntoElevacion ( ID, IDSendero, Latitud,Longitud,Altura)',
-    ], function () {
-        console.log('Tabla SenderoPuntoElevacion OK');
-        //db.close()
-    }, function (error) {
-        //console.log('SQL batch ERROR: ' + error.message);
-    });
 
 
-    syncSenderos()
+
+
 
 
 }
@@ -339,17 +342,11 @@ function syncSenderos()
 
             var strSQL = "INSERT INTO Senderos (ID, Nombre,Imglocation, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima) VALUES ";
             var strSQL2 = "INSERT INTO SenderoPuntoElevacion (ID, IDSendero, Latitud, Longitud, Altura) VALUES ";
-            var img = [];
-
-            img[0] = "https://www.cicloide.com/images/cicloide_pasos.jpg";
-            img[1] = "http://www.jachalmagazine.com.ar/wp-content/uploads/2016/10/00078291.jpg";
-            img[2] = "http://www.valledezonda.com/images/FincaSierrasAzules.jpg";
-            img[3] = "https://k26.kn3.net/taringa/3/4/4/1/5/8/4/andrew66mckana/AC8.jpg?9654"
-
             for(var i=0;i<response.Senderos.length;i++) {
-                //var j = DownloadFile('http://staticf5a.lavozdelinterior.com.ar/sites/default/files/styles/landscape_1020_560/public/articulo_patrocinado/Ruta_60_Argentina1_0.jpg',"",response.Senderos[i].ID)
 
-                strSQL = strSQL + "(" + response.Senderos[i].ID + ",'" + response.Senderos[i].Nombre + "','"+img[i]+"','"+response.Senderos[i].Descripcion+"','"+response.Senderos[i].LugarInicio+"','"+response.Senderos[i].LugarFin+"','"+response.Senderos[i].Distancia+"','"+response.Senderos[i].Desnivel+"','"+response.Senderos[i].DuracionTotal+"','"+response.Senderos[i].AlturaMaxima+"'),"
+                DownloadFile(RecursoWeb+response.Senderos[i].RutaImagen,"",response.Senderos[i].ID,response.Senderos[i].ID,0)
+
+                strSQL = strSQL + "(" + response.Senderos[i].ID + ",'" + response.Senderos[i].Nombre + "','','"+response.Senderos[i].Descripcion+"','"+response.Senderos[i].LugarInicio+"','"+response.Senderos[i].LugarFin+"','"+response.Senderos[i].Distancia+"','"+response.Senderos[i].Desnivel+"','"+response.Senderos[i].DuracionTotal+"','"+response.Senderos[i].AlturaMaxima+"'),"
                 for(var x=0; x<response.Senderos[i].SenderoPuntoElevacion.length;x++)
                 {
                     strSQL2 = strSQL2 + "(" + x + ","+response.Senderos[i].ID+", '"+response.Senderos[i].SenderoPuntoElevacion[x].Latitud+"','"+response.Senderos[i].SenderoPuntoElevacion[x].Longitud+"','"+response.Senderos[i].SenderoPuntoElevacion[x].Altura+"'),"
@@ -421,6 +418,30 @@ function checkInternet() //devuelve 0 si no hay conexion , 1 si hay conexion.
 
 }
 
+
+function UpdateFilePathDB(file, id,filetype){
+    db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
+
+
+    var query = "";
+
+    if(filetype == 0)
+    {
+        query =  "UPDATE Senderos Set Imglocation = '"+file+"' where ID="+id;
+    }
+    else
+    {
+        query =  "UPDATE Senderos Set RutZipMapa = '"+file+"'  where ID="+id;
+    }
+
+    db.executeSql(query, [], function(rs) {
+        return rs;
+
+    }, function(error) {
+        console.log('SELECT SQL statement ERROR: ' + error.message);
+    });
+
+}
 //*************
 //    Unzip
 //*************

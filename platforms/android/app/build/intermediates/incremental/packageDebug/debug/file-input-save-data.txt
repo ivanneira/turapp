@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Tue Feb 06 08:18:42 GMT-03:00 2018
+#Tue Feb 06 09:28:40 GMT-03:00 2018
 835.base=D\:\\Sistemas\\GitHubOficial\\turapp\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 100.set=ASSET
 57.file=D\:\\Sistemas\\GitHubOficial\\turapp\\platforms\\android\\app\\build\\intermediates\\assets\\debug\\www\\res\\icon\\ios\\icon-small@3x.png

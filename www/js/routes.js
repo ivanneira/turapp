@@ -11,6 +11,10 @@ routes = [
       path: '/noticias/',
       url: './pages/noticias.html',
   },
+  {
+    path: '/recomendaciones/',
+    url: './pages/recomendaciones.html',
+  },
   // {
   //   path: '/product/:id/',
   //   componentUrl: './pages/product.html',

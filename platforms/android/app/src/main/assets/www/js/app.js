@@ -76,6 +76,10 @@ var noticiasView = app.views.create('#view-noticias', {
 var climaView = app.views.create('#view-clima', {
   url: '/clima/'
 });
+var recomendacionesView = app.views.create('#view-recomendaciones', {
+    url: '/recomendaciones/'
+});
+
 
 app.on('pageAfterIn', function(tab){
 

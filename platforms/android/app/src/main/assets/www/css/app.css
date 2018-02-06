@@ -122,16 +122,27 @@ p {
 
 .menuPanel {
 
-  background-color: #55b9a1 !important;
+  background-color: #001821 !important;
+
 }
 
-.linkMenu{
+.item-title{
 
   color: #f2f2f2 !important;
+
 }
 
 .menuImg {
 
   height: 2em;
   width: 2em;
+}
+
+.sidebarNav {
+  background-color: #55b9a1 !important;
+
+}
+
+.menuList {
+  padding-left: 1em !important;
 }

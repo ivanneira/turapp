@@ -79,7 +79,15 @@ var climaView = app.views.create('#view-clima', {
 var recomendacionesView = app.views.create('#view-recomendaciones', {
     url: '/recomendaciones/'
 });
-
+var emergenciasView = app.views.create('#view-emergencias', {
+    url: '/emergencias/'
+});
+var ayudaView = app.views.create('#view-ayuda', {
+    url: '/ayuda/'
+});
+var acercaView = app.views.create('#view-acerca', {
+    url: '/acerca/'
+});
 
 app.on('pageAfterIn', function(tab){
 
@@ -154,7 +162,7 @@ function onDeviceReady() {
 
     internet = checkInternet();
     //alert(checkInternet());
-    //document.addEventListener("backbutton", onBackKeyDown, false);
+    document.addEventListener("backbutton", onBackKeyDown, false);
 
     //FORZADO DE ACTIVACION DE GPS EN LAS PLATAFORMAS
     //requestPermissionGPS();
@@ -272,20 +280,15 @@ function offline()
     internet = checkInternet()
 }
 
+
 function onBackKeyDown() {
-    var page=app;
-    console.dir(app);
-
-    if(page.name=="index"){
-        app.confirm('¿Quiere salir de la aplicación?', 'Salir',function () {
-            navigator.app.clearHistory(); navigator.app.exitApp();
-        });
+    if ($$('.modal-in').length > 0) {
+        app.popup.close();
+		return false;
+        }else{
+            navigator.app.clearHistory(); navigator.app.exitApp(); 
+        return true;
     }
-    else{
-        page.router.back();
-    }
-
-
 }
 
 function Database(db) {

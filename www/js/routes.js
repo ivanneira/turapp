@@ -12,6 +12,18 @@ routes = [
       url: './pages/noticias.html',
   },
   {
+    path: '/emergencias/',
+    url: './pages/emergencias.html',
+  },
+  {
+    path: '/ayuda/',
+    url: './pages/ayuda.html',
+  },
+  {
+    path: '/acerca/',
+    url: './pages/acerca.html',
+  },
+  {
     path: '/recomendaciones/',
     url: './pages/recomendaciones.html',
   },

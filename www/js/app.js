@@ -79,7 +79,15 @@ var climaView = app.views.create('#view-clima', {
 var recomendacionesView = app.views.create('#view-recomendaciones', {
     url: '/recomendaciones/'
 });
-
+var emergenciasView = app.views.create('#view-emergencias', {
+    url: '/emergencias/'
+});
+var ayudaView = app.views.create('#view-ayuda', {
+    url: '/ayuda/'
+});
+var acercaView = app.views.create('#view-acerca', {
+    url: '/acerca/'
+});
 
 app.on('pageAfterIn', function(tab){
 

@@ -1,6 +1,6 @@
 //Variables
-var senderosAPI = "http://200.85.158.85/plesk-site-preview/turapp.com/api/SenderosAPI";
-var RecursoWeb = "http://200.85.158.85/plesk-site-preview/turapp.com";
+var senderosAPI = "http://economiayciencia.com/api/SenderosAPI";
+var RecursoWeb = "http://economiayciencia.com";
 var ErrorAjax = "Debes tener una conexión activa.";
 var conn ="";
 var isOffline = 'onLine' in navigator && !navigator.onLine;

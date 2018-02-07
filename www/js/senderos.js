@@ -87,7 +87,7 @@ function onPopUpOpen(){
                       '     <div class="card-header mapaheader">Mapa del sendero</div>'+
                       '     <div id ="mapid" class="card-content card-content-padding"></div>'+
                       '     <div class="card-footer mapafooter">algunos detalles del mapa</div>'+
-                      '</div>';
+                      '</div><div id="elevChart"></div>';
 
     $$("#senderoContainer").append(mapTemplate);
 
@@ -102,7 +102,7 @@ function onPopUpOpen(){
 
         db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
-        db.executeSql('SELECT Latitud, Longitud FROM SenderoPuntoElevacion where IDSendero=' + senderoID + ' order by ID asc', [], function (rs) {
+        db.executeSql('SELECT Latitud, Longitud, Altura FROM SenderoPuntoElevacion where IDSendero=' + senderoID + ' order by ID asc', [], function (rs) {
             console.dir(rs);
             console.log(rs.rows.item(0).Latitud);
             var mymap = L.map('mapid').setView([rs.rows.item(0).Latitud, rs.rows.item(0).Longitud], 16);
@@ -119,6 +119,7 @@ function onPopUpOpen(){
                 smoothFactor: 1
             });
             DrawPolyline.addTo(mymap);
+ 	    plotElevation(rs);
         }, function (error) {
             console.log('SELECT SQL statement ERROR: ' + error.message);
         });
@@ -150,6 +151,7 @@ function onPopUpOpen(){
                     smoothFactor: 1
                 });
                 DrawPolyline.addTo(mymap)
+		plotElevation(rs);
             },
             error: function(){
             }

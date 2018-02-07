@@ -146,3 +146,8 @@ p {
 .menuList {
   padding-left: 1em !important;
 }
+
+#btnEmergencias {
+
+  height: 20em;
+}

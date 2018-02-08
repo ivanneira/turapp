@@ -1,7 +1,14 @@
-function plotElevation(returnedElevations) {
+function plotElevation(returnedElevations,source) {
+
     var elevations = [];
     for (var i = 0; i < returnedElevations.rows.length; i++) {
-        elevations.push(parseInt(returnedElevations.rows.item(i).Altura));
+        if(source == 1) {
+            elevations.push(parseInt(returnedElevations.rows.item(i).Altura));
+        }
+        else
+        {
+            elevations.push(parseInt(returnedElevations.rows[i].Altura));
+        }
         //locations.push(returnedElevations[i].location);
     }
     var minElevation = elevations[0];

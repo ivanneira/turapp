@@ -1,7 +1,9 @@
 
 var senderosResult = [];
 
+
 $$(document).on('DOMContentLoaded', function(){
+    internet = checkInternet();
     loadSenderos();
 });
 
@@ -10,6 +12,8 @@ $$(document).on('DOMContentLoaded', function(){
 //Consulta si hay internet, y consume recursos desde la web, caso contrario utiliza la bd y los recursos descargados previamente.
 
 function loadSenderos(){
+
+
 
     if(internet == 0) {
         console.log("Sin internet");
@@ -103,12 +107,11 @@ function onPopUpOpen(){
         db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
         db.executeSql('SELECT Latitud, Longitud, Altura FROM SenderoPuntoElevacion where IDSendero=' + senderoID + ' order by ID asc', [], function (rs) {
-            console.dir(rs);
-            console.log(rs.rows.item(0).Latitud);
+
             var mymap = L.map('mapid').setView([rs.rows.item(0).Latitud, rs.rows.item(0).Longitud], 16);
             var x = L.tileLayer('mapas/quebradaZonda/{z}/{x}/{y}.jpg', {maxZoom: 18, minZoom: 15}).addTo(mymap);
             var a = new L.LatLng(rs.rows.item(0).Latitud, rs.rows.item(0).Longitud);
-            console.dir(a);
+
             for (var i = 0; i < rs.rows.length; i++) {
                 plArray.push(new L.LatLng(rs.rows.item(i).Latitud, rs.rows.item(i).Longitud));
             }
@@ -119,13 +122,15 @@ function onPopUpOpen(){
                 smoothFactor: 1
             });
             DrawPolyline.addTo(mymap);
- 	    plotElevation(rs);
+ 	    plotElevation(rs,1);
+ 	    console.dir(rs)
         }, function (error) {
             console.log('SELECT SQL statement ERROR: ' + error.message);
         });
     }
     else
     {
+
         $.ajax({
             url: senderosAPI,
             cache: false,
@@ -136,9 +141,12 @@ function onPopUpOpen(){
 
                 for (var i = 0; i < response.Senderos.length; i++) {
                     if(senderoID == response.Senderos[i].ID) {
+                        console.dir(response.Senderos[i])
                         var mymap = L.map('mapid').setView([response.Senderos[i].SenderoPunto[0].Latitud, response.Senderos[i].SenderoPunto[0].Longitud], 16);
                         var x = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {maxZoom: 18, minZoom: 15,subdomains:['mt0','mt1','mt2','mt3']}).addTo(mymap);
-                        var a = new L.LatLng(response.Senderos[0].SenderoPunto[i].Latitud, response.Senderos[i].SenderoPunto[0].Longitud);
+                        var a = new L.LatLng(response.Senderos[i].SenderoPunto[i].Latitud, response.Senderos[i].SenderoPunto[0].Longitud);
+                        var elevationvar = [];
+                        elevationvar.push({rows : response.Senderos[i].SenderoPuntoElevacion})
                         for (var x = 0; x < response.Senderos[i].SenderoPunto.length; x++) {
                             plArray.push(new L.LatLng(response.Senderos[i].SenderoPunto[x].Latitud, response.Senderos[i].SenderoPunto[x].Longitud));
                         }
@@ -151,7 +159,8 @@ function onPopUpOpen(){
                     smoothFactor: 1
                 });
                 DrawPolyline.addTo(mymap)
-		plotElevation(rs);
+
+                plotElevation(elevationvar[0],0);
             },
             error: function(){
             }

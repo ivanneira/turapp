@@ -153,3 +153,10 @@ p {
 
   height: 20em;
 }
+
+.headerRecomendaciones{
+
+  font-family: 'Nunito';
+  color: #f2f2f2;
+  background-color: #d83559;
+}

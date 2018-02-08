@@ -21,8 +21,12 @@ function loadSenderos(){
 
         db.executeSql('SELECT * FROM Senderos  ORDER BY Nombre ASC', [], function (rs) {
             for (var i = 0; i < rs.rows.length; i++) {
+                var img = rs.rows.item(i).Imglocation;
+                if (img == null)
+                    img = "img/no_disponible.jpg";
+
                 var tmp = '<div class="card demo-card-header-pic senderoCard" data-senderoid="' + rs.rows.item(i).ID + '">' +
-                    '<div class="card-header align-items-flex-end"><img src="' + rs.rows.item(i).Imglocation + '" width="100%" height="200px"> </div>' +
+                    '<div class="card-header align-items-flex-end"><img src="' + img + '" width="100%" height="auto"> </div>' +
                     '<div class="card-content card-content-padding">' +
                     '<p class="titulonoticia">' + rs.rows.item(i).Nombre + '</p>' +
                     '<p class="date">Destacado</p>' +
@@ -54,8 +58,15 @@ function loadSenderos(){
             dataType: "json",
             success: function (response) {
                 for (var i = 0; i < response.Senderos.length; i++) {
+                    var img = response.Senderos[i].RutaImagen;
+                    if (img == null) {
+                        img = "img/no_disponible.jpg";
+                    }
+                    else {
+                        img = RecursoWeb + response.Senderos[i].RutaImagen;
+                    }
                     var tmp = '<div class="card demo-card-header-pic senderoCard" data-senderoid="' + response.Senderos[i].ID + '">' +
-                        '<div class="card-header align-items-flex-end"><img src="' + RecursoWeb + response.Senderos[i].RutaImagen + '" width="100%" height="100px"> </div>' +
+                        '<div class="card-header align-items-flex-end"><img src="' + img + '" width="100%" height="auto"> </div>' +
                         '<div class="card-content card-content-padding">' +
                         '<p class="titulonoticia">' + response.Senderos[i].Nombre + '</p>' +
                         '<p class="date">Destacado</p>' +

@@ -246,7 +246,7 @@ function filetransfer(download_link, fp,id,filetype) {
 // File download function with URL and local path
       fileTransfer.download(download_link, fp,
         function (entry) {
-            alert("download complete: " + entry.toURL());
+            //alert("download complete: " + entry.toURL());
             //$$("#view-home").append("<img src='"+entry.toURL()+"'>")
             console.log("complete")
             UpdateFilePathDB(entry.toURL(),id,filetype)

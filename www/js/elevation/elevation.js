@@ -23,11 +23,10 @@ function plotElevation(returnedElevations,source) {
             type: 'area'
         },
         title: {
-            text: 'US and USSR nuclear stockpiles'
+            text: 'Datos de elevación'
         },
         subtitle: {
-            text: 'Source: <a href="http://thebulletin.metapress.com/content/c4120650912x74k7/fulltext.pdf">' +
-                'thebulletin.metapress.com</a>'
+            text: ''
         },
         xAxis: {
             allowDecimals: false,
@@ -41,16 +40,16 @@ function plotElevation(returnedElevations,source) {
             max: maxElevation,
             min: minElevation,
             title: {
-                text: 'Nuclear weapon states'
+                text: 'Elevación del terreno'
             },
             labels: {
                 formatter: function () {
-                    return this.value / 1000 + 'k';
+                    return this.value  + ' msnm';
                 }
             }
         },
         tooltip: {
-            pointFormat: '{series.name} produced <b>{point.y:,.0f}</b><br/>warheads in {point.x}'
+            pointFormat: '{point.y:,.0f} msnm' /*'{series.name} produced <b>{point.y:,.0f}</b><br/>warheads in {point.x}'*/
         },
         plotOptions: {
             area: {
@@ -68,7 +67,7 @@ function plotElevation(returnedElevations,source) {
             }
         },
         series: [{
-            name: 'USA',
+            name: ' - ',
             data: elevations
         }]
     });

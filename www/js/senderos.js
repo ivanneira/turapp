@@ -99,9 +99,19 @@ function onPopUpOpen(){
     console.log("El id del sendero es " + senderoID);
 
     var mapTemplate = '<div class="card">'+
-                      '     <div class="card-header mapaheader">Mapa del sendero</div>'+
+                      '     <div id="nombre" class="card-header mapaheader"></div>'+
                       '     <div id ="mapid" class="card-content card-content-padding"></div>'+
                       '     <div class="card-footer mapafooter">algunos detalles del mapa</div>'+
+                      '     <div class="card-footer mapafooter" style="color:#222">'+
+                      '     <ul>'+
+                      '     <li id="inicio">Lugar de Inicio</li>'+
+                      '     <li id="fin">Lugar de Fin</li>'+
+                      '     <li id="distancia">Distancia</li>'+
+                      '     <li id="desnivel">Desnivel</li>'+
+                      '     <li id="duracion">Duracion Total</li>'+
+                      '     <li id="altmaxima">Altura Máxima</li>'+
+                      '     </ul>'+
+                      '     </div>'+
                       '</div><div id="elevChart"></div>';
 
     $$("#senderoContainer").append(mapTemplate);
@@ -117,15 +127,26 @@ function onPopUpOpen(){
 
         db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
-        db.executeSql('SELECT Latitud, Longitud, Altura FROM SenderoPuntoElevacion where IDSendero=' + senderoID + ' order by ID asc', [], function (rs) {
+        db.executeSql('SELECT spe.Latitud, spe.Longitud, spe.Altura, s.Descripcion,s.LugarInicio,s.LugarFin,s.Distancia,s.Desnivel,s.DuracionTotal,s.AlturaMaxima, s.Nombre FROM SenderoPuntoElevacion as spe left join Senderos as s on s.ID = spe.IDSendero  where spe.IDSendero=' + senderoID + ' order by spe.ID asc', [], function (rs) {
 
             var mymap = L.map('mapid').setView([rs.rows.item(0).Latitud, rs.rows.item(0).Longitud], 16);
             var x = L.tileLayer('mapas/quebradaZonda/{z}/{x}/{y}.jpg', {maxZoom: 18, minZoom: 15}).addTo(mymap);
             var a = new L.LatLng(rs.rows.item(0).Latitud, rs.rows.item(0).Longitud);
 
+
+            $$("#nombre").append(" " + rs.rows.item(0).Nombre);
+            $$("#inicio").append(" " + rs.rows.item(0).LugarInicio);
+            $$("#fin").append(" " +rs.rows.item(0).LugarFin);
+            $$("#distancia").append(" " +rs.rows.item(0).Distancia);
+            $$("#desnivel").append(" " +rs.rows.item(0).Desnivel);
+            $$("#duracion").append(" " +rs.rows.item(0).DuracionTotal);
+            $$("#altmaxima").append(" " +rs.rows.item(0).AlturaMaxima);
+
+
             for (var i = 0; i < rs.rows.length; i++) {
                 plArray.push(new L.LatLng(rs.rows.item(i).Latitud, rs.rows.item(i).Longitud));
             }
+
             var DrawPolyline = new L.Polyline(plArray, {
                 color: '#00b3fd',
                 weight: 4,
@@ -152,10 +173,19 @@ function onPopUpOpen(){
 
                 for (var i = 0; i < response.Senderos.length; i++) {
                     if(senderoID == response.Senderos[i].ID) {
-                        console.dir(response.Senderos[i])
+
                         var mymap = L.map('mapid').setView([response.Senderos[i].SenderoPunto[0].Latitud, response.Senderos[i].SenderoPunto[0].Longitud], 16);
                         var x = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {maxZoom: 18, minZoom: 15,subdomains:['mt0','mt1','mt2','mt3']}).addTo(mymap);
                         var a = new L.LatLng(response.Senderos[i].SenderoPunto[i].Latitud, response.Senderos[i].SenderoPunto[0].Longitud);
+
+                        $$("#nombre").append(" " + response.Senderos[i].Nombre);
+                        $$("#inicio").append(" " + response.Senderos[i].LugarInicio);
+                        $$("#fin").append(" " +response.Senderos[i].LugarFin);
+                        $$("#distancia").append(" " +response.Senderos[i].Distancia);
+                        $$("#desnivel").append(" " +response.Senderos[i].Desnivel);
+                        $$("#duracion").append(" " +response.Senderos[i].DuracionTotal);
+                        $$("#altmaxima").append(" " +response.Senderos[i].AlturaMaxima);
+
                         var elevationvar = [];
                         elevationvar.push({rows : response.Senderos[i].SenderoPuntoElevacion})
                         for (var x = 0; x < response.Senderos[i].SenderoPunto.length; x++) {

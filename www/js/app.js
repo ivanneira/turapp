@@ -292,7 +292,7 @@ function offline()
 
 function onBackKeyDown() {
     if ($$('.modal-in').length > 0) {
-        app.popup.close();
+        app.f7.popup.close();
 		return false;
         }else{
             navigator.app.clearHistory(); navigator.app.exitApp(); 

@@ -172,9 +172,9 @@ function onPopUpOpen(){
                 for (var i = 0; i < response.Senderos.length; i++) {
                     if(senderoID == response.Senderos[i].ID) {
 
-                        var mymap = L.map('mapid').setView([response.Senderos[i].SenderoPunto[0].Latitud, response.Senderos[i].SenderoPunto[0].Longitud], 16);
+                        var mymap = L.map('mapid').setView([response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud], 16);
                         var x = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {maxZoom: 18, minZoom: 15,subdomains:['mt0','mt1','mt2','mt3']}).addTo(mymap);
-                        var a = new L.LatLng(response.Senderos[i].SenderoPunto[i].Latitud, response.Senderos[i].SenderoPunto[0].Longitud);
+                        var a = new L.LatLng(response.Senderos[i].SenderoPuntoElevacion[i].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud);
 
                         $$("#nombre").append(" " + response.Senderos[i].Nombre);
                         $$("#inicio").append(" " + response.Senderos[i].LugarInicio);
@@ -186,8 +186,8 @@ function onPopUpOpen(){
 
                         var elevationvar = [];
                         elevationvar.push({rows : response.Senderos[i].SenderoPuntoElevacion})
-                        for (var x = 0; x < response.Senderos[i].SenderoPunto.length; x++) {
-                            plArray.push(new L.LatLng(response.Senderos[i].SenderoPunto[x].Latitud, response.Senderos[i].SenderoPunto[x].Longitud));
+                        for (var x = 0; x < response.Senderos[i].SenderoPuntoElevacion.length; x++) {
+                            plArray.push(new L.LatLng(response.Senderos[i].SenderoPuntoElevacion[x].Latitud, response.Senderos[i].SenderoPuntoElevacion[x].Longitud));
                         }
                     }
                 }

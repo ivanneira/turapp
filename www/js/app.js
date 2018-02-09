@@ -105,7 +105,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     app.on('pageAfterIn', function(tab){
 
         if(tab.name == "noticias"){
-
             showContenidos(noticiasResult)
         }
     });
@@ -154,7 +153,6 @@ var noticiaID = -1;
 
 
 $$('.popup-noticias').on('popup:opened', function (e, popup) {
-
     onPopUpNoticiasOpen();
 });
 
@@ -164,19 +162,14 @@ $$('.popup-noticias').on('popup:close', function (e, popup) {
 
 
 
-
 (function () {
     "use strict";
-
     document.addEventListener('deviceready', onDeviceReady.bind(this), false);
     document.addEventListener("offline", offline, false);
     document.addEventListener("online", online, false);
 } )();
 
 function onDeviceReady() {
-
-
-
     internet = checkInternet();
     //alert(checkInternet());
     document.addEventListener("backbutton", onBackKeyDown, false);

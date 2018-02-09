@@ -29,7 +29,6 @@ function loadSenderos(){
                     '<div class="card-header align-items-flex-end"><img src="' + img + '" width="100%" height="auto"> </div>' +
                     '<div class="card-content card-content-padding">' +
                     '<p class="titulonoticia">' + rs.rows.item(i).Nombre + '</p>' +
-                    '<p class="date">Destacado</p>' +
                     '<p>' + rs.rows.item(i).Descripcion + '</p>' +
                     '</div>' +
                     '</div>';
@@ -39,7 +38,7 @@ function loadSenderos(){
 
 
             $$(".senderoCard").click(function () {
-                app.popup.open('.popup-senderos')
+                app.f7.popup.open('.popup-senderos')
                 senderoID = $(this).data().senderoid;
             });
 
@@ -69,7 +68,6 @@ function loadSenderos(){
                         '<div class="card-header align-items-flex-end"><img src="' + img + '" width="100%" height="auto"> </div>' +
                         '<div class="card-content card-content-padding">' +
                         '<p class="titulonoticia">' + response.Senderos[i].Nombre + '</p>' +
-                        '<p class="date">Destacado</p>' +
                         '<p>' + response.Senderos[i].Descripcion + '</p>' +
                         '</div>' +
                         '</div>';
@@ -78,7 +76,7 @@ function loadSenderos(){
 
                 }
                 $$(".senderoCard").click(function () {
-                    app.popup.open('.popup-senderos')
+                    app.f7.popup.open('.popup-senderos')
                     senderoID = $(this).data().senderoid;
                 });
             },

@@ -170,7 +170,7 @@ $$('.popup-noticias').on('popup:close', function (e, popup) {
 } )();
 
 function onDeviceReady() {
-    internet = checkInternet();
+
     //alert(checkInternet());
     document.addEventListener("backbutton", onBackKeyDown, false);
 
@@ -347,6 +347,7 @@ function getSenderosPuntosDB(id)
 
 function syncSenderos()
 {
+
     $.ajax({
         url: senderosAPI,
         cache: false,

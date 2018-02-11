@@ -66,7 +66,7 @@
   "com.jjdltc.cordova.plugin.zip": {
     "source": {
       "type": "registry",
-      "id": "cordova-zip-plugin"
+      "id": "cordova-zip-plugin@0.0.4"
     },
     "is_top_level": true,
     "variables": {}

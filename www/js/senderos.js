@@ -3,7 +3,7 @@ var senderosResult = [];
 
 
 $$(document).on('DOMContentLoaded', function(){
-    internet = checkInternet();
+
     loadSenderos();
 });
 
@@ -13,7 +13,7 @@ $$(document).on('DOMContentLoaded', function(){
 
 function loadSenderos(){
 
-
+    internet = checkInternet();
 
     if(internet == 0) {
         console.log("Sin internet");

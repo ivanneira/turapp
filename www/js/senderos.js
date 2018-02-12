@@ -216,10 +216,12 @@ function onPopUpOpen(){
                         $$("#desnivel").append(" " +response.Senderos[i].Desnivel);
                         $$("#duracion").append(" " +response.Senderos[i].DuracionTotal);
                         $$("#altmaxima").append(" " +response.Senderos[i].AlturaMaxima);
-                        alert(RecursoWeb + response.Senderos[i].RutZipMapa);
 
+                        var urlmapa = RecursoWeb + response.Senderos[i].RutZipMapa;
+                        var namemapa = response.Senderos[i].ID
                         $$("#btn_download").click(function(){
-                            DownloadFile(RecursoWeb + response.Senderos[i].RutZipMapa,"",response.Senderos[i].ID,response.Senderos[i].ID,1)
+                            alert(urlmapa);
+                            DownloadFile(urlmapa,"",namemapa,namemapa,1)
                         });
 
                         var elevationvar = [];

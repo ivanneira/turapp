@@ -256,7 +256,12 @@ function filetransfer(download_link, fp,id,filetype) {
             //alert("download complete: " + entry.toURL());
             //$$("#view-home").append("<img src='"+entry.toURL()+"'>")
             console.log("complete")
+            if(filetype == 0){
             UpdateFilePathDB(entry.toURL(),id,filetype)
+            }else
+            {
+                console.log(" RUTA "+ entry.toURL() + " ID " + id + " TYPE " +  filetype)
+            }
             entry.toURL();
         },
          function (error) {
@@ -465,13 +470,7 @@ function UpdateFilePathDB(file, id,filetype){
 //*************
 //    Unzip
 //*************
-//var PathToFileInString  = cordova.file.externalRootDirectory+"HereIsMyFolder",
-//    PathToResultZip     = cordova.file.externalRootDirectory;
-//JJzip.zip(PathToFileInString, {target:PathToResultZip,name:"SuperZip"},function(data){
-//    /* Wow everiting goes good, but just in case verify data.success*/
-//},function(error){
-//    /* Wow something goes wrong, check the error.message */
-//})
+
 
 //*************
 //     Zip

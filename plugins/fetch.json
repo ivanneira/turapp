@@ -63,10 +63,10 @@
     "is_top_level": true,
     "variables": {}
   },
-  "com.jjdltc.cordova.plugin.zip": {
+  "cordova-plugin-zeep": {
     "source": {
       "type": "registry",
-      "id": "cordova-zip-plugin@0.0.4"
+      "id": "cordova-plugin-zeep@0.0.4"
     },
     "is_top_level": true,
     "variables": {}

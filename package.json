@@ -23,7 +23,6 @@
     "cordova-plugin-x-toast": "^2.6.0",
     "cordova-plugin-zeep": "0.0.4",
     "cordova-sqlite-storage": "^2.2.0",
-    "cordova-zip-plugin": "git+https://github.com/jjdltc/jjdltc-cordova-plugin-zip.git",
     "gradle": "^1.0.9"
   }
 }

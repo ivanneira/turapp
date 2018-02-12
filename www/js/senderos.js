@@ -11,6 +11,13 @@ $$(document).on('DOMContentLoaded', function(){
 //Funcion que se ejecuta al cargar la vista senderos..
 //Consulta si hay internet, y consume recursos desde la web, caso contrario utiliza la bd y los recursos descargados previamente.
 
+function downloadMAP()
+{
+
+    alert("Descarga mapa");
+
+}
+
 function loadSenderos(){
 
     internet = checkInternet();
@@ -92,11 +99,32 @@ function loadSenderos(){
 
 function onPopUpOpen(){
 
+    var LeafIcon = L.Icon.extend({
+        options: {
+            //shadowUrl: 'leaf-shadow.png',
+            iconSize:     [38, 95],
+            //shadowSize:   [50, 64],
+            iconAnchor:   [22, 94],
+            //shadowAnchor: [4, 62],
+            popupAnchor:  [-3, -76]
+        }
+    });
+
+    var mk_inicio = new LeafIcon({iconUrl: 'img/icons_gps/green.png'}),
+        mk_fin = new LeafIcon({iconUrl: 'img/icons_gps/red.png'}),
+        mk_gps = new LeafIcon({iconUrl: 'img/icons_gps/gps.png'});
+
+    L.icon = function (options) {
+        return new L.Icon(options);
+    };
+
+
 
     //el id del sendero llega como variable global, va cambiando según el atributo data-senderoid del tag a
     console.log("El id del sendero es " + senderoID);
 
     var mapTemplate = '<div class="card">'+
+                      '     <button id="btn_download" class="button">Descargar Mapa</button>'+
                       '     <div id="nombre" class="card-header mapaheader"></div>'+
                       '     <div id ="mapid" class="card-content card-content-padding"></div>'+
                       '     <div class="card-footer mapafooter">algunos detalles del mapa</div>'+
@@ -131,6 +159,10 @@ function onPopUpOpen(){
             var x = L.tileLayer('mapas/quebradaZonda/{z}/{x}/{y}.jpg', {maxZoom: 18, minZoom: 15}).addTo(mymap);
             var a = new L.LatLng(rs.rows.item(0).Latitud, rs.rows.item(0).Longitud);
 
+            L.marker([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud], {icon: mk_inicio}).addTo(mymap).bindPopup("Este es punto de inicio del circuito..");
+            L.marker([rs.rows.item(255).Latitud,rs.rows.item(255).Longitud], {icon: mk_fin}).addTo(mymap).bindPopup("Este es punto de fin del circuito..");
+            //L.marker([51.495, -0.083], {icon: redIcon}).addTo(map).bindPopup("I am a red leaf.");
+            //L.marker([51.49, -0.1], {icon: orangeIcon}).addTo(map).bindPopup("I am an orange leaf.");
 
             $$("#nombre").append(" " + rs.rows.item(0).Nombre);
             $$("#inicio").append(" " + rs.rows.item(0).LugarInicio);
@@ -175,7 +207,8 @@ function onPopUpOpen(){
                         var mymap = L.map('mapid').setView([response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud], 16);
                         var x = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {maxZoom: 18, minZoom: 15,subdomains:['mt0','mt1','mt2','mt3']}).addTo(mymap);
                         var a = new L.LatLng(response.Senderos[i].SenderoPuntoElevacion[i].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud);
-
+                        L.marker([response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud], {icon: mk_inicio}).addTo(mymap).bindPopup("Este es punto de inicio del circuito..");
+                        L.marker([response.Senderos[i].SenderoPuntoElevacion[255].Latitud, response.Senderos[i].SenderoPuntoElevacion[255].Longitud], {icon: mk_fin}).addTo(mymap).bindPopup("Este es punto de fin del circuito..");
                         $$("#nombre").append(" " + response.Senderos[i].Nombre);
                         $$("#inicio").append(" " + response.Senderos[i].LugarInicio);
                         $$("#fin").append(" " +response.Senderos[i].LugarFin);
@@ -183,6 +216,11 @@ function onPopUpOpen(){
                         $$("#desnivel").append(" " +response.Senderos[i].Desnivel);
                         $$("#duracion").append(" " +response.Senderos[i].DuracionTotal);
                         $$("#altmaxima").append(" " +response.Senderos[i].AlturaMaxima);
+                        alert(RecursoWeb + response.Senderos[i].RutZipMapa);
+
+                        $$("#btn_download").click(function(){
+                            DownloadFile(RecursoWeb + response.Senderos[i].RutZipMapa,"",response.Senderos[i].ID,response.Senderos[i].ID,1)
+                        });
 
                         var elevationvar = [];
                         elevationvar.push({rows : response.Senderos[i].SenderoPuntoElevacion})

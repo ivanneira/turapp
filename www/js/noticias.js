@@ -26,7 +26,8 @@ console.log("noticiasResult")
 function showContenidos(jsonResponse){
 
 
-    for ( var i = 0 ; i < jsonResponse.titles.length ; i++){
+    //for ( var i = 0 ; i < jsonResponse.titles.length ; i++){
+    for ( var i = 0 ; i < 10 ; i++){
 
         var template =  '<div class="card demo-card-header-pic noticia" data-noticiaid="' + [i] + '">' +
                         '  <div style="background-image:url('+ jsonResponse.image[i]  +')" data-background="'+ jsonResponse.image[i]  +'" class="card-header align-items-flex-end"></div>' +
@@ -39,7 +40,9 @@ function showContenidos(jsonResponse){
     }
 
     $$(".noticia").click(function(){
-        app.popup.open('.popup-noticias')
+
+        app.f7.popup.open('.popup-noticias')
+
         noticiaID = $(this).data().noticiaid;
     });
 

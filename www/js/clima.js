@@ -114,8 +114,15 @@ $$(document).on('DOMContentLoaded', function(){
         }
 
     });
-});
 
+
+});
+var pullclima = $$('.ptr-content');
+
+pullclima.on('ptr:refresh', function(e){
+    console.dir(e);
+    app.ptr.done();
+});
 
 function cleanWeather(data){
 

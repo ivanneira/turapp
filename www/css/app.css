@@ -69,7 +69,7 @@ p {
 }
 #mapid {
   position: relative;
-  height:350px;
+  height:250px;
   padding-left: 1em;
 }
 
@@ -159,4 +159,8 @@ p {
   font-family: 'Nunito';
   color: #f2f2f2;
   background-color: #d83559;
+}
+
+#elevChart{
+  height: 250px;
 }

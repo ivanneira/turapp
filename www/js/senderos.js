@@ -127,6 +127,7 @@ function onPopUpOpen(){
                       '     <button id="btn_download" class="button">Descargar Mapa</button>'+
                       '     <div id="nombre" class="card-header mapaheader"></div>'+
                       '     <div id ="mapid" class="card-content card-content-padding"></div>'+
+                      '     </div><div id="elevChart"></div>'+
                       '     <div class="card-footer mapafooter">algunos detalles del mapa</div>'+
                       '     <div class="card-footer mapafooter" style="color:#222">'+
                       '     <ul>'+
@@ -137,8 +138,7 @@ function onPopUpOpen(){
                       '     <li id="duracion">Duracion Total</li>'+
                       '     <li id="altmaxima">Altura Máxima</li>'+
                       '     </ul>'+
-                      '     </div>'+
-                      '</div><div id="elevChart"></div>';
+                      '     </div>';
 
     $$("#senderoContainer").append(mapTemplate);
 
@@ -149,7 +149,7 @@ function onPopUpOpen(){
     console.log("Internet: " + internet);
 
 
-    if(internet == 0) {
+    // if(internet == 0) {
 
         db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
@@ -158,7 +158,13 @@ function onPopUpOpen(){
             var soucerMap = rs.rows.item(0).RutZipMapa +  "Google Hibrido"
             console.log("soucerMap " + soucerMap)
             var mymap = L.map('mapid').setView([rs.rows.item(0).Latitud, rs.rows.item(0).Longitud], 16);
-            var x = L.tileLayer(soucerMap+'/{z}/{x}/{y}.jpg', {maxZoom: 18, minZoom: 15}).addTo(mymap);
+            var x;
+            if(internet == 0) {
+                x = L.tileLayer(soucerMap+'/{z}/{x}/{y}.jpg', {maxZoom: 18, minZoom: 15}).addTo(mymap);
+            }
+            else{
+                x = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {maxZoom: 18, minZoom: 7,subdomains:['mt0','mt1','mt2','mt3']}).addTo(mymap);
+            }
             var a = new L.LatLng(rs.rows.item(0).Latitud, rs.rows.item(0).Longitud);
 
             L.marker([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud], {icon: mk_inicio}).addTo(mymap).bindPopup("Este es punto de inicio del circuito..");
@@ -186,74 +192,74 @@ function onPopUpOpen(){
                 smoothFactor: 1
             });
             DrawPolyline.addTo(mymap);
- 	    plotElevation(rs,1);
- 	    console.dir(rs)
+            mymap.fitBounds(DrawPolyline.getBounds());
+ 	    plotElevation(rs,1,rs.rows.item(0).Distancia,mymap,plArray);
         }, function (error) {
             console.log('SELECT SQL statement ERROR: ' + error.message);
         });
-    }
-    else
-    {
+    // }
+    // else
+    // {
 
-        $.ajax({
-            url: senderosAPI,
-            cache: false,
-            type: 'get',
-            timeout: timeOut,
-            dataType: "json",
-            success: function (response) {
+    //     $.ajax({
+    //         url: senderosAPI,
+    //         cache: false,
+    //         type: 'get',
+    //         timeout: timeOut,
+    //         dataType: "json",
+    //         success: function (response) {
+    //             console.dir(response);
+    //             for (var i = 0; i < response.Senderos.length; i++) {
+    //                 if(senderoID == response.Senderos[i].ID) {
 
-                for (var i = 0; i < response.Senderos.length; i++) {
-                    if(senderoID == response.Senderos[i].ID) {
+    //                     var mymap = L.map('mapid').setView([response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud], 16);
+    //                     var x = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {maxZoom: 18, minZoom: 7,subdomains:['mt0','mt1','mt2','mt3']}).addTo(mymap);
+    //                     var a = new L.LatLng(response.Senderos[i].SenderoPuntoElevacion[i].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud);
+    //                     L.marker([response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud], {icon: mk_inicio}).addTo(mymap).bindPopup("Este es punto de inicio del circuito..");
+    //                     L.marker([response.Senderos[i].SenderoPuntoElevacion[255].Latitud, response.Senderos[i].SenderoPuntoElevacion[255].Longitud], {icon: mk_fin}).addTo(mymap).bindPopup("Este es punto de fin del circuito..");
 
-                        var mymap = L.map('mapid').setView([response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud], 16);
-                        var x = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {maxZoom: 18, minZoom: 7,subdomains:['mt0','mt1','mt2','mt3']}).addTo(mymap);
-                        var a = new L.LatLng(response.Senderos[i].SenderoPuntoElevacion[i].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud);
-                        L.marker([response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud], {icon: mk_inicio}).addTo(mymap).bindPopup("Este es punto de inicio del circuito..");
-                        L.marker([response.Senderos[i].SenderoPuntoElevacion[255].Latitud, response.Senderos[i].SenderoPuntoElevacion[255].Longitud], {icon: mk_fin}).addTo(mymap).bindPopup("Este es punto de fin del circuito..");
+    //                     //Polygon.getBounds().contains
+    //                     var latlngs = [[response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud],
+    //                                    [response.Senderos[i].SenderoPuntoElevacion[255].Latitud, response.Senderos[i].SenderoPuntoElevacion[255].Longitud]];
+    //                     var polygon = L.polygon(latlngs, {color: 'red'}).addTo(mymap);
+    //                     mymap.fitBounds(polygon.getBounds());
 
-                        //Polygon.getBounds().contains
-                        var latlngs = [[response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud],
-                                       [response.Senderos[i].SenderoPuntoElevacion[255].Latitud, response.Senderos[i].SenderoPuntoElevacion[255].Longitud]];
-                        var polygon = L.polygon(latlngs, {color: 'red'}).addTo(mymap);
-                        mymap.fitBounds(polygon.getBounds());
+    //                     $$("#nombre").append(" " + response.Senderos[i].Nombre);
+    //                     $$("#inicio").append(" " + response.Senderos[i].LugarInicio);
+    //                     $$("#fin").append(" " +response.Senderos[i].LugarFin);
+    //                     $$("#distancia").append(" " +response.Senderos[i].Distancia);
+    //                     $$("#desnivel").append(" " +response.Senderos[i].Desnivel);
+    //                     $$("#duracion").append(" " +response.Senderos[i].DuracionTotal);
+    //                     $$("#altmaxima").append(" " +response.Senderos[i].AlturaMaxima);
 
-                        $$("#nombre").append(" " + response.Senderos[i].Nombre);
-                        $$("#inicio").append(" " + response.Senderos[i].LugarInicio);
-                        $$("#fin").append(" " +response.Senderos[i].LugarFin);
-                        $$("#distancia").append(" " +response.Senderos[i].Distancia);
-                        $$("#desnivel").append(" " +response.Senderos[i].Desnivel);
-                        $$("#duracion").append(" " +response.Senderos[i].DuracionTotal);
-                        $$("#altmaxima").append(" " +response.Senderos[i].AlturaMaxima);
+    //                     var urlmapa = RecursoWeb + response.Senderos[i].RutZipMapa;
+    //                     var namemapa = response.Senderos[i].ID
+    //                     $$("#btn_download").click(function(){
+    //                         alert(urlmapa);
+    //                         DownloadFile(urlmapa,"",namemapa,namemapa,1)
+    //                     });
 
-                        var urlmapa = RecursoWeb + response.Senderos[i].RutZipMapa;
-                        var namemapa = response.Senderos[i].ID
-                        $$("#btn_download").click(function(){
-                            alert(urlmapa);
-                            DownloadFile(urlmapa,"",namemapa,namemapa,1)
-                        });
+    //                     var elevationvar = [];
+    //                     elevationvar.push({rows : response.Senderos[i].SenderoPuntoElevacion})
+    //                     for (var x = 0; x < response.Senderos[i].SenderoPuntoElevacion.length; x++) {
+    //                         plArray.push(new L.LatLng(response.Senderos[i].SenderoPuntoElevacion[x].Latitud, response.Senderos[i].SenderoPuntoElevacion[x].Longitud));
+    //                     }
+    //                 }
+    //             }
+    //             var DrawPolyline = new L.Polyline(plArray, {
+    //                 color: '#00b3fd',
+    //                 weight: 4,
+    //                 opacity: 0.7,
+    //                 smoothFactor: 1
+    //             });
+    //             DrawPolyline.addTo(mymap)
 
-                        var elevationvar = [];
-                        elevationvar.push({rows : response.Senderos[i].SenderoPuntoElevacion})
-                        for (var x = 0; x < response.Senderos[i].SenderoPuntoElevacion.length; x++) {
-                            plArray.push(new L.LatLng(response.Senderos[i].SenderoPuntoElevacion[x].Latitud, response.Senderos[i].SenderoPuntoElevacion[x].Longitud));
-                        }
-                    }
-                }
-                var DrawPolyline = new L.Polyline(plArray, {
-                    color: '#00b3fd',
-                    weight: 4,
-                    opacity: 0.7,
-                    smoothFactor: 1
-                });
-                DrawPolyline.addTo(mymap)
-
-                plotElevation(elevationvar[0],0);
-            },
-            error: function(){
-            }
-        });
-    }
+    //             plotElevation(elevationvar[0],0,response.Senderos[0].Distancia,mymap);
+    //         },
+    //         error: function(){
+    //         }
+    //     });
+    // }
 
     //Traer desde API por primera vez luego sqlite.
 

@@ -1,6 +1,7 @@
-function plotElevation(returnedElevations,source) {
-
+function plotElevation(returnedElevations,source, distance, mymap, LatLng) {
     var elevations = [];
+    var elevations = [];
+    var marker = 0;
     for (var i = 0; i < returnedElevations.rows.length; i++) {
         if(source == 1) {
             elevations.push(parseInt(returnedElevations.rows.item(i).Altura));
@@ -9,7 +10,6 @@ function plotElevation(returnedElevations,source) {
         {
             elevations.push(parseInt(returnedElevations.rows[i].Altura));
         }
-        //locations.push(returnedElevations[i].location);
     }
     var minElevation = elevations[0];
     var maxElevation = elevations[0];
@@ -29,10 +29,11 @@ function plotElevation(returnedElevations,source) {
             text: ''
         },
         xAxis: {
-            allowDecimals: false,
+            allowDecimals: true,
+            minRange: 1,
             labels: {
                 formatter: function () {
-                    return this.value; // clean, unformatted number for year
+                    return (this.value * (parseInt(distance)/256)).toFixed(2) + ' km'; // clean, unformatted number for year
                 }
             }
         },
@@ -40,16 +41,24 @@ function plotElevation(returnedElevations,source) {
             max: maxElevation,
             min: minElevation,
             title: {
-                text: 'Elevación del terreno'
+                text: 'Elevación del terreno en msnm'
             },
             labels: {
                 formatter: function () {
-                    return this.value  + ' msnm';
+                    return this.value;
                 }
             }
         },
         tooltip: {
-            pointFormat: '{point.y:,.0f} msnm' /*'{series.name} produced <b>{point.y:,.0f}</b><br/>warheads in {point.x}'*/
+            formatter: function() {
+                if(marker == 0){
+                    marker = L.marker(LatLng[this.x]).addTo(mymap);
+                }
+                else{
+                    marker.setLatLng(LatLng[this.x]); 
+                }
+                return  '<b>Distancia: ' + (this.x * (parseInt(distance)/256)).toFixed(2) +' km</b><br/>' + 'Altura: ' + this.y + ' msnm';
+            }
         },
         plotOptions: {
             area: {
@@ -67,8 +76,9 @@ function plotElevation(returnedElevations,source) {
             }
         },
         series: [{
-            name: ' - ',
-            data: elevations
+            name: ' ',
+            data: elevations,
+            color: '#55b9a1'
         }]
     });
 }    

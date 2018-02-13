@@ -245,8 +245,9 @@
 /* visual tweaks */
 
 .leaflet-container {
-	background: #ddd;
+	background: #fff;
 	outline: 0;
+	background-image: url(../img/no-tile.png)
 	}
 .leaflet-container a {
 	color: #0078A8;

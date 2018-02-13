@@ -153,10 +153,12 @@ function onPopUpOpen(){
 
         db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
-        db.executeSql('SELECT spe.Latitud, spe.Longitud, spe.Altura, s.Descripcion,s.LugarInicio,s.LugarFin,s.Distancia,s.Desnivel,s.DuracionTotal,s.AlturaMaxima, s.Nombre FROM SenderoPuntoElevacion as spe left join Senderos as s on s.ID = spe.IDSendero  where spe.IDSendero=' + senderoID + ' order by spe.ID asc', [], function (rs) {
+        db.executeSql('SELECT spe.Latitud, spe.Longitud, spe.Altura,s.ID,  s.Descripcion,s.RutZipMapa,s.LugarInicio,s.LugarFin,s.Distancia,s.Desnivel,s.DuracionTotal,s.AlturaMaxima, s.Nombre FROM SenderoPuntoElevacion as spe left join Senderos as s on s.ID = spe.IDSendero  where spe.IDSendero=' + senderoID + ' order by spe.ID asc', [], function (rs) {
 
+            var soucerMap = rs.rows.item(0).RutZipMapa +  "Google Hibrido"
+            console.log("soucerMap " + soucerMap)
             var mymap = L.map('mapid').setView([rs.rows.item(0).Latitud, rs.rows.item(0).Longitud], 16);
-            var x = L.tileLayer('mapas/quebradaZonda/{z}/{x}/{y}.jpg', {maxZoom: 18, minZoom: 15}).addTo(mymap);
+            var x = L.tileLayer(soucerMap+'/{z}/{x}/{y}.jpg', {maxZoom: 18, minZoom: 15}).addTo(mymap);
             var a = new L.LatLng(rs.rows.item(0).Latitud, rs.rows.item(0).Longitud);
 
             L.marker([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud], {icon: mk_inicio}).addTo(mymap).bindPopup("Este es punto de inicio del circuito..");
@@ -205,10 +207,17 @@ function onPopUpOpen(){
                     if(senderoID == response.Senderos[i].ID) {
 
                         var mymap = L.map('mapid').setView([response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud], 16);
-                        var x = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {maxZoom: 18, minZoom: 15,subdomains:['mt0','mt1','mt2','mt3']}).addTo(mymap);
+                        var x = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {maxZoom: 18, minZoom: 7,subdomains:['mt0','mt1','mt2','mt3']}).addTo(mymap);
                         var a = new L.LatLng(response.Senderos[i].SenderoPuntoElevacion[i].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud);
                         L.marker([response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud], {icon: mk_inicio}).addTo(mymap).bindPopup("Este es punto de inicio del circuito..");
                         L.marker([response.Senderos[i].SenderoPuntoElevacion[255].Latitud, response.Senderos[i].SenderoPuntoElevacion[255].Longitud], {icon: mk_fin}).addTo(mymap).bindPopup("Este es punto de fin del circuito..");
+
+                        //Polygon.getBounds().contains
+                        var latlngs = [[response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud],
+                                       [response.Senderos[i].SenderoPuntoElevacion[255].Latitud, response.Senderos[i].SenderoPuntoElevacion[255].Longitud]];
+                        var polygon = L.polygon(latlngs, {color: 'red'}).addTo(mymap);
+                        mymap.fitBounds(polygon.getBounds());
+
                         $$("#nombre").append(" " + response.Senderos[i].Nombre);
                         $$("#inicio").append(" " + response.Senderos[i].LugarInicio);
                         $$("#fin").append(" " +response.Senderos[i].LugarFin);

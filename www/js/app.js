@@ -261,6 +261,7 @@ function filetransfer(download_link, fp,id,filetype) {
             }else
             {
                 console.log(" RUTA "+ entry.toURL() + " ID " + id + " TYPE " +  filetype)
+                UnzipDonwloadedMap(entry.toURL(),id, filetype);
             }
             entry.toURL();
         },
@@ -274,14 +275,35 @@ function filetransfer(download_link, fp,id,filetype) {
     );
 }
 
+function UnzipDonwloadedMap(zipFile, id){
+    var zip       = zipFile,
+        extracted =   zip.substring(0,zip.lastIndexOf("/")+1) + id + "/"
+
+    //zip = zip.substring(0,zip.lastIndexOf("/")+1)
+    console.log('zipping ...');
+
+
+    Zeep.unzip({
+        from : zip,
+        to   : extracted
+    }, function() {
+        console.log('unzip success!');
+        deleteFile(zipFile);
+        console.log("Extracted "+extracted)
+        UpdateFilePathDB(extracted,id,1)
+    }, function(e) {
+        console.log('unzip error: ', e);
+    });
+}
+
 function onPause() {
     // TODO: esta aplicación se ha suspendido. Guarde el estado de la aplicación aquí.
-    alert("Pause");
+    //alert("Pause");
 };
 
 function onResume() {
     // TODO: esta aplicación se ha reactivado. Restaure el estado de la aplicación aquí.
-    alert("Resume");
+    //alert("Resume");
 };
 
 function online()

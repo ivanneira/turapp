@@ -14,7 +14,7 @@ $$(document).on('DOMContentLoaded', function(){
 
 function loadSenderos(){
 
-    internet = 1;//checkInternet();
+    internet = checkInternet();
 
     if(internet == 0) {
         console.log("Sin internet");
@@ -71,7 +71,7 @@ function loadSenderos(){
                         img = RecursoWeb + response.Senderos[i].RutaImagen;
                     }
                     var tmp = '<div class="card demo-card-header-pic senderoCard" data-senderoid="' + response.Senderos[i].ID + '">' +
-                        '<div class="card-header align-items-flex-end" style="background-image:url( ' + img + ' )"> ' +
+                        '<div class="card-header align-items-flex-end lazy lazy-fade-in" style="background-image:url( ' + img + ' )"> ' +
                         '       <div class="chip chipMapa">' +
                         '           <div class="chip-label">Disponible</div>' +
                         '       </div>' +

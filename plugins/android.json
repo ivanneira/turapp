@@ -8,24 +8,24 @@
   },
   "installed_plugins": {
     "cordova-plugin-file": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+      "PACKAGE_NAME": "tur.app.TurismoSJ"
     },
     "cordova-plugin-file-transfer": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+      "PACKAGE_NAME": "tur.app.TurismoSJ"
     },
     "cordova-plugin-network-information": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+      "PACKAGE_NAME": "tur.app.TurismoSJ"
     },
     "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+      "PACKAGE_NAME": "tur.app.TurismoSJ"
     },
     "cordova-plugin-x-toast": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
-    },
-    "cordova-sqlite-storage": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+      "PACKAGE_NAME": "tur.app.TurismoSJ"
     },
     "cordova-plugin-zeep": {
+      "PACKAGE_NAME": "tur.app.TurismoSJ"
+    },
+    "cordova-sqlite-storage": {
       "PACKAGE_NAME": "tur.app.TurismoSJ"
     }
   },

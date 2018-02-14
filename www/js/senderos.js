@@ -7,7 +7,6 @@ $$(document).on('DOMContentLoaded', function(){
     loadSenderos();
 });
 
-
 //Funcion que se ejecuta al cargar la vista senderos..
 //Consulta si hay internet, y consume recursos desde la web, caso contrario utiliza la bd y los recursos descargados previamente.
 
@@ -15,7 +14,7 @@ $$(document).on('DOMContentLoaded', function(){
 
 function loadSenderos(){
 
-    internet = checkInternet();
+    internet = 1;//checkInternet();
 
     if(internet == 0) {
         console.log("Sin internet");
@@ -27,12 +26,17 @@ function loadSenderos(){
                 if (img == null)
                     img = "img/no_disponible.jpg";
 
-                var tmp = '<div class="card demo-card-header-pic senderoCard" data-senderoid="' + rs.rows.item(i).ID + '">' +
-                    '<div class="card-header align-items-flex-end"><img src="' + img + '" width="100%" height="auto"> </div>' +
-                    '<div class="card-content card-content-padding">' +
-                    '<p class="titulonoticia">' + rs.rows.item(i).Nombre + '</p>' +
-                    '<p>' + rs.rows.item(i).Descripcion + '</p>' +
-                    '</div>' +
+                var tmp =
+                    '<div class="card demo-card-header-pic senderoCard" data-senderoid="' + rs.rows.item(i).ID + '">' +
+                    '   <div class="card-header align-items-flex-end" style="background-image:url( ' + img + ' )"> ' +
+                    '       <div class="chip chipMapa">' +
+                    '           <div class="chip-label">Descargado</div>' +
+                    '       </div>' +
+                    '   </div>' +
+                    '   <div class="card-content card-content-padding">' +
+                    '       <p class="titulonoticia">' + rs.rows.item(i).Nombre + '</p>' +
+                    '       <p>' + rs.rows.item(i).Descripcion + '</p>' +
+                    '   </div>' +
                     '</div>';
 
                 $$("#senderosResultDiv").append(tmp);
@@ -67,7 +71,11 @@ function loadSenderos(){
                         img = RecursoWeb + response.Senderos[i].RutaImagen;
                     }
                     var tmp = '<div class="card demo-card-header-pic senderoCard" data-senderoid="' + response.Senderos[i].ID + '">' +
-                        '<div class="card-header align-items-flex-end"><img src="' + img + '" width="100%" height="auto"> </div>' +
+                        '<div class="card-header align-items-flex-end" style="background-image:url( ' + img + ' )"> ' +
+                        '       <div class="chip chipMapa">' +
+                        '           <div class="chip-label">Disponible</div>' +
+                        '       </div>' +
+                        '</div>' +
                         '<div class="card-content card-content-padding">' +
                         '<p class="titulonoticia">' + response.Senderos[i].Nombre + '</p>' +
                         '<p>' + response.Senderos[i].Descripcion + '</p>' +
@@ -119,22 +127,29 @@ function onPopUpOpen(){
     //el id del sendero llega como variable global, va cambiando según el atributo data-senderoid del tag a
     console.log("El id del sendero es " + senderoID);
 
-    var mapTemplate = '<div class="card">'+
-                      '     <button id="btn_download" class="button">Descargar Mapa</button>'+
-                      '     <div id="nombre" class="card-header mapaheader"></div>'+
-                      '     <div id ="mapid" class="card-content card-content-padding"></div>'+
-                      '     </div><div id="elevChart"></div>'+
-                      '     <div class="card-footer mapafooter">algunos detalles del mapa</div>'+
-                      '     <div class="card-footer mapafooter" style="color:#222">'+
-                      '     <ul>'+
-                      '     <li id="inicio">Lugar de Inicio</li>'+
-                      '     <li id="fin">Lugar de Fin</li>'+
-                      '     <li id="distancia">Distancia</li>'+
-                      '     <li id="desnivel">Desnivel</li>'+
-                      '     <li id="duracion">Duracion Total</li>'+
-                      '     <li id="altmaxima">Altura Máxima</li>'+
-                      '     </ul>'+
-                      '     </div>';
+    var mapTemplate =
+                    '<div class="fab fab-right-bottom">' +
+                    '   <a href="#" id="btn_download">' +
+                    '      <i class="icon f7-icons">download</i>' +
+                    '   </a>' +
+                    '</div>' +
+                    '<div class="card">' +
+                    '   <div id="nombre" class="card-header mapaheader"></div>'+
+                    '   <div id ="mapid" class="card-content card-content-padding"></div>'+
+                    '</div>' +
+                    '' +
+                    '<div id="elevChart"></div>'+
+                    '<div class="card-footer mapafooter">algunos detalles del mapa</div>'+
+                    '<div class="card-footer mapafooter" style="color:#222">'+
+                    '     <ul>'+
+                    '       <li id="inicio">Lugar de Inicio</li>'+
+                    '       <li id="fin">Lugar de Fin</li>'+
+                    '       <li id="distancia">Distancia</li>'+
+                    '       <li id="desnivel">Desnivel</li>'+
+                    '       <li id="duracion">Duracion Total</li>'+
+                    '       <li id="altmaxima">Altura Máxima</li>'+
+                    '     </ul>'+
+                    '</div>';
 
     $$("#senderoContainer").append(mapTemplate);
 

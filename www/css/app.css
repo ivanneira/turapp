@@ -164,3 +164,8 @@ p {
 #elevChart{
   height: 250px;
 }
+
+.chipMapa {
+
+  background-color: #55b9a1 !important;
+}

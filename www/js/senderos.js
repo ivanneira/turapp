@@ -11,12 +11,7 @@ $$(document).on('DOMContentLoaded', function(){
 //Funcion que se ejecuta al cargar la vista senderos..
 //Consulta si hay internet, y consume recursos desde la web, caso contrario utiliza la bd y los recursos descargados previamente.
 
-function downloadMAP()
-{
 
-    alert("Descarga mapa");
-
-}
 
 function loadSenderos(){
 
@@ -26,9 +21,9 @@ function loadSenderos(){
         console.log("Sin internet");
         db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
-        db.executeSql('SELECT * FROM Senderos  ORDER BY Nombre ASC', [], function (rs) {
+        db.executeSql('SELECT sen.*,simg.img FROM Senderos  as sen inner join SenderoRecursosImg as simg on simg.IDSendero = sen.ID  ORDER BY sen.Nombre ASC', [], function (rs) {
             for (var i = 0; i < rs.rows.length; i++) {
-                var img = rs.rows.item(i).Imglocation;
+                var img = rs.rows.item(i).img;
                 if (img == null)
                     img = "img/no_disponible.jpg";
 
@@ -99,6 +94,7 @@ function loadSenderos(){
 
 function onPopUpOpen(){
 
+    console.log("open popup")
     var LeafIcon = L.Icon.extend({
         options: {
             //shadowUrl: 'leaf-shadow.png',
@@ -142,6 +138,14 @@ function onPopUpOpen(){
 
     $$("#senderoContainer").append(mapTemplate);
 
+
+    var urlmapa = RecursoWeb + "/Content/Senderos/1/Mapa/senderoMapa_"+senderoID+".zip";
+    var namemapa = senderoID
+
+    $$("#btn_download").click(function(){
+         alert("El mapa sera descargado...")
+         DownloadFile(urlmapa,"",namemapa,namemapa,1)
+    });
     var plArray = [];
 
     internet = checkInternet();
@@ -153,9 +157,9 @@ function onPopUpOpen(){
 
         db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
-        db.executeSql('SELECT spe.Latitud, spe.Longitud, spe.Altura,s.ID,  s.Descripcion,s.RutZipMapa,s.LugarInicio,s.LugarFin,s.Distancia,s.Desnivel,s.DuracionTotal,s.AlturaMaxima, s.Nombre FROM SenderoPuntoElevacion as spe left join Senderos as s on s.ID = spe.IDSendero  where spe.IDSendero=' + senderoID + ' order by spe.ID asc', [], function (rs) {
+        db.executeSql('SELECT spe.Latitud, spe.Longitud, spe.Altura,s.ID,  s.Descripcion,smap.map,s.LugarInicio,s.LugarFin,s.Distancia,s.Desnivel,s.DuracionTotal,s.AlturaMaxima, s.Nombre FROM SenderoPuntoElevacion as spe left join Senderos as s on s.ID = spe.IDSendero left join SenderoRecursosMap as smap on smap.IDSendero = s.ID where spe.IDSendero=' + senderoID + ' order by spe.ID asc', [], function (rs) {
 
-            var soucerMap = rs.rows.item(0).RutZipMapa +  "Google Hibrido"
+            var soucerMap = rs.rows.item(0).map +  "Google Hibrido"
             console.log("soucerMap " + soucerMap)
             var mymap = L.map('mapid').setView([rs.rows.item(0).Latitud, rs.rows.item(0).Longitud], 16);
             var x;

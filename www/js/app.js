@@ -331,6 +331,8 @@ function Database(db) {
     db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
     //Creo la tabla Senderos
+
+/*
     db.sqlBatch([
         'CREATE TABLE IF NOT EXISTS Senderos ( ID, Nombre,Imglocation,RutZipMapa, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima)',
     ], function () {
@@ -341,6 +343,41 @@ function Database(db) {
         ], function () {
             console.log('Tabla SenderoPuntoElevacion OK');
             syncSenderos()
+            //db.close()
+        }, function (error) {
+            //console.log('SQL batch ERROR: ' + error.message);
+        });
+    }, function (error) {
+        //console.log('SQL batch ERROR: ' + error.message);
+    });
+*/
+
+    db.sqlBatch([
+        'CREATE TABLE IF NOT EXISTS Senderos ( ID, Nombre, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima)',
+    ], function () {
+        console.log('Tabla Senderos OK');
+        //Creo la tabla SenderoPuntoElevacion
+        db.sqlBatch([
+            'CREATE TABLE IF NOT EXISTS SenderoPuntoElevacion ( ID, IDSendero, Latitud,Longitud,Altura)',
+        ], function () {
+            console.log('Tabla SenderoPuntoElevacion OK');
+            db.sqlBatch([
+                'CREATE TABLE IF NOT EXISTS SenderoRecursosImg ( ID, IDSendero, img)',
+            ], function () {
+                console.log('Tabla SenderoRecursosImg OK');
+                db.sqlBatch([
+                    'CREATE TABLE IF NOT EXISTS SenderoRecursosMap ( ID, IDSendero, map)',
+                ], function () {
+                    console.log('Tabla SenderoRecursosMap OK');
+                    syncSenderos()
+                    //db.close()
+                }, function (error) {
+                    //console.log('SQL batch ERROR: ' + error.message);
+                });
+                //db.close()
+            }, function (error) {
+                //console.log('SQL batch ERROR: ' + error.message);
+            });
             //db.close()
         }, function (error) {
             //console.log('SQL batch ERROR: ' + error.message);
@@ -386,13 +423,13 @@ function syncSenderos()
             var strDelSQL = "delete from Senderos;";
             var strDelSQL2 = "delete from SenderoPuntoElevacion;";
 
-            var strSQL = "INSERT INTO Senderos (ID, Nombre,Imglocation, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima) VALUES ";
+            var strSQL = "INSERT INTO Senderos (ID, Nombre, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima) VALUES ";
             var strSQL2 = "INSERT INTO SenderoPuntoElevacion (ID, IDSendero, Latitud, Longitud, Altura) VALUES ";
             for(var i=0;i<response.Senderos.length;i++) {
 
                 DownloadFile(RecursoWeb+response.Senderos[i].RutaImagen,"",response.Senderos[i].ID,response.Senderos[i].ID,0)
 
-                strSQL = strSQL + "(" + response.Senderos[i].ID + ",'" + response.Senderos[i].Nombre + "','','"+response.Senderos[i].Descripcion+"','"+response.Senderos[i].LugarInicio+"','"+response.Senderos[i].LugarFin+"','"+response.Senderos[i].Distancia+"','"+response.Senderos[i].Desnivel+"','"+response.Senderos[i].DuracionTotal+"','"+response.Senderos[i].AlturaMaxima+"'),"
+                strSQL = strSQL + "(" + response.Senderos[i].ID + ",'" + response.Senderos[i].Nombre + "','"+response.Senderos[i].Descripcion+"','"+response.Senderos[i].LugarInicio+"','"+response.Senderos[i].LugarFin+"','"+response.Senderos[i].Distancia+"','"+response.Senderos[i].Desnivel+"','"+response.Senderos[i].DuracionTotal+"','"+response.Senderos[i].AlturaMaxima+"'),"
                 for(var x=0; x<response.Senderos[i].SenderoPuntoElevacion.length;x++)
                 {
                     strSQL2 = strSQL2 + "(" + x + ","+response.Senderos[i].ID+", '"+response.Senderos[i].SenderoPuntoElevacion[x].Latitud+"','"+response.Senderos[i].SenderoPuntoElevacion[x].Longitud+"','"+response.Senderos[i].SenderoPuntoElevacion[x].Altura+"'),"
@@ -472,18 +509,29 @@ function UpdateFilePathDB(file, id,filetype){
 
     var query = "";
 
+    /*
+     insert or replace into Book (ID, Name, TypeID, Level, Seen) values ( (select ID from Book where Name = "SearchName"), "SearchName", 5, 6, (select Seen from Book where Name = "SearchName"));
+    */
     if(filetype == 0)
     {
-        query =  "UPDATE Senderos Set Imglocation = '"+file+"' where ID="+id;
+        //query =  "UPDATE Senderos Set Imglocation = '"+file+"' where ID="+id;
+        //query =  "INSERT into SenderoRecursosImg (IDSendero, img) VALUES ("+id+",'"+file+"')";
+        query = "insert or replace into SenderoRecursosImg (IDSendero, img) values ( (select IDSendero from SenderoRecursosImg where IDSendero = "+id+"), '"+file+"');";
     }
     else
     {
-        query =  "UPDATE Senderos Set RutZipMapa = '"+file+"'  where ID="+id;
+        //query =  "UPDATE Senderos Set RutZipMapa = '"+file+"'  where ID="+id;
+        //query =  "INSERT into SenderoRecursosMap (IDSendero, map) VALUES ("+id+",'"+file+"')";
+        query = "insert or replace into SenderoRecursosMap (IDSendero, map) values ( (select IDSendero from SenderoRecursosMap where IDSendero = "+id+"), '"+file+"');";
     }
 
     db.executeSql(query, [], function(rs) {
-        return rs;
 
+        if(filetype == 1)
+        {
+            alert("El mapa ha sido descargado, estara disponible sin conexion.");
+        }
+        return rs;
     }, function(error) {
         console.log('SELECT SQL statement ERROR: ' + error.message);
     });

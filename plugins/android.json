@@ -36,11 +36,10 @@
     },
     "cordova-plugin-geolocation": {
       "PACKAGE_NAME": "tur.app.TurismoSJ"
-    }
-  },
-  "dependent_plugins": {
-    "com.jjdltc.cordova.plugin.zip": {
+    },
+    "mx.ferreyra.callnumber": {
       "PACKAGE_NAME": "tur.app.TurismoSJ"
     }
   }
+
 }

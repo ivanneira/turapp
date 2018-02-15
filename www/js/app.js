@@ -387,7 +387,7 @@ function Database(db) {
         'CREATE TABLE IF NOT EXISTS Senderos ( ID PRIMARY KEY, Nombre, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima)',
         'CREATE TABLE IF NOT EXISTS SenderoPuntoElevacion ( ID, IDSendero, Latitud,Longitud,Altura, PRIMARY KEY (ID, IDSendero))',
         'CREATE TABLE IF NOT EXISTS SenderoRecursosImg ( IDSendero PRIMARY KEY, img)',
-        'CREATE TABLE IF NOT EXISTS SenderoRecursosMap ( ID PRIMARY KEY, IDSendero, map)',
+        'CREATE TABLE IF NOT EXISTS SenderoRecursosMap ( IDSendero PRIMARY KEY, map)',
         'CREATE TABLE IF NOT EXISTS RegistroActualizacion ( FechaActualizacion )',
     ], function () {
                     console.log('Tablas OK');
@@ -551,14 +551,14 @@ function UpdateFilePathDB(file, id,filetype){
     if(filetype == 0)
     {
         //query =  "UPDATE Senderos Set Imglocation = '"+file+"' where ID="+id;
-        //query =  "INSERT into SenderoRecursosImg (IDSendero, img) VALUES ("+id+",'"+file+"')";
-        query = "insert or replace into SenderoRecursosImg (IDSendero, img) values ( (select IDSendero from SenderoRecursosImg where IDSendero = "+id+"), '"+file+"');";
+        query =  "INSERT into SenderoRecursosImg (IDSendero, img) VALUES ("+id+",'"+file+"')";
+        //query = "insert or replace into SenderoRecursosImg (IDSendero, img) values ( (select IDSendero from SenderoRecursosImg where IDSendero = "+id+"), '"+file+"');";
     }
     else
     {
         //query =  "UPDATE Senderos Set RutZipMapa = '"+file+"'  where ID="+id;
         //query =  "INSERT into SenderoRecursosMap (IDSendero, map) VALUES ("+id+",'"+file+"')";
-        query = "insert or replace into SenderoRecursosMap (IDSendero, map) values ( (select IDSendero from SenderoRecursosMap where IDSendero = "+id+"), '"+file+"');";
+        query = "insert or replace into SenderoRecursosMap (IDSendero, map) values ("+id+",'"+file+"');";
     }
 
     db.executeSql(query, [], function(rs) {
@@ -636,4 +636,20 @@ function deleteFile(source)
     });
 });
 
+}
+
+function CallPhone(number) {
+   // app.f7.dialog.confirm('¿Está seguro que desea llamar a emergencias?', 'Senderismo San Juan.',function () {
+        //navigator.app.clearHistory(); navigator.app.exitApp();
+        window.plugins.CallNumber.callNumber(onSuccess, onError, number, true);
+    //});
+
+}
+
+function onSuccess(result){
+    console.log("Success:"+result);
+}
+
+function onError(result) {
+    console.log("Error:"+result);
 }

@@ -123,10 +123,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
         id: 'io.sanjuansalud.turApp', // App bundle ID
         name: 'turApp', // App name
         theme: 'auto', // Automatic theme detection
-        welcomescreen: {
+        /*welcomescreen: {
             slides: welcomescreen_slides,
             options: options,
-        },
+        },*/
 
         routes: routes,
     });
@@ -307,6 +307,7 @@ function filetransfer(download_link, fp,id,filetype) {
             //alert("download complete: " + entry.toURL());
             //$$("#view-home").append("<img src='"+entry.toURL()+"'>")
             console.log("complete")
+            app.f7.preloader.hide();
             if(filetype == 0){
             UpdateFilePathDB(entry.toURL(),id,filetype)
             }else

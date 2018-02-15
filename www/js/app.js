@@ -503,38 +503,52 @@ function syncSenderos()
 
 function checkInternet() //devuelve 0 si no hay conexion , 1 si hay conexion.
 {
-    var isOffline = 'onLine' in navigator && !navigator.onLine;
 
-    // internet data
-    var networkState = navigator.connection.type;
-
-    var states = {};
-
-        states[Connection.UNKNOWN]  = 'Unknown connection';
-        states[Connection.ETHERNET] = 'Ethernet connection';
-        states[Connection.WIFI]     = 'WiFi connection';
-        states[Connection.CELL_2G]  = 'Cell 2G connection';
-        states[Connection.CELL_3G]  = 'Cell 3G connection';
-        states[Connection.CELL_4G]  = 'Cell 4G connection';
-        states[Connection.CELL]     = 'Cell generic connection';
-        states[Connection.NONE]     = 'No network connection';
-
-
-        //Solo si tengo conexion 4g, 3g y wifi && si la conexion responde.
-        if(states[networkState] == "Cell 4G connection" || states[networkState] == 'Cell 3G connection' || states[networkState] == 'WiFi connection')
-        {
-            window.plugins.toast.show("Online","3000","bottom");
-            if ( isOffline ) {
-                //local db
-                window.plugins.toast.show("Offline","3000","bottom");
-                return 0;
+    try {
+    
+        var isOffline = 'onLine' in navigator && !navigator.onLine;
+        // internet data
+        var networkState = navigator.connection.type;
+    
+        var states = {};
+    
+            states[Connection.UNKNOWN]  = 'Unknown connection';
+            states[Connection.ETHERNET] = 'Ethernet connection';
+            states[Connection.WIFI]     = 'WiFi connection';
+            states[Connection.CELL_2G]  = 'Cell 2G connection';
+            states[Connection.CELL_3G]  = 'Cell 3G connection';
+            states[Connection.CELL_4G]  = 'Cell 4G connection';
+            states[Connection.CELL]     = 'Cell generic connection';
+            states[Connection.NONE]     = 'No network connection';
+    
+    
+            //Solo si tengo conexion 4g, 3g y wifi && si la conexion responde.
+            if(states[networkState] == "Cell 4G connection" || states[networkState] == 'Cell 3G connection' || states[networkState] == 'WiFi connection')
+            {
+                if ( isOffline ) {
+                    //local db
+                    window.plugins.toast.show("Offline","3000","bottom");
+                    return 0;
+                }
+                else {
+                    console.log("toast online");
+                    window.plugins.toast.show("Online","3000","bottom");
+                    return 1;
+                }
             }
-            else {
-                window.plugins.toast.show("Online","3000","bottom");
-                return 1;
-            }
+            return 0;
+    }
+    catch(err) {
+        var isOffline = 'onLine' in navigator && !navigator.onLine;
+        if(isOffline){
+            console.log("offline");
+            return 0;
         }
-        return 0;
+        else{
+            console.log("online");
+            return 1;
+        }
+    }
 
 }
 

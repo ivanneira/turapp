@@ -12,7 +12,11 @@
       "cordova-plugin-zeep": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-request-location-accuracy": {},
-      "cordova-plugin-geolocation": {}
+      "cordova-plugin-geolocation": {},
+      "cordova-sqlite-storage": {},
+      "com.jjdltc.cordova.plugin.zip": {},
+      "cordova-plugin-network-information": {},
+      "cordova-plugin-x-toast": {}
     }
   },
   "dependencies": {

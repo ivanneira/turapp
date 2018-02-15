@@ -1,5 +1,6 @@
 //Variables
 var senderosAPI = "http://economiayciencia.com/api/SenderosAPI";
+var updateSenderosAPI = "http://economiayciencia.com/UpdateSenderosAPI";
 var RecursoWeb = "http://economiayciencia.com";
 var ErrorAjax = "Debes tener una conexión activa.";
 var conn ="";
@@ -246,7 +247,7 @@ function filetransfer(download_link, fp,id,filetype) {
      fileTransfer.onprogress = function(result){
         var percent =  result.loaded / result.total * 100;
         percent = Math.round(percent);
-        console.log("Progreso de ID: " + id + " -> "+ percent + "%");
+        //console.log("Progreso de ID: " + id + " -> "+ percent + "%");
         window.plugins.toast.show("Progreso de ID: " + id + " -> "+ percent + "%","250","bottom");
     };
 
@@ -331,66 +332,18 @@ function Database(db) {
     db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
     //Creo la tabla Senderos
-
-/*
     db.sqlBatch([
-        'CREATE TABLE IF NOT EXISTS Senderos ( ID, Nombre,Imglocation,RutZipMapa, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima)',
+        'CREATE TABLE IF NOT EXISTS Senderos ( ID PRIMARY KEY, Nombre, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima)',
+        'CREATE TABLE IF NOT EXISTS SenderoPuntoElevacion ( ID, IDSendero, Latitud,Longitud,Altura, PRIMARY KEY (ID, IDSendero))',
+        'CREATE TABLE IF NOT EXISTS SenderoRecursosImg ( IDSendero PRIMARY KEY, img)',
+        'CREATE TABLE IF NOT EXISTS SenderoRecursosMap ( ID PRIMARY KEY, IDSendero, map)',
+        'CREATE TABLE IF NOT EXISTS RegistroActualizacion ( FechaActualizacion )',
     ], function () {
-        console.log('Tabla Senderos OK');
-        //Creo la tabla SenderoPuntoElevacion
-        db.sqlBatch([
-            'CREATE TABLE IF NOT EXISTS SenderoPuntoElevacion ( ID, IDSendero, Latitud,Longitud,Altura)',
-        ], function () {
-            console.log('Tabla SenderoPuntoElevacion OK');
-            syncSenderos()
-            //db.close()
-        }, function (error) {
-            //console.log('SQL batch ERROR: ' + error.message);
-        });
-    }, function (error) {
-        //console.log('SQL batch ERROR: ' + error.message);
-    });
-*/
-
-    db.sqlBatch([
-        'CREATE TABLE IF NOT EXISTS Senderos ( ID, Nombre, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima)',
-    ], function () {
-        console.log('Tabla Senderos OK');
-        //Creo la tabla SenderoPuntoElevacion
-        db.sqlBatch([
-            'CREATE TABLE IF NOT EXISTS SenderoPuntoElevacion ( ID, IDSendero, Latitud,Longitud,Altura)',
-        ], function () {
-            console.log('Tabla SenderoPuntoElevacion OK');
-            db.sqlBatch([
-                'CREATE TABLE IF NOT EXISTS SenderoRecursosImg ( ID, IDSendero, img)',
-            ], function () {
-                console.log('Tabla SenderoRecursosImg OK');
-                db.sqlBatch([
-                    'CREATE TABLE IF NOT EXISTS SenderoRecursosMap ( ID, IDSendero, map)',
-                ], function () {
-                    console.log('Tabla SenderoRecursosMap OK');
-                    syncSenderos()
+                    console.log('Tablas OK');
+                    syncSenderos();
                     //db.close()
-                }, function (error) {
-                    //console.log('SQL batch ERROR: ' + error.message);
-                });
-                //db.close()
-            }, function (error) {
-                //console.log('SQL batch ERROR: ' + error.message);
-            });
-            //db.close()
-        }, function (error) {
-            //console.log('SQL batch ERROR: ' + error.message);
-        });
-    }, function (error) {
-        //console.log('SQL batch ERROR: ' + error.message);
-    });
-
-
-
-
-
-
+                }
+    );
 
 }
 
@@ -411,57 +364,89 @@ function getSenderosPuntosDB(id)
 
 function syncSenderos()
 {
-
+    console.log("syncSenderos");
+    var FechaActualizacionDB;
+    var FechaActualizacionResponse;
+    debugger
+    db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
+    db.executeSql('SELECT FechaActualizacion FROM RegistroActualizacion', [], function (rs) {   
+        console.log(rs.rows.length);
+        if(rs.rows.length > 0){
+            FechaActualizacionDB = rs.rows.item(0).FechaActualizacion;
+        }
+    });
+    console.log(FechaActualizacionDB);
     $.ajax({
-        url: senderosAPI,
+        url: updateSenderosAPI,
         cache: false,
         type: 'get',
         timeout: timeOut,
         dataType: "json",
-        success: function (response) {
-            db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
-            var strDelSQL = "delete from Senderos;";
-            var strDelSQL2 = "delete from SenderoPuntoElevacion;";
-
-            var strSQL = "INSERT INTO Senderos (ID, Nombre, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima) VALUES ";
-            var strSQL2 = "INSERT INTO SenderoPuntoElevacion (ID, IDSendero, Latitud, Longitud, Altura) VALUES ";
-            for(var i=0;i<response.Senderos.length;i++) {
-
-                DownloadFile(RecursoWeb+response.Senderos[i].RutaImagen,"",response.Senderos[i].ID,response.Senderos[i].ID,0)
-
-                strSQL = strSQL + "(" + response.Senderos[i].ID + ",'" + response.Senderos[i].Nombre + "','"+response.Senderos[i].Descripcion+"','"+response.Senderos[i].LugarInicio+"','"+response.Senderos[i].LugarFin+"','"+response.Senderos[i].Distancia+"','"+response.Senderos[i].Desnivel+"','"+response.Senderos[i].DuracionTotal+"','"+response.Senderos[i].AlturaMaxima+"'),"
-                for(var x=0; x<response.Senderos[i].SenderoPuntoElevacion.length;x++)
-                {
-                    strSQL2 = strSQL2 + "(" + x + ","+response.Senderos[i].ID+", '"+response.Senderos[i].SenderoPuntoElevacion[x].Latitud+"','"+response.Senderos[i].SenderoPuntoElevacion[x].Longitud+"','"+response.Senderos[i].SenderoPuntoElevacion[x].Altura+"'),"
-                }
-
+        success: function (response) { 
+            console.log(response)
+            if(FechaActualizacionDB == undefined || response.FechaActualizacion > FechaActualizacionDB){
+                FechaActualizacionResponse = response.FechaActualizacion
+                $.ajax({
+                    url: senderosAPI,
+                    cache: false,
+                    type: 'get',
+                    timeout: timeOut,
+                    dataType: "json",
+                    success: function (response) {
+                        db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
+                        // var strDelSQL = "delete from Senderos;";
+                        // var strDelSQL2 = "delete from SenderoPuntoElevacion;";
+                        // console.dir(response);
+                        var strSQL = "INSERT OR REPLACE INTO Senderos (ID, Nombre, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima) VALUES ";
+                        var strSQL2 = "INSERT OR REPLACE INTO SenderoPuntoElevacion (ID, IDSendero, Latitud, Longitud, Altura) VALUES ";
+                        var strSQL3 = "INSERT OR REPLACE INTO SenderoRecursosImg (IDSendero, img) VALUES ";
+                        var strSQL4 = "INSERT OR REPLACE INTO RegistroActualizacion (FechaActualizacion) VALUES (" + FechaActualizacionResponse + ")";
+                        console.log(strSQL4);
+                        for(var i=0;i<response.Senderos.length;i++) {
+            
+                            // DownloadFile(RecursoWeb+response.Senderos[i].RutaImagen,"",response.Senderos[i].ID,response.Senderos[i].ID,0)
+            
+                            strSQL = strSQL + "(" + response.Senderos[i].ID + ",'" + response.Senderos[i].Nombre + "','"+response.Senderos[i].Descripcion+"','"+response.Senderos[i].LugarInicio+"','"+response.Senderos[i].LugarFin+"','"+response.Senderos[i].Distancia+"','"+response.Senderos[i].Desnivel+"','"+response.Senderos[i].DuracionTotal+"','"+response.Senderos[i].AlturaMaxima+"'),"
+                            for(var x=0; x<response.Senderos[i].SenderoPuntoElevacion.length;x++)
+                            {
+                                strSQL2 = strSQL2 + "(" + x + ","+response.Senderos[i].ID+", '"+response.Senderos[i].SenderoPuntoElevacion[x].Latitud+"','"+response.Senderos[i].SenderoPuntoElevacion[x].Longitud+"','"+response.Senderos[i].SenderoPuntoElevacion[x].Altura+"'),"
+                            }
+                            strSQL3 = strSQL3 + "(" + response.Senderos[i].ID + ",'" + response.Senderos[i].ImgBase64 +"'),";
+                        }
+                        strSQL = strSQL.slice(0,-1);
+                        strSQL = strSQL + ";";
+            
+                        strSQL2 = strSQL2.slice(0,-1);
+                        strSQL2 = strSQL2 + ";";
+            
+                        strSQL3 = strSQL3.slice(0,-1);
+                        strSQL3 = strSQL3 + ";";
+            
+                        //Si Hay internet Sincronizo senderos limpiando la tabla.
+            
+                        db.sqlBatch([
+                            // strDelSQL,
+                            // strDelSQL2,
+                            strSQL,
+                            strSQL2,
+                            strSQL3,
+                            strSQL4
+                        ], function() {
+                            //console.log('Clear database OK');
+                            loadSenderos();     
+                            //window.plugins.toast.show("Los Senderos estan siendo Actualizados ","3000","bottom");
+                        }, function(error) {
+                            console.log('SQL batch ERROR: ' + error.message);
+                        });
+                    },
+                    error: function () {
+                        //window.plugins.toast.show(ErrorAjax,"3000","bottom");
+                    }
+            
+                });
             }
-            strSQL = strSQL.slice(0,-1);
-            strSQL = strSQL + ";";
-
-            strSQL2 = strSQL2.slice(0,-1);
-            strSQL2 = strSQL2 + ";";
-
-
-            //Si Hay internet Sincronizo senderos limpiando la tabla.
-
-            db.sqlBatch([
-                strDelSQL,
-                strDelSQL2,
-                strSQL,
-                strSQL2
-            ], function() {
-                //console.log('Clear database OK');
-                window.plugins.toast.show("Los Senderos estan siendo Actualizados ","3000","bottom");
-            }, function(error) {
-                console.log('SQL batch ERROR: ' + error.message);
-            });
-        },
-        error: function () {
-            //window.plugins.toast.show(ErrorAjax,"3000","bottom");
         }
-
-    });
+    });    
 }
 
 

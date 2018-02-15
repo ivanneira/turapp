@@ -4,7 +4,7 @@ var senderosResult = [];
 
 $$(document).on('DOMContentLoaded', function(){
 
-    loadSenderos();
+        loadSenderos();
 });
 
 //Funcion que se ejecuta al cargar la vista senderos..
@@ -16,19 +16,21 @@ function loadSenderos(){
 
     internet = checkInternet();
 
-    if(internet == 0) {
-        console.log("Sin internet");
+    // if(internet == 0) {
+         console.log("Sin internet");
         db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
-        db.executeSql('SELECT sen.*,simg.img FROM Senderos  as sen inner join SenderoRecursosImg as simg on simg.IDSendero = sen.ID  ORDER BY sen.Nombre ASC', [], function (rs) {
-            for (var i = 0; i < rs.rows.length; i++) {
+        db.executeSql('SELECT sen.*,simg.img FROM Senderos  as sen left join SenderoRecursosImg as simg on simg.IDSendero = sen.ID  ORDER BY sen.Nombre ASC', [], function (rs) {        
+            for (var i = 0; i < rs.rows.length; i++) { 
                 var img = rs.rows.item(i).img;
-                if (img == null)
+                console.log();
+                if (img == null){
                     img = "img/no_disponible.jpg";
+                }
 
                 var tmp =
                     '<div class="card demo-card-header-pic senderoCard" data-senderoid="' + rs.rows.item(i).ID + '">' +
-                    '   <div class="card-header align-items-flex-end" style="background-image:url( ' + img + ' )"> ' +
+                    '   <div class="card-header align-items-flex-end" style="background-image:url('  + img + ' ")> ' +
                     '       <div class="chip chipMapa">' +
                     '           <div class="chip-label">Descargado</div>' +
                     '       </div>' +
@@ -51,50 +53,50 @@ function loadSenderos(){
         }, function (error) {
             console.log('SELECT SQL statement ERROR: ' + error.message);
         });
-    }
-    else
-    {
-        console.log("Con internet");
-        $.ajax({
-            url: senderosAPI,
-            cache: false,
-            type: 'get',
-            timeout: timeOut,
-            dataType: "json",
-            success: function (response) {
-                for (var i = 0; i < response.Senderos.length; i++) {
-                    var img = response.Senderos[i].RutaImagen;
-                    if (img == null) {
-                        img = "img/no_disponible.jpg";
-                    }
-                    else {
-                        img = RecursoWeb + response.Senderos[i].RutaImagen;
-                    }
-                    var tmp = '<div class="card demo-card-header-pic senderoCard" data-senderoid="' + response.Senderos[i].ID + '">' +
-                        '<div class="card-header align-items-flex-end lazy lazy-fade-in" style="background-image:url( ' + img + ' )"> ' +
-                        '       <div class="chip chipMapa">' +
-                        '           <div class="chip-label">Disponible</div>' +
-                        '       </div>' +
-                        '</div>' +
-                        '<div class="card-content card-content-padding">' +
-                        '<p class="titulonoticia">' + response.Senderos[i].Nombre + '</p>' +
-                        '<p>' + response.Senderos[i].Descripcion + '</p>' +
-                        '</div>' +
-                        '</div>';
+    // }
+    // else
+    // {
+    //     console.log("Con internet");
+    //     $.ajax({
+    //         url: senderosAPI,
+    //         cache: false,
+    //         type: 'get',
+    //         timeout: timeOut,
+    //         dataType: "json",
+    //         success: function (response) {
+    //             for (var i = 0; i < response.Senderos.length; i++) {
+    //                 var img = response.Senderos[i].RutaImagen;
+    //                 if (img == null) {
+    //                     img = "img/no_disponible.jpg";
+    //                 }
+    //                 else {
+    //                     img = RecursoWeb + response.Senderos[i].RutaImagen;
+    //                 }
+    //                 var tmp = '<div class="card demo-card-header-pic senderoCard" data-senderoid="' + response.Senderos[i].ID + '">' +
+    //                     '<div class="card-header align-items-flex-end lazy lazy-fade-in" style="background-image:url( ' + img + ' )"> ' +
+    //                     '       <div class="chip chipMapa">' +
+    //                     '           <div class="chip-label">Disponible</div>' +
+    //                     '       </div>' +
+    //                     '</div>' +
+    //                     '<div class="card-content card-content-padding">' +
+    //                     '<p class="titulonoticia">' + response.Senderos[i].Nombre + '</p>' +
+    //                     '<p>' + response.Senderos[i].Descripcion + '</p>' +
+    //                     '</div>' +
+    //                     '</div>';
 
-                    $$("#senderosResultDiv").append(tmp);
+    //                 $$("#senderosResultDiv").append(tmp);
 
-                }
-                $$(".senderoCard").click(function () {
-                    app.f7.popup.open('.popup-senderos')
-                    senderoID = $(this).data().senderoid;
-                });
-            },
-            error: function(){
-            }
-        });
+    //             }
+    //             $$(".senderoCard").click(function () {
+    //                 app.f7.popup.open('.popup-senderos')
+    //                 senderoID = $(this).data().senderoid;
+    //             });
+    //         },
+    //         error: function(){
+    //         }
+    //     });
 
-    }
+    // }
 
 }
 
@@ -140,10 +142,12 @@ function onPopUpOpen(){
                     '' +
                     '<div id="elevChart"></div>'+
                     '<div class="card-footer mapafooter">algunos detalles del mapa</div>'+
-                    '<div class="card-footer mapafooter" style="color:#222">'+
+                    '<div class="card-footer mapafooter" style="color:#222">'+                                            
+                    '     <div class="row">'+
+                    '        <div id="inicio class="col">Lugar de Inicio</div>'+
+                    '        <div id="fin" class="col">Lugar de Fin</div>'+
+                    '     </div>'+
                     '     <ul>'+
-                    '       <li id="inicio">Lugar de Inicio</li>'+
-                    '       <li id="fin">Lugar de Fin</li>'+
                     '       <li id="distancia">Distancia</li>'+
                     '       <li id="desnivel">Desnivel</li>'+
                     '       <li id="duracion">Duracion Total</li>'+
@@ -172,7 +176,7 @@ function onPopUpOpen(){
 
         db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
-        db.executeSql('SELECT spe.Latitud, spe.Longitud, spe.Altura,s.ID,  s.Descripcion,smap.map,s.LugarInicio,s.LugarFin,s.Distancia,s.Desnivel,s.DuracionTotal,s.AlturaMaxima, s.Nombre FROM SenderoPuntoElevacion as spe left join Senderos as s on s.ID = spe.IDSendero left join SenderoRecursosMap as smap on smap.IDSendero = s.ID where spe.IDSendero=' + senderoID + ' order by spe.ID asc', [], function (rs) {
+        db.executeSql('SELECT spe.Latitud, spe.Longitud, spe.Altura,s.ID, s.Descripcion,smap.map,s.LugarInicio,s.LugarFin,s.Distancia,s.Desnivel,s.DuracionTotal,s.AlturaMaxima, s.Nombre FROM SenderoPuntoElevacion as spe left join Senderos as s on s.ID = spe.IDSendero left join SenderoRecursosMap as smap on smap.IDSendero = s.ID where spe.IDSendero=' + senderoID + ' order by spe.ID asc', [], function (rs) {
 
             var soucerMap = rs.rows.item(0).map +  "Google Hibrido"
             console.log("soucerMap " + soucerMap)
@@ -205,14 +209,14 @@ function onPopUpOpen(){
             }
 
             var DrawPolyline = new L.Polyline(plArray, {
-                color: '#00b3fd',
-                weight: 4,
-                opacity: 0.7,
+                color: '#ff9e00',
+                weight: 5,
+                opacity: 1,
                 smoothFactor: 1
             });
             DrawPolyline.addTo(mymap);
             mymap.fitBounds(DrawPolyline.getBounds());
- 	    plotElevation(rs,1,rs.rows.item(0).Distancia,mymap,plArray);
+ 	        plotElevation(rs,1,rs.rows.item(0).Distancia,mymap,plArray);
         }, function (error) {
             console.log('SELECT SQL statement ERROR: ' + error.message);
         });

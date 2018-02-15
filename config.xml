@@ -48,4 +48,5 @@
     <plugin name="cordova-plugin-zeep" spec="0.0.4" />
     <engine name="browser" spec="^5.0.3" />
     <engine name="android" spec="^7.0.0" />
+    <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
 </widget>

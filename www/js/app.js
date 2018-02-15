@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }
     ];
 
-    Framework7.use(Framework7WelcomescreenPlugin);
+    //Framework7.use(Framework7WelcomescreenPlugin);
 
     var app  = new Framework7({
         root: '#app', // App root element

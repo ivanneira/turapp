@@ -6,6 +6,9 @@ var ErrorAjax = "Debes tener una conexión activa.";
 var conn ="";
 var isOffline = 'onLine' in navigator && !navigator.onLine;
 
+
+
+
 var internet = 0;
 // Dom7
 var $$ = Dom7;
@@ -14,11 +17,58 @@ var $$ = Dom7;
 var db = null;
 
 //GPS Basics
+
+var myLat = -31.536395;
+var myLong = -68.536976;
+
+
 var optionsGPS = {
     enableHighAccuracy: true,
     timeout: 150000,
     maximumAge: 0
 };
+
+
+
+
+function requestPermissionGPS()
+{
+    console.log("permisos");
+    if(typeof(cordova.plugins) != 'undefined') {
+        //cordova.plugins.locationAccuracy.canRequest(function (canRequest) {
+        //if (canRequest) {
+        cordova.plugins.locationAccuracy.request(function () {
+                //console.log("Request successful");
+                navigator.geolocation.getCurrentPosition(successGPS, errorGPS, optionsGPS);
+            }, function (error) {
+                //alert("Por favor habilite los permisos de ubicación para el correcto funcionamiento de la aplicación.");
+                window.plugins.toast.show("Por favor habilite los permisos de ubicación para el correcto funcionamiento de la aplicación.","3000","bottom");
+                if (error) {
+                    // Android only
+                    console.error("error code=" + error.code + "; error message=" + error.message);
+                    if (error.code !== cordova.plugins.locationAccuracy.ERROR_USER_DISAGREED) {
+                        if (window.confirm("Fallo al solicitar ubicación con alta presición. Desea abrir la configuración y hacerlo manualmente?")) {
+                            cordova.plugins.diagnostic.switchToLocationSettings();
+                        }
+                    }
+                }
+            }, cordova.plugins.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY // iOS will ignore this
+        );
+        //}
+        //});
+    }
+}
+
+function errorGPS(err) {
+
+    window.plugins.toast.show("Disculpe, no pudimos obtener sus datos de ubicación.","3000","bottom");
+}
+function successGPS(pos) {
+    var crd = pos.coords;
+    myLat = parseFloat(crd.latitude);
+    myLong = parseFloat(crd.longitude);
+    console.log("hay datos")
+}
 
 //AJAX timeout
 var timeOut = 30000;
@@ -168,15 +218,15 @@ $$('.popup-noticias').on('popup:close', function (e, popup) {
     document.addEventListener('deviceready', onDeviceReady.bind(this), false);
     document.addEventListener("offline", offline, false);
     document.addEventListener("online", online, false);
+
 } )();
 
 function onDeviceReady() {
 
     //alert(checkInternet());
     document.addEventListener("backbutton", onBackKeyDown, false);
-
+    requestPermissionGPS();
     //FORZADO DE ACTIVACION DE GPS EN LAS PLATAFORMAS
-    //requestPermissionGPS();
 
     Database(db);
 

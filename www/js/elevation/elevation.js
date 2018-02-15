@@ -1,5 +1,5 @@
 function plotElevation(returnedElevations,source, distance, mymap, LatLng) {
-    var elevations = [];
+
     var elevations = [];
     var marker = 0;
     for (var i = 0; i < returnedElevations.rows.length; i++) {
@@ -55,7 +55,7 @@ function plotElevation(returnedElevations,source, distance, mymap, LatLng) {
                     marker = L.marker(LatLng[this.x]).addTo(mymap);
                 }
                 else{
-                    marker.setLatLng(LatLng[this.x]); 
+                    marker.setLatLng(LatLng[this.x]);
                 }
                 return  '<b>Distancia: ' + (this.x * (parseInt(distance)/256)).toFixed(2) +' km</b><br/>' + 'Altura: ' + this.y + ' msnm';
             }

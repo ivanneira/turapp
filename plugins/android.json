@@ -16,6 +16,9 @@
     "cordova-plugin-network-information": {
       "PACKAGE_NAME": "tur.app.TurismoSJ"
     },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "tur.app.TurismoSJ"
+    },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "tur.app.TurismoSJ"
     },
@@ -27,7 +30,17 @@
     },
     "cordova-sqlite-storage": {
       "PACKAGE_NAME": "tur.app.TurismoSJ"
+    },
+    "cordova-plugin-request-location-accuracy": {
+      "PACKAGE_NAME": "tur.app.TurismoSJ"
+    },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "tur.app.TurismoSJ"
     }
   },
-  "dependent_plugins": {}
+  "dependent_plugins": {
+    "com.jjdltc.cordova.plugin.zip": {
+      "PACKAGE_NAME": "tur.app.TurismoSJ"
+    }
+  }
 }

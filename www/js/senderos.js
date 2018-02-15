@@ -1,6 +1,27 @@
 
-var senderosResult = [];
+var LeafIcon = L.Icon.extend({
+    options: {
+        //shadowUrl: 'leaf-shadow.png',
+        iconSize:     [22, 22],
+        //shadowSize:   [50, 64],
+        iconAnchor:   [22, 22],
+        //shadowAnchor: [4, 62],
+        popupAnchor:  [-3, -76]
+    }
+});
 
+var mk_inicio = new LeafIcon({iconUrl: 'img/icons_gps/green.png'}),
+    mk_fin = new LeafIcon({iconUrl: 'img/icons_gps/red.png'}),
+    mk_gps = new LeafIcon({iconUrl: 'img/icons_gps/gps.png'}),
+    mk_elevation = new LeafIcon({iconUrl: 'img/icons_gps/elevation.png'});
+
+L.icon = function (options) {
+    return new L.Icon(options);
+};
+
+
+var senderosResult = [];
+var gps_marker = 0;
 
 $$(document).on('DOMContentLoaded', function(){
 
@@ -105,24 +126,7 @@ function loadSenderos(){
 function onPopUpOpen(){
 
     console.log("open popup")
-    var LeafIcon = L.Icon.extend({
-        options: {
-            //shadowUrl: 'leaf-shadow.png',
-            iconSize:     [38, 95],
-            //shadowSize:   [50, 64],
-            iconAnchor:   [22, 94],
-            //shadowAnchor: [4, 62],
-            popupAnchor:  [-3, -76]
-        }
-    });
 
-    var mk_inicio = new LeafIcon({iconUrl: 'img/icons_gps/green.png'}),
-        mk_fin = new LeafIcon({iconUrl: 'img/icons_gps/red.png'}),
-        mk_gps = new LeafIcon({iconUrl: 'img/icons_gps/gps.png'});
-
-    L.icon = function (options) {
-        return new L.Icon(options);
-    };
 
 
 
@@ -194,6 +198,35 @@ function onPopUpOpen(){
             L.marker([rs.rows.item(255).Latitud,rs.rows.item(255).Longitud], {icon: mk_fin}).addTo(mymap).bindPopup("Este es punto de fin del circuito..");
             //L.marker([51.495, -0.083], {icon: redIcon}).addTo(map).bindPopup("I am a red leaf.");
             //L.marker([51.49, -0.1], {icon: orangeIcon}).addTo(map).bindPopup("I am an orange leaf.");
+
+
+            var  _onSuccess = function(position) {
+
+                //L.marker([position.coords.latitude,position.coords.longitude], {icon: mk_gps}).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
+
+                if(gps_marker == 0){
+                    gps_marker = L.marker([position.coords.latitude,position.coords.longitude]).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
+                }
+                else{
+                    gps_marker.setLatLng([position.coords.latitude,position.coords.longitude]);
+                }
+
+                //var element = document.getElementById('geolocation');
+                //element.innerHTML = 'Latitude: '  + position.coords.latitude      + '<br />' +
+                // 'Longitude: ' + position.coords.longitude     + '<br />' +
+                //    '<hr />'      + element.innerHTML;
+
+            }
+
+            // onError Callback receives a PositionError object
+            //
+            var _onError = function (error) {
+                window.plugins.toast.show('Código: '+ error.code +'\n' +' Detalle: ' + error.message + '\n',"2000","bottom");
+            }
+
+
+            var watchID = navigator.geolocation.watchPosition(_onSuccess, _onError, {  optionsGPS });
+
 
             $$("#nombre").append(" " + rs.rows.item(0).Nombre);
             $$("#inicio").append(" " + rs.rows.item(0).LugarInicio);
@@ -298,3 +331,5 @@ function onPopUpClose(){
     $$("#senderoContainer").empty();
 
 }
+
+

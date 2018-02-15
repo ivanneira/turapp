@@ -206,13 +206,32 @@ function onPopUpOpen(){
     $$("#senderoContainer").append(mapTemplate);
 
 
+
     var urlmapa = RecursoWeb + "/Content/Senderos/1/Mapa/senderoMapa_"+senderoID+".zip";
     var namemapa = senderoID
 
-    $$("#btn_download").click(function(){
-         alert("El mapa sera descargado...")
-         DownloadFile(urlmapa,"",namemapa,namemapa,1)
+    db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
+
+    db.executeSql('select IDSendero from SenderoRecursosMap where IDSendero='+senderoID, [], function (rs) {
+
+        if(rs.rows.length == 0) {
+            $$("#btn_download").click(function () {
+                alert("El mapa sera descargado...")
+                DownloadFile(urlmapa, "", namemapa, namemapa, 1)
+            });
+
+        }
+        else{
+            $$("#btn_download").click(function () {
+                alert("El ya ha sido descargado.")
+            })
+        }
+
+    }, function(error) {
+        console.log('SELECT SQL statement ERROR: ' + error.message);
     });
+
+
     var plArray = [];
 
     internet = checkInternet();
@@ -377,3 +396,17 @@ function onPopUpClose(){
 }
 
 
+function checkIfFileExists(path){
+    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem){
+        fileSystem.root.getFile(path, { create: false }, fileExists, fileDoesNotExist);
+    }, getFSFail); //of requestFileSystem
+}
+function fileExists(fileEntry){
+    alert("File " + fileEntry.fullPath + " exists!");
+}
+function fileDoesNotExist(){
+    alert("file does not exist");
+}
+function getFSFail(evt) {
+    console.log(evt.target.error.code);
+}

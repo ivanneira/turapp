@@ -17,6 +17,8 @@
   src: url("../fonts/Nunito-Bold.ttf");
 }
 
+.leaflet-control-attribution {display:none !important;}
+.highcharts-credits{display:none !important;}
 #temperatura {
   margin: 10px;
   color: #001821;

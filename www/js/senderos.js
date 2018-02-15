@@ -1,6 +1,27 @@
 
-var senderosResult = [];
+var LeafIcon = L.Icon.extend({
+    options: {
+        //shadowUrl: 'leaf-shadow.png',
+        iconSize:     [22, 22],
+        //shadowSize:   [50, 64],
+        iconAnchor:   [22, 22],
+        //shadowAnchor: [4, 62],
+        popupAnchor:  [-3, -76]
+    }
+});
 
+var mk_inicio = new LeafIcon({iconUrl: 'img/icons_gps/green.png'}),
+    mk_fin = new LeafIcon({iconUrl: 'img/icons_gps/red.png'}),
+    mk_gps = new LeafIcon({iconUrl: 'img/icons_gps/gps.png'}),
+    mk_elevation = new LeafIcon({iconUrl: 'img/icons_gps/elevation.png'});
+
+L.icon = function (options) {
+    return new L.Icon(options);
+};
+
+
+var senderosResult = [];
+var gps_marker = 0;
 
 $$(document).on('DOMContentLoaded', function(){
 
@@ -43,8 +64,10 @@ function loadSenderos(){
 
                 $$("#senderosResultDiv").append(tmp);
             }
-
-
+            
+            //quita el preloader de senderos
+            $$(".senderoLoader").remove();
+            
             $$(".senderoCard").click(function () {
                 app.f7.popup.open('.popup-senderos')
                 senderoID = $(this).data().senderoid;
@@ -97,7 +120,7 @@ function loadSenderos(){
     //     });
 
     // }
-
+    //
 }
 
 
@@ -105,24 +128,7 @@ function loadSenderos(){
 function onPopUpOpen(){
 
     console.log("open popup")
-    var LeafIcon = L.Icon.extend({
-        options: {
-            //shadowUrl: 'leaf-shadow.png',
-            iconSize:     [38, 95],
-            //shadowSize:   [50, 64],
-            iconAnchor:   [22, 94],
-            //shadowAnchor: [4, 62],
-            popupAnchor:  [-3, -76]
-        }
-    });
 
-    var mk_inicio = new LeafIcon({iconUrl: 'img/icons_gps/green.png'}),
-        mk_fin = new LeafIcon({iconUrl: 'img/icons_gps/red.png'}),
-        mk_gps = new LeafIcon({iconUrl: 'img/icons_gps/gps.png'});
-
-    L.icon = function (options) {
-        return new L.Icon(options);
-    };
 
 
 
@@ -130,29 +136,71 @@ function onPopUpOpen(){
     console.log("El id del sendero es " + senderoID);
 
     var mapTemplate =
-                    '<div class="fab fab-right-bottom">' +
-                    '   <a href="#" id="btn_download">' +
-                    '      <i class="icon f7-icons">download</i>' +
-                    '   </a>' +
-                    '</div>' +
+                    '<br>' +
+                    '<button id="btn_download" class="button button-raised button-fill">Descargar mapa</button>' +
+                    '<br>' +
                     '<div class="card">' +
-                    '   <div id="nombre" class="card-header mapaheader"></div>'+
+                    '   <div id="nombre" class="card-header mapaheader titulonoticia"></div>'+
                     '   <div id ="mapid" class="card-content card-content-padding"></div>'+
                     '</div>' +
                     '' +
-                    '<div id="elevChart"></div>'+
-                    '<div class="card-footer mapafooter">algunos detalles del mapa</div>'+
-                    '<div class="card-footer mapafooter" style="color:#222">'+                                            
-                    '     <div class="row">'+
-                    '        <div id="inicio class="col">Lugar de Inicio</div>'+
-                    '        <div id="fin" class="col">Lugar de Fin</div>'+
-                    '     </div>'+
-                    '     <ul>'+
-                    '       <li id="distancia">Distancia</li>'+
-                    '       <li id="desnivel">Desnivel</li>'+
-                    '       <li id="duracion">Duracion Total</li>'+
-                    '       <li id="altmaxima">Altura Máxima</li>'+
-                    '     </ul>'+
+                    '<div id="elevChart"></div>' +
+                    '<div class="card">' +
+                    '   <div class="card-header">Detalles del mapa</div>' +
+                    '   <div class="card-content card-content-padding text-align-center">' +
+                    '           <div class="list simple-list ">'+
+                    '               <ul>' +
+                    '                    <li>' +
+                    '                       <div class="chip chipClima">' +
+                    '                           <div class="chip-media bg-color-pink">' +
+                    '                               <img id="windDirection" src="img/inicio.svg">' +
+                    '                           </div>' +
+                    '                           <div class="chip-label" id="inicio">Lugar de inicio:</div>' +
+                    '                       </div>' +
+                    '                    </li>'+
+                    '                    <li>' +
+                    '                       <div class="chip chipClima">' +
+                    '                           <div class="chip-media bg-color-pink">' +
+                    '                               <img id="windDirection" src="img/fin.svg">' +
+                    '                           </div>' +
+                    '                           <div class="chip-label" id="fin">Lugar de fin:</div>' +
+                    '                       </div>' +
+                    '                    </li>'+
+                    '                    <li>' +
+                    '                       <div class="chip chipClima">' +
+                    '                           <div class="chip-media bg-color-pink">' +
+                    '                               <img id="windDirection" src="img/distance.svg">' +
+                    '                           </div>' +
+                    '                           <div class="chip-label" id="distancia">Distancia:</div>' +
+                    '                       </div>' +
+                    '                    </li>'+
+                    '                    <li>' +
+                    '                       <div class="chip chipClima">' +
+                    '                           <div class="chip-media bg-color-pink">' +
+                    '                               <img id="windDirection" src="img/desnivel.svg">' +
+                    '                           </div>' +
+                    '                           <div class="chip-label" id="desnivel">Desnivel:</div>' +
+                    '                       </div>' +
+                    '                    </li>'+
+                    '                    <li>' +
+                    '                       <div class="chip chipClima">' +
+                    '                           <div class="chip-media bg-color-pink">' +
+                    '                               <img id="windDirection" src="img/clock.svg">' +
+                    '                           </div>' +
+                    '                           <div class="chip-label" id="duracion">Duración total:</div>' +
+                    '                       </div>' +
+                    '                    </li>'+
+                    '                    <li>' +
+                    '                       <div class="chip chipClima">' +
+                    '                           <div class="chip-media bg-color-pink">' +
+                    '                               <img id="windDirection" src="img/cumbre.svg">' +
+                    '                           </div>' +
+                    '                           <div class="chip-label" id="altmaxima">Altura máxima:</div>' +
+                    '                       </div>' +
+                    '                    </li>'+
+                    '                </ul>' +
+                    '           </div>' +
+                    '   </div>' +
                     '</div>';
 
     $$("#senderoContainer").append(mapTemplate);
@@ -195,13 +243,42 @@ function onPopUpOpen(){
             //L.marker([51.495, -0.083], {icon: redIcon}).addTo(map).bindPopup("I am a red leaf.");
             //L.marker([51.49, -0.1], {icon: orangeIcon}).addTo(map).bindPopup("I am an orange leaf.");
 
+
+            var  _onSuccess = function(position) {
+
+                //L.marker([position.coords.latitude,position.coords.longitude], {icon: mk_gps}).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
+
+                if(gps_marker == 0){
+                    gps_marker = L.marker([position.coords.latitude,position.coords.longitude]).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
+                }
+                else{
+                    gps_marker.setLatLng([position.coords.latitude,position.coords.longitude]);
+                }
+
+                //var element = document.getElementById('geolocation');
+                //element.innerHTML = 'Latitude: '  + position.coords.latitude      + '<br />' +
+                // 'Longitude: ' + position.coords.longitude     + '<br />' +
+                //    '<hr />'      + element.innerHTML;
+
+            }
+
+            // onError Callback receives a PositionError object
+            //
+            var _onError = function (error) {
+                window.plugins.toast.show('Código: '+ error.code +'\n' +' Detalle: ' + error.message + '\n',"2000","bottom");
+            }
+
+
+            var watchID = navigator.geolocation.watchPosition(_onSuccess, _onError, {  optionsGPS });
+
+
             $$("#nombre").append(" " + rs.rows.item(0).Nombre);
             $$("#inicio").append(" " + rs.rows.item(0).LugarInicio);
             $$("#fin").append(" " +rs.rows.item(0).LugarFin);
-            $$("#distancia").append(" " +rs.rows.item(0).Distancia);
-            $$("#desnivel").append(" " +rs.rows.item(0).Desnivel);
+            $$("#distancia").append(" " +rs.rows.item(0).Distancia + " km");
+            $$("#desnivel").append(" " +rs.rows.item(0).Desnivel + " msnm");
             $$("#duracion").append(" " +rs.rows.item(0).DuracionTotal);
-            $$("#altmaxima").append(" " +rs.rows.item(0).AlturaMaxima);
+            $$("#altmaxima").append(" " +rs.rows.item(0).AlturaMaxima + " m");
 
 
             for (var i = 0; i < rs.rows.length; i++) {
@@ -298,3 +375,5 @@ function onPopUpClose(){
     $$("#senderoContainer").empty();
 
 }
+
+

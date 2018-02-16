@@ -192,13 +192,13 @@ p {
 
 
 .tituloSendero {
-  color: #d83559 !important;
+  color: #f2f2f2 !important;
   font-family: 'Nunito' !important;
   font-weight: bold;
   font-size: 18px !important;
 }
 
 .headerSenderos {
-
+  background-color: #d83559;
   height: auto !important;
 }

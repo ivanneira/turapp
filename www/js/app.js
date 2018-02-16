@@ -418,7 +418,7 @@ function syncSenderos()
     console.log("syncSenderos");
     var FechaActualizacionDB;
     var FechaActualizacionResponse;
-    debugger
+    //debugger
     db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
     db.executeSql('SELECT FechaActualizacion FROM RegistroActualizacion', [], function (rs) {   
         console.log(rs.rows.length);

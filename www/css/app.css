@@ -171,3 +171,34 @@ p {
 
   background-color: #55b9a1 !important;
 }
+
+.senderosImg {
+  width: 40vw !important;
+
+}
+
+
+.senderosInfo {
+  height: 40vw !important;
+
+}
+
+
+.chipSendero {
+
+  width: auto;
+}
+
+
+
+.tituloSendero {
+  color: #d83559 !important;
+  font-family: 'Nunito' !important;
+  font-weight: bold;
+  font-size: 18px !important;
+}
+
+.headerSenderos {
+
+  height: auto !important;
+}

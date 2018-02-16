@@ -41,8 +41,11 @@ function loadSenderos(){
          console.log("Sin internet");
         db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
-        db.executeSql('SELECT sen.*,simg.img FROM Senderos  as sen left join SenderoRecursosImg as simg on simg.IDSendero = sen.ID  ORDER BY sen.Nombre ASC', [], function (rs) {        
-            for (var i = 0; i < rs.rows.length; i++) { 
+        db.executeSql('SELECT sen.*,simg.img FROM Senderos  as sen left join SenderoRecursosImg as simg on simg.IDSendero = sen.ID  ORDER BY sen.Nombre ASC', [], function (rs) {
+
+            for (var i = 0; i < rs.rows.length; i++) {
+
+                console.dir(rs.rows.item(i))
                 var img = rs.rows.item(i).img;
                 console.log();
                 if (img == null){
@@ -51,14 +54,34 @@ function loadSenderos(){
 
                 var tmp =
                     '<div class="card demo-card-header-pic senderoCard" data-senderoid="' + rs.rows.item(i).ID + '">' +
-                    '   <div class="card-header align-items-flex-end" style="background-image:url('  + img + ' ")> ' +
-                    '       <div class="chip chipMapa">' +
-                    '           <div class="chip-label">Descargado</div>' +
-                    '       </div>' +
+                    '   <div class="card-header align-items-flex-end headerSenderos" > ' +
+                    '        <p class="tituloSendero">' + rs.rows.item(i).Nombre + '</p>' +
                     '   </div>' +
                     '   <div class="card-content card-content-padding">' +
-                    '       <p class="titulonoticia">' + rs.rows.item(i).Nombre + '</p>' +
-                    '       <p>' + rs.rows.item(i).Descripcion + '</p>' +
+                    '       <div class="row">' +
+                    '           <div class="col-50 card-header align-items-flex-end senderosImg" style="background-image:url('  + img + ' ")>' +
+                    '           </div>' +
+                    '           <div class="col-50 senderosInfo">' +
+                    '               <div class="chip chipSendero">' +
+                    '                   <div class="chip-media bg-color-pink">' +
+                    '                       <img id="windDirection" src="img/distance.svg">' +
+                    '                   </div>' +
+                    '                  <div class="chip-label" id="distancia">Distancia: ' + rs.rows.item(i).Distancia + ' km</div>' +
+                    '               </div>' +
+                    '               <div class="chip chipSendero">' +
+                    '                   <div class="chip-media bg-color-pink">' +
+                    '                       <img id="windDirection" src="img/dificultad.svg">' +
+                    '                   </div>' +
+                    '                  <div class="chip-label" id="distancia">Dificultad: ' + rs.rows.item(i).TipoDificultadFisica + '</div>' +
+                    '               </div>' +
+                    '               <div class="chip chipSendero">' +
+                    '                   <div class="chip-media bg-color-pink">' +
+                    '                       <img id="windDirection" src="img/clock.svg">' +
+                    '                   </div>' +
+                    '                  <div class="chip-label" id="distancia">Duración: ' + rs.rows.item(i).DuracionTotal + '</div>' +
+                    '               </div>' +
+                    '           </div>' +
+                    '       </div>' +
                     '   </div>' +
                     '</div>';
 
@@ -140,7 +163,7 @@ function onPopUpOpen(){
                     '<button id="btn_download" class="button button-raised button-fill">Descargar mapa</button>' +
                     '<br>' +
                     '<div class="card">' +
-                    '   <div id="nombre" class="card-header mapaheader titulonoticia"></div>'+
+                    '   <div id="nombre" class="card-header mapaheader tituloSendero"></div>'+
                     '   <div id ="mapid" class="card-content card-content-padding"></div>'+
                     '</div>' +
                     '' +

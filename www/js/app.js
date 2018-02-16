@@ -1,7 +1,7 @@
 //Variables
-var senderosAPI = "http://economiayciencia.com/api/SenderosAPI";
-var updateSenderosAPI = "http://economiayciencia.com/UpdateSenderosAPI";
-var RecursoWeb = "http://economiayciencia.com";
+var senderosAPI = "http://appsenderos.sanjuan.gov.ar/api/SenderosAPI";
+var updateSenderosAPI = "http://appsenderos.sanjuan.gov.ar/UpdateSenderosAPI";
+var RecursoWeb = "http://appsenderos.sanjuan.gov.ar";
 var ErrorAjax = "Debes tener una conexión activa.";
 var conn ="";
 var isOffline = 'onLine' in navigator && !navigator.onLine;

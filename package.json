@@ -16,7 +16,7 @@
       "cordova-sqlite-storage": {},
       "cordova-plugin-network-information": {},
       "cordova-plugin-x-toast": {},
-      "mx.ferreyra.callnumber": {}
+      "cordova-plugin-file-transfer": {}
     }
   },
   "dependencies": {

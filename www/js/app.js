@@ -384,7 +384,7 @@ function Database(db) {
 
     //Creo la tabla Senderos
     db.sqlBatch([
-        'CREATE TABLE IF NOT EXISTS Senderos ( ID PRIMARY KEY, Nombre, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima,TipoDificultadFisica,TipoDificultadTecnica,InfoInteres)',
+        'CREATE TABLE IF NOT EXISTS Senderos ( ID integer PRIMARY KEY, Nombre, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima,TipoDificultadFisica,TipoDificultadTecnica,InfoInteres)',
         'CREATE TABLE IF NOT EXISTS SenderoPuntoElevacion ( ID, IDSendero, Latitud, Longitud, Altura, PRIMARY KEY (ID, IDSendero))',
         'CREATE TABLE IF NOT EXISTS SenderoPuntoInteres ( ID, IDSendero, Descripcion, Latitud, Longitud, TipoPuntoInteresID, PRIMARY KEY (ID, IDSendero))',
         'CREATE TABLE IF NOT EXISTS SenderoRecursosImg ( IDSendero PRIMARY KEY, img)',
@@ -491,7 +491,6 @@ function syncSenderos()
                             strSQL = strSQL + strSQL5;
                         }
                         //Si Hay internet Sincronizo senderos limpiando la tabla.
-                        console.log(strSQL);
                         db.sqlBatch([
                             // strDelSQL,
                             // strDelSQL2,

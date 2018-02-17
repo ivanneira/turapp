@@ -34,7 +34,7 @@ $$(document).on('DOMContentLoaded', function(){
 
 
 function loadSenderos(){
-
+    document.getElementById('senderosResultDiv').innerHTML = "";
     internet = checkInternet();
 
     // if(internet == 0) {
@@ -42,7 +42,7 @@ function loadSenderos(){
         db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
         db.executeSql('SELECT sen.*,simg.img FROM Senderos  as sen left join SenderoRecursosImg as simg on simg.IDSendero = sen.ID  ORDER BY sen.Nombre ASC', [], function (rs) {
-
+            console.dir(rs);
             for (var i = 0; i < rs.rows.length; i++) {
 
                 console.dir(rs.rows.item(i))

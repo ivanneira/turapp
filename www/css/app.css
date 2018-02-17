@@ -190,9 +190,20 @@ p {
 }
 
 
+.welcomescreen-text a{
+  color: #fff !important;
+  font-weight: bold;
+}
+
+.tituloSendero2 {
+  /*color: #f2f2f2 !important;*/
+  font-family: 'Nunito' !important;
+  font-weight: bold;
+  font-size: 18px !important;
+}
 
 .tituloSendero {
-  /*color: #f2f2f2 !important;*/
+  color: #f2f2f2 !important;
   font-family: 'Nunito' !important;
   font-weight: bold;
   font-size: 18px !important;

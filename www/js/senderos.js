@@ -173,7 +173,7 @@ function onPopUpOpen(){
                     '<button id="btn_download" class="button button-raised button-fill">Descargar mapa</button>' +
                     '<br>' +
                     '<div class="card">' +
-                    '   <div id="nombre" class="card-header mapaheader tituloSendero"></div>'+
+                    '   <div id="nombre" class="card-header mapaheader tituloSendero2"></div>'+
                     '   <div id ="mapid" class="card-content card-content-padding"></div>'+
                     '</div>' +
                     '' +

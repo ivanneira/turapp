@@ -90,29 +90,29 @@ document.addEventListener("DOMContentLoaded", function(event) {
     };
 
     var welcomescreen_slides = [
-        {
+        {//<img src="img/img_wc_1.jpg" height="150px">
             id: 'slide0',
             title: 'Bienvenido',
-            picture: '<div class="tutorialicon">♥</div>',
+            picture: '<div class="tutorialicon"><img src="img/inicio.svg" height="80px"></div>',
             text: 'Gracias por descargar <b>TurApp</b>  Descubre Senderos, Circuitos y  rutas, descarga mapas topográficos con todo detalle y disfruta tus aventuras al aire libre con el sistema de navegación integrada.<br><br>Desliza para continuar →'
         },
         {
             id: 'slide1',
             title: 'Funcionamiento...',
-            picture: '<div class="tutorialicon">✲</div>',
+            picture: '<div class="tutorialicon"><img src="img/inicio.svg" height="80px"></div>',
             text: 'La aplicación te guiara haciendo uso del tu GPS, por ello es importante otorgar los permisos de ubicacion / geolocalizacion cuando te sean solicitados.<br><br>Desliza para continuar →'
         },
         {
             id: 'slide2',
             title: 'Tips - Información',
-            picture: '<div class="tutorialicon">✲</div>',
+            picture: '<div class="tutorialicon"><img src="img/inicio.svg" height="80px"></div>',
             text: 'TurApp te da la opción de Descargar los mapas de los circuitos publicados para que no tengas que requerir de algun tipo de conectividad en tus aventuras al aire libre.Es importante que <b><u>Descargues</u></b> el mapa que sea de tu interés antes de comenzar una aventura.<br><br>Desliza para continuar →'
         },
         {
             id: 'slide3',
             // title: 'NO TITLE',
-            picture: '<div class="tutorialicon">☆</div>',
-            text: 'Gracias por tu atención, No olvides comentar tu experiencia, sugerencias u otros.'
+            picture: '<div class="tutorialicon"><img src="img/inicio.svg" height="80px"></div>',
+            text: 'Gracias por tu atención, No olvides comentar tu experiencia, sugerencias u otros.<br><br><a class="tutorial-close-btn" href="javascript:app.f7.welcomescreen.close();">Comenzar</a>'
         }
     ];
 
@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     var mainView = app.views.create('.view-main');
 
     Dom7(document).on('click', '.tutorial-close-btn', function () {
-        app.welcomescreen.close();
+        app.f7.welcomescreen.close();
     });
 
     Dom7('.tutorial-open-btn').click(function () {

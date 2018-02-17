@@ -85,6 +85,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             console.log("welcome screen opened");
         },
         'onClosed': function () {
+            app.f7.popup.open('.popup-preloader')
             console.log("welcome screen closed");
         }
     };
@@ -116,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }
     ];
 
-    Framework7.use(Framework7WelcomescreenPlugin);
+    //Framework7.use(Framework7WelcomescreenPlugin);
 
     var app  = new Framework7({
         root: '#app', // App root element

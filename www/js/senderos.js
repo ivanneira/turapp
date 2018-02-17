@@ -25,6 +25,8 @@ var gps_marker = 0;
 
 $$(document).on('DOMContentLoaded', function(){
 
+    app.f7.popup.open('.popup-preloader')
+
         loadSenderos();
 });
 
@@ -65,34 +67,39 @@ function loadSenderos(){
                     '           <div class="col-50 card-header align-items-flex-end senderosImg" style="background-image:url('  + img + ' ")>' +
                     '           </div>' +
                     '           <div class="col-50 senderosInfo">' +
-                    '               <div class="chip chipSendero">' +
-                    '                   <div class="chip-media bg-color-pink">' +
-                    '                       <img id="windDirection" src="img/distance.svg">' +
-                    '                   </div>' +
-                    '                  <div class="chip-label" >Distancia: ' + rs.rows.item(i).Distancia + ' km</div>' +
-                    '               </div>' +
-                    '               <div class="chip chipSendero">' +
-                    '                   <div class="chip-media bg-color-pink">' +
-                    '                       <img id="windDirection" src="img/dificultad.svg">' +
-                    '                   </div>' +
-                    '                  <div class="chip-label" >Dificultad: ' + rs.rows.item(i).TipoDificultadFisica + '</div>' +
-                    '               </div>' +
-                    '               <div class="chip chipSendero">' +
-                    '                   <div class="chip-media bg-color-pink">' +
-                    '                       <img id="windDirection" src="img/clock.svg">' +
-                    '                   </div>' +
-                    '                  <div class="chip-label" >Duración: ' + rs.rows.item(i).DuracionTotal + '</div>' +
-                    '               </div>' +
-                    '               <div class="chip chipSendero">' +
-                    '                   <div class="chip-media bg-color-pink">' +
-                    '                       <img  src="img/arrow.svg">' +
-                    '                   </div>' +
-                    '                  <div class="chip-label"><a href="javascript:navigate(['+rs.rows.item(i).LATITUD+','+rs.rows.item(i).LONGITUD+']);"> Como llegar... </a></div>' +
+                    '               <div class="list">' +
+                    '                <ul>' +
+                    '                   <li>' +
+                    '                       <div class="item-content">' +
+                    '                           <div class="item-inner">' +
+                    '                                   <div class="item-title chipSendero">Distancia</div>' +
+                    '                                   <div class="item-after">' + rs.rows.item(i).Distancia + ' km</div>' +
+                    '                            </div>' +
+                    '                       </div>' +
+                    '                    </li>' +
+                    '                    <li>' +
+                    '                       <div class="item-content">' +
+                    '                           <div class="item-inner">' +
+                    '                               <div class="item-title chipSendero">Dificultad</div>' +
+                    '                                   <div class="item-after">' + rs.rows.item(i).TipoDificultadFisica + '</div>' +
+                    '                               </div>' +
+                    '                           </div>' +
+                    '                    </li>' +
+                    '                    <li>' +
+                    '                       <div class="item-content">' +
+                    '                           <div class="item-inner">' +
+                    '                               <div class="item-title chipSendero">Duración</div>' +
+                    '                                   <div class="item-after">' + rs.rows.item(i).DuracionTotal + '</div>' +
+                    '                               </div>' +
+                    '                           </div>' +
+                    '                   </li>' +
+                    '                  </ul>' +
                     '               </div>' +
                     '           </div>' +
                     '       </div>' +
                     '   </div>' +
-                    '</div>';
+                    '</div>' +
+                    '<br>';
 
                 $$("#senderosResultDiv").append(tmp);
 
@@ -100,8 +107,7 @@ function loadSenderos(){
             }
             
             //quita el preloader de senderos
-            $$(".senderoLoader").remove();
-
+            app.f7.popup.close('.popup-preloader')
 
             $$(".senderoCard").click(function () {
                 app.f7.popup.open('.popup-senderos')

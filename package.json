@@ -36,7 +36,7 @@
     "cordova-plugin-whitelist": "^1.3.3",
     "cordova-plugin-x-toast": "^2.6.0",
     "cordova-plugin-zeep": "0.0.4",
-    "cordova-sqlite-storage": "^2.2.0",
+    "cordova-sqlite-storage": "^2.2.1",
     "gradle": "^1.0.9",
     "uk.co.workingedge.phonegap.plugin.launchnavigator": "^4.1.3"
   }

@@ -186,7 +186,10 @@ p {
 
 .chipSendero {
 
-  width: auto;
+  color: #d83559 !important;
+  font-family: 'Nunito' !important;
+  font-weight: bold;
+  font-size: 16px !important;
 }
 
 
@@ -212,4 +215,16 @@ p {
 .headerSenderos {
   background-color: #d83559;
   height: auto !important;
+}
+
+.senderoLoader {
+
+  margin-top: 40vh !important;
+  background-color: #f2f2f2 !important;
+  color: #f2f2f2 !important;
+}
+
+.popup-preloader {
+
+  background-color: #55b9a1 !important;
 }

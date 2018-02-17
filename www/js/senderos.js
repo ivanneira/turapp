@@ -69,19 +69,19 @@ function loadSenderos(){
                     '                   <div class="chip-media bg-color-pink">' +
                     '                       <img id="windDirection" src="img/distance.svg">' +
                     '                   </div>' +
-                    '                  <div class="chip-label" id="distancia">Distancia: ' + rs.rows.item(i).Distancia + ' km</div>' +
+                    '                  <div class="chip-label" >Distancia: ' + rs.rows.item(i).Distancia + ' km</div>' +
                     '               </div>' +
                     '               <div class="chip chipSendero">' +
                     '                   <div class="chip-media bg-color-pink">' +
                     '                       <img id="windDirection" src="img/dificultad.svg">' +
                     '                   </div>' +
-                    '                  <div class="chip-label" id="distancia">Dificultad: ' + rs.rows.item(i).TipoDificultadFisica + '</div>' +
+                    '                  <div class="chip-label" >Dificultad: ' + rs.rows.item(i).TipoDificultadFisica + '</div>' +
                     '               </div>' +
                     '               <div class="chip chipSendero">' +
                     '                   <div class="chip-media bg-color-pink">' +
                     '                       <img id="windDirection" src="img/clock.svg">' +
                     '                   </div>' +
-                    '                  <div class="chip-label" id="distancia">Duración: ' + rs.rows.item(i).DuracionTotal + '</div>' +
+                    '                  <div class="chip-label" >Duración: ' + rs.rows.item(i).DuracionTotal + '</div>' +
                     '               </div>' +
                     '               <div class="chip chipSendero">' +
                     '                   <div class="chip-media bg-color-pink">' +
@@ -234,9 +234,11 @@ function onPopUpOpen(){
                     '                </ul>' +
                     '           </div>' +
                     '   </div>' +
+                    '<br><button id="comollego" class="button button-raised button-fill">Como llegar al Sendero ? </button>'+
                     '</div>';
 
     $$("#senderoContainer").append(mapTemplate);
+
 
 
 
@@ -294,6 +296,11 @@ function onPopUpOpen(){
             L.marker([rs.rows.item(255).Latitud,rs.rows.item(255).Longitud], {icon: mk_fin}).addTo(mymap).bindPopup("Este es punto de fin del circuito..");
             //L.marker([51.495, -0.083], {icon: redIcon}).addTo(map).bindPopup("I am a red leaf.");
             //L.marker([51.49, -0.1], {icon: orangeIcon}).addTo(map).bindPopup("I am an orange leaf.");
+
+
+            $$("#comollego").click(function(){
+                navigate([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud]);
+            })
 
 
             var  _onSuccess = function(position) {

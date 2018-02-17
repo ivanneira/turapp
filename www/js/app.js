@@ -24,7 +24,7 @@ var myLong = -68.536976;
 
 var optionsGPS = {
     enableHighAccuracy: true,
-    timeout: 150000,
+    timeout: 15000,
     maximumAge: 0
 };
 
@@ -77,7 +77,7 @@ var timeOut = 30000;
 document.addEventListener("DOMContentLoaded", function(event) {
 
     var options = {
-        'bgcolor': '#d83559',
+        'bgcolor': '#55b9a1',
         'fontcolor': '#fff',
 
 

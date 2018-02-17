@@ -43,14 +43,14 @@ function loadSenderos(){
 
         db.executeSql('SELECT sen.*,simg.img,(SELECT  Latitud FROM SenderoPuntoElevacion AS spe WHERE spe.IDSendero = sen.ID LIMIT 1) AS LATITUD, (SELECT  Longitud FROM SenderoPuntoElevacion AS spe WHERE spe.IDSendero = sen.ID LIMIT 1) AS LONGITUD FROM Senderos  as sen left join SenderoRecursosImg as simg on simg.IDSendero = sen.ID   ORDER BY sen.Nombre ASC', [], function (rs) {
 
-        db.executeSql('SELECT sen.*,simg.img FROM Senderos  as sen left join SenderoRecursosImg as simg on simg.IDSendero = sen.ID  ORDER BY sen.Nombre ASC', [], function (rs) {
+        //db.executeSql('SELECT sen.*,simg.img FROM Senderos  as sen left join SenderoRecursosImg as simg on simg.IDSendero = sen.ID  ORDER BY sen.Nombre ASC', [], function (rs) {
             console.dir(rs);
             for (var i = 0; i < rs.rows.length; i++) {
 
-                console.dir(rs.rows.item(i))
+
                 var img = rs.rows.item(i).img;
                 console.log("acxa");
-                console.dir(rs.rows.items)
+
                 if (img == null){
                     img = "img/no_disponible.jpg";
                 }

@@ -20,7 +20,6 @@
     <platform name="android">
         <allow-intent href="market:*" />
     </platform>
-    <preference name="Orientation" value="portrait" />
     <platform name="android">
         <icon density="ldpi" src="www/res/icon/android/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="www/res/icon/android/drawable-mdpi-icon.png" />

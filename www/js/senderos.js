@@ -41,13 +41,14 @@ function loadSenderos(){
          console.log("Sin internet");
         db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
-        db.executeSql('SELECT sen.*,simg.img FROM Senderos  as sen left join SenderoRecursosImg as simg on simg.IDSendero = sen.ID  ORDER BY sen.Nombre ASC', [], function (rs) {
+        db.executeSql('SELECT sen.*,simg.img,(SELECT  Latitud FROM SenderoPuntoElevacion AS spe WHERE spe.IDSendero = sen.ID LIMIT 1) AS LATITUD, (SELECT  Longitud FROM SenderoPuntoElevacion AS spe WHERE spe.IDSendero = sen.ID LIMIT 1) AS LONGITUD FROM Senderos  as sen left join SenderoRecursosImg as simg on simg.IDSendero = sen.ID   ORDER BY sen.Nombre ASC', [], function (rs) {
 
             for (var i = 0; i < rs.rows.length; i++) {
 
                 console.dir(rs.rows.item(i))
                 var img = rs.rows.item(i).img;
-                console.log();
+                console.log("acxa");
+                console.dir(rs.rows.items)
                 if (img == null){
                     img = "img/no_disponible.jpg";
                 }
@@ -80,17 +81,26 @@ function loadSenderos(){
                     '                   </div>' +
                     '                  <div class="chip-label" id="distancia">Duración: ' + rs.rows.item(i).DuracionTotal + '</div>' +
                     '               </div>' +
+                    '               <div class="chip chipSendero">' +
+                    '                   <div class="chip-media bg-color-pink">' +
+                    '                       <img  src="img/arrow.svg">' +
+                    '                   </div>' +
+                    '                  <div class="chip-label"><a href="javascript:navigate(['+rs.rows.item(i).LATITUD+','+rs.rows.item(i).LONGITUD+']);"> Como llegar... </a></div>' +
+                    '               </div>' +
                     '           </div>' +
                     '       </div>' +
                     '   </div>' +
                     '</div>';
 
                 $$("#senderosResultDiv").append(tmp);
+
+
             }
             
             //quita el preloader de senderos
             $$(".senderoLoader").remove();
-            
+
+
             $$(".senderoCard").click(function () {
                 app.f7.popup.open('.popup-senderos')
                 senderoID = $(this).data().senderoid;

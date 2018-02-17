@@ -13,7 +13,13 @@
     "cordova-plugin-file-transfer": {
       "PACKAGE_NAME": "tur.app.TurismoSJ"
     },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "tur.app.TurismoSJ"
+    },
     "cordova-plugin-network-information": {
+      "PACKAGE_NAME": "tur.app.TurismoSJ"
+    },
+    "cordova-plugin-request-location-accuracy": {
       "PACKAGE_NAME": "tur.app.TurismoSJ"
     },
     "cordova-plugin-splashscreen": {
@@ -31,15 +37,19 @@
     "cordova-sqlite-storage": {
       "PACKAGE_NAME": "tur.app.TurismoSJ"
     },
-    "cordova-plugin-request-location-accuracy": {
-      "PACKAGE_NAME": "tur.app.TurismoSJ"
-    },
-    "cordova-plugin-geolocation": {
-      "PACKAGE_NAME": "tur.app.TurismoSJ"
-    },
     "mx.ferreyra.callnumber": {
+      "PACKAGE_NAME": "tur.app.TurismoSJ"
+    },
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": {
+      "PACKAGE_NAME": "tur.app.TurismoSJ"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-actionsheet": {
+      "PACKAGE_NAME": "tur.app.TurismoSJ"
+    },
+    "cordova-plugin-dialogs": {
       "PACKAGE_NAME": "tur.app.TurismoSJ"
     }
   }
-
 }

@@ -77,7 +77,7 @@ var timeOut = 30000;
 document.addEventListener("DOMContentLoaded", function(event) {
 
     var options = {
-        'bgcolor': '#0da6ec',
+        'bgcolor': '#d83559',
         'fontcolor': '#fff',
 
 
@@ -94,39 +94,39 @@ document.addEventListener("DOMContentLoaded", function(event) {
             id: 'slide0',
             title: 'Bienvenido',
             picture: '<div class="tutorialicon">♥</div>',
-            text: 'Welcome to this tutorial. In the <a class="tutorial-next-link" href="#">next steps</a> we will guide you through a manual that will teach you how to use this app.<br><br>Swipe to continue →'
+            text: 'Gracias por descargar <b>TurApp</b>  Descubre Senderos, Circuitos y  rutas, descarga mapas topográficos con todo detalle y disfruta tus aventuras al aire libre con el sistema de navegación integrada.<br><br>Desliza para continuar →'
         },
         {
             id: 'slide1',
-            title: 'Slide 2',
+            title: 'Funcionamiento...',
             picture: '<div class="tutorialicon">✲</div>',
-            text: 'This is slide 2<br><br>Swipe to continue →'
+            text: 'La aplicación te guiara haciendo uso del tu GPS, por ello es importante otorgar los permisos de ubicacion / geolocalizacion cuando te sean solicitados.<br><br>Desliza para continuar →'
         },
         {
             id: 'slide2',
-            title: 'Slide 3',
-            picture: '<div class="tutorialicon">♫</div>',
-            text: 'This is slide 3<br><br>Swipe to continue →'
+            title: 'Tips - Información',
+            picture: '<div class="tutorialicon">✲</div>',
+            text: 'TurApp te da la opción de Descargar los mapas de los circuitos publicados para que no tengas que requerir de algun tipo de conectividad en tus aventuras al aire libre.Es importante que <b><u>Descargues</u></b> el mapa que sea de tu interés antes de comenzar una aventura.<br><br>Desliza para continuar →'
         },
         {
             id: 'slide3',
             // title: 'NO TITLE',
             picture: '<div class="tutorialicon">☆</div>',
-            text: 'Thanks for reading! Enjoy this app or go to <a class="tutorial-previous-slide" href="#">previous slide</a>.<br><br><a class="tutorial-close-btn" href="#">End Tutorial</a>'
+            text: 'Gracias por tu atención, No olvides comentar tu experiencia, sugerencias u otros.'
         }
     ];
 
-    //Framework7.use(Framework7WelcomescreenPlugin);
+    Framework7.use(Framework7WelcomescreenPlugin);
 
     var app  = new Framework7({
         root: '#app', // App root element
         id: 'io.sanjuansalud.turApp', // App bundle ID
         name: 'turApp', // App name
         theme: 'auto', // Automatic theme detection
-        /*welcomescreen: {
+        welcomescreen: {
             slides: welcomescreen_slides,
             options: options,
-        },*/
+        },
 
         routes: routes,
     });
@@ -666,4 +666,27 @@ function onSuccess(result){
 
 function onError(result) {
     console.log("Error:"+result);
+}
+
+function navigate(hasta)
+{
+
+    var  _onSuccess = function(position) {
+
+        launchnavigator.navigate([hasta[0], hasta[1]], {
+            start: ""+position.coords.latitude+","+position.coords.longitude+""
+        });
+
+    }
+
+    // onError Callback receives a PositionError object
+    //
+    var _onError = function (error) {
+        window.plugins.toast.show('Código: '+ error.code +'\n' +' Detalle: ' + error.message + '\n',"2000","bottom");
+    }
+
+
+     navigator.geolocation.getCurrentPosition(_onSuccess, _onError,   optionsGPS );
+
+
 }

@@ -18,7 +18,7 @@
   <meta name="theme-color" content="#2196f3">
   <meta name="format-detection" content="telephone=no">
   <meta name="msapplication-tap-highlight" content="no">
-  <title>turApp</title>
+  <title>Senderismo San Juan</title>
 
   <link rel="stylesheet" href="framework7/css/framework7.md.min.css">
   <link rel="stylesheet" href="leafletjs/leaflet.css">
@@ -30,7 +30,7 @@
 </head>
 <body class="color-theme-blue">
 <div id="app">
-
+    <!--<div class="progressbar-infinite"></div>-->
     <!--sidebar panel-->
     <div class="panel panel-left menuPanel" >
       <div class="navbar">
@@ -59,6 +59,15 @@
               </div>
             </a>
           </li>
+            <li>
+                <a href="#view-guias" class="link tab-link panel-close">
+                    <div class="item-media"><i class="icon material-icons md-only f7-icons  color-white">compass_fill</i></div>
+                    <div class="item-inner">
+                        <div class="item-title">Guías</div>
+                        <!--<div class="item-after">CEO</div>-->
+                    </div>
+                </a>
+            </li>
           <li>
             <a href="#view-clima" class="link tab-link panel-close">
               <div class="item-media"><i class="icon material-icons md-only f7-icons  color-white">cloud_fill</i></div>
@@ -144,7 +153,7 @@
               </div>
             </div>
           </div>
-
+<!--
           <div class="searchbar-backdrop"></div>
           <form class="searchbar">
             <div class="searchbar-inner">
@@ -156,7 +165,7 @@
               <span class="searchbar-disable-button">Cancel</span>
             </div>
           </form>
-
+-->
           <!--popup NOTICIAS-->
           <div class="popup popup-noticias theme-dark">
             <div class="view">
@@ -196,7 +205,7 @@
                       <span class="ios-only">Back</span>
                     </a>
                   </div>
-                  <div class="title">Sendero</div>
+                  <div id="nombre" class="title">Sendero</div>
                   <div class="right"></div>
                 </div>
               </div>
@@ -248,18 +257,18 @@
         <!-- Settings page will be loaded here dynamically from /recomendaciones/ route -->
       </div>
 
-      <!-- Recomendaciones View -->
+      <!-- Emergencias View -->
       <div id="view-emergencias" class="view tab">
         <!-- Settings page will be loaded here dynamically from /recomendaciones/ route -->
       </div>
 
-      <!-- Recomendaciones View -->
+      <!-- Ayuda View -->
       <div id="view-ayuda" class="view tab">
         <!-- Settings page will be loaded here dynamically from /recomendaciones/ route -->
       </div>
 
-      <!-- Recomendaciones View -->
-      <div id="view-acerca" class="view tab">
+      <!-- Guia View -->
+      <div id="view-guias" class="view tab">
         <!-- Settings page will be loaded here dynamically from /recomendaciones/ route -->
       </div>
 

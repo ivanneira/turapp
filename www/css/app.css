@@ -52,7 +52,7 @@ p {
 
 .card {
   color: #000;
-  background-color: #fff;
+  background-color: #fff !important;
 }
 /*noticias cards*/
 .demo-card-header-pic .card-header {
@@ -72,6 +72,7 @@ p {
 #mapid {
   position: relative;
   height:250px;
+  width: 90%;
   padding-left: 1em;
 }
 
@@ -185,9 +186,10 @@ p {
 
 
 .chipSendero {
+  background-color: #333 !important;
   width: 100% !important;
   height: 20% !important;
-  color: #d83559 !important;
+  color: #f2f2f2 !important;
   font-family: 'Nunito' !important;
   font-weight: bold;
   font-size: 12px !important;
@@ -214,7 +216,7 @@ p {
 }
 
 .headerSenderos {
-  /*background-color: #d83559;*/
+  background-color: #dddddd;
   height: auto !important;
 }
 
@@ -228,4 +230,20 @@ p {
 .popup-preloader {
 
   background-color: #55b9a1 !important;
+}
+
+.chipDetalle{
+  font-family: 'Nunito' !important;
+  font-size: 11px !important;
+  width: 100% !important;
+}
+
+.chip-label {
+
+  margin-left: 5vw !important;
+}
+
+.phone, .guiatitulo, guianumero {
+
+    color: black !important;
 }

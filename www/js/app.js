@@ -5,7 +5,10 @@ var RecursoWeb = "http://appsenderos.sanjuan.gov.ar";
 var ErrorAjax = "Debes tener una conexión activa.";
 var conn ="";
 var isOffline = 'onLine' in navigator && !navigator.onLine;
-var mapaExiste = "<p>Este mapa se encuentra disponible sin conexion.</p>";
+var mapaExiste =
+    '<div class="chip color-green">' +
+    '    <div class="chip-label">Mapa descargado</div>' +
+    '</div>';
 
 
 var gps_marker = 0;
@@ -117,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }
     ];
 
-    Framework7.use(Framework7WelcomescreenPlugin);
+    //Framework7.use(Framework7WelcomescreenPlugin);
 
     var app  = new Framework7({
         root: '#app', // App root element
@@ -150,8 +153,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     var ayudaView = app.views.create('#view-ayuda', {
         url: '/ayuda/'
     });
-    var acercaView = app.views.create('#view-acerca', {
-        url: '/acerca/'
+    var guiaView = app.views.create('#view-guias', {
+        url: '/guias/'
     });
 
     app.on('pageAfterIn', function(tab){
@@ -296,6 +299,7 @@ function download(URL, Folder_Name, File_Name,id,filetype) {
 function filetransfer(download_link, fp,id,filetype) {
     var fileTransfer = new FileTransfer();
     app.f7.dialog.preloader('Descargando... ').open()
+    //app.f7.progressbar.show(app.f7.theme === 'md' ? 'yellow' : 'blue');
      fileTransfer.onprogress = function(result){
 
 

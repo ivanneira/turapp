@@ -68,9 +68,10 @@ function loadSenderos(){
                 }
 
                 var tmp =
-                    '<div class="card demo-card-header-pic senderoCard" data-sectorid="' + rs.rows.item(i).IDSector + '" data-senderoid="' + rs.rows.item(i).ID + '"> <br>Sector:'+rs.rows.item(i).SectorNombre + '<br>Departamento: '+ rs.rows.item(i).DepartamentoNombre +
+                    '<div class="card demo-card-header-pic senderoCard" data-sectorid="' + rs.rows.item(i).IDSector + '" data-senderoid="' + rs.rows.item(i).ID + '">'+
                     '   <div class="card-header align-items-flex-end headerSenderos" > ' +
                     '        <span class="tituloSendero">' + rs.rows.item(i).Nombre + '</span>' +
+                    '           <div class="item-subtitle">' + rs.rows.item(i).DepartamentoNombre + '</div>' +
                     '   </div>' +
                     '   <div class="card-content card-content-padding">' +
                     '       <div class="row">' +
@@ -81,23 +82,24 @@ function loadSenderos(){
                     '                   <div class="chip-media bg-color-pink">' +
                     '                       <img src="img/distance.svg">' +
                     '                   </div>' +
-                    '                  <div class="chip-label" id="distancia">Distancia: ' + rs.rows.item(i).Distancia + 'km</div>' +
+                    '                  <div class="chip-label"><b>Distancia:</b> ' + rs.rows.item(i).Distancia + 'km</div>' +
                     '               </div>' +
                     '               <div class="chip chipSendero">' +
                     '                   <div class="chip-media bg-color-pink">' +
                     '                       <img src="img/dificultad.svg">' +
                     '                   </div>' +
-                    '                  <div class="chip-label" id="distancia">Dificultad: ' + rs.rows.item(i).TipoDificultadFisica + '</div>' +
+                    '                  <div class="chip-label"><b>Dificultad:</b> ' + rs.rows.item(i).TipoDificultadFisica + '</div>' +
                     '               </div>' +
                     '               <div class="chip chipSendero">' +
                     '                   <div class="chip-media bg-color-pink">' +
                     '                       <img src="img/clock.svg">' +
                     '                   </div>' +
-                    '                  <div class="chip-label" id="distancia">Duración: ' + rs.rows.item(i).DuracionTotal + '</div>' +
+                    '                  <div class="chip-label"><b>Duración:</b> ' + rs.rows.item(i).DuracionTotal + '</div>' +
                     '           </div>' +
                     '       </div>' +
                     '   </div>' +
-                    '</div>';
+                    '</div>' +
+                    '<br>';
 
                 $$("#senderosResultDiv").append(tmp);
 
@@ -122,81 +124,81 @@ function loadSenderos(){
 
 function onPopUpOpen(){
 
-    console.log("open popup")
+    //console.log("open popup")
 
 
     //el id del sendero llega como variable global, va cambiando según el atributo data-senderoid del tag a
-    console.log("El id del sendero es " + senderoID);
-    console.log("El id del sector es " + sectorID);
+    //console.log("El id del sendero es " + senderoID);
+    //console.log("El id del sector es " + sectorID);
+
+
+    var detalle =
+        '                       <div class="chip chipDetalle">' +
+        '                           <div class="chip-media bg-color-pink">' +
+        '                               <img src="img/inicio.svg">' +
+        '                           </div>' +
+        '                           <div class="chip-label" id="inicio"><b>Inicio:</b></div>' +
+        '                       </div>' +
+        '                       <div class="chip chipDetalle">' +
+        '                           <div class="chip-media bg-color-pink">' +
+        '                               <img src="img/fin.svg">' +
+        '                           </div>' +
+        '                           <div class="chip-label" id="fin"><b>Fin:</b></div>' +
+        '                       </div>' +
+        '                       <div class="chip chipDetalle">' +
+        '                           <div class="chip-media bg-color-pink">' +
+        '                               <img src="img/distance.svg">' +
+        '                           </div>' +
+        '                           <div class="chip-label" id="distancia"><b>Distancia:</b></div>' +
+        '                       </div>' +
+        '                       <div class="chip chipDetalle">' +
+        '                           <div class="chip-media bg-color-pink">' +
+        '                               <img src="img/desnivel.svg">' +
+        '                           </div>' +
+        '                           <div class="chip-label" id="desnivel"><b>Desnivel:</b></div>' +
+        '                       </div>' +
+        '                       <div class="chip chipDetalle">' +
+        '                           <div class="chip-media bg-color-pink">' +
+        '                               <img src="img/clock.svg">' +
+        '                           </div>' +
+        '                           <div class="chip-label" id="duracion"><b>Duración:</b></div>' +
+        '                       </div>' +
+        '                       <div class="chip chipDetalle">' +
+        '                           <div class="chip-media bg-color-pink">' +
+        '                               <img src="img/maxima.svg">' +
+        '                           </div>' +
+        '                           <div class="chip-label" id="altmaxima"><b>Altura Max:</b></div>' +
+        '                       </div>' +
+        '' +
+        '';
 
     var mapTemplate =
-                    '<br>' +
-                    '<div id="btn_down_container"></div>' +
-                    '<br>' +
-                    '<div class="card">' +
-                    '   <div id="nombre" class="card-header mapaheader tituloSendero2"></div>'+
-                    '   <div id ="mapid" class="card-content card-content-padding"></div>'+
-                    '</div>' +
-                    '' +
-                    '<div id="elevChart"></div>' +
-                    '<div class="card">' +
-                    '   <div class="card-header">Detalles del mapa</div>' +
-                    '   <div class="card-content card-content-padding text-align-center">' +
-                    '           <div class="list simple-list ">'+
-                    '               <ul>' +
-                    '                    <li>' +
-                    '                       <div class="chip chipClima">' +
-                    '                           <div class="chip-media bg-color-pink">' +
-                    '                               <img id="windDirection" src="img/inicio.svg">' +
-                    '                           </div>' +
-                    '                           <div class="chip-label" id="inicio">Lugar de inicio:</div>' +
-                    '                       </div>' +
-                    '                    </li>'+
-                    '                    <li>' +
-                    '                       <div class="chip chipClima">' +
-                    '                           <div class="chip-media bg-color-pink">' +
-                    '                               <img id="windDirection" src="img/fin.svg">' +
-                    '                           </div>' +
-                    '                           <div class="chip-label" id="fin">Lugar de fin:</div>' +
-                    '                       </div>' +
-                    '                    </li>'+
-                    '                    <li>' +
-                    '                       <div class="chip chipClima">' +
-                    '                           <div class="chip-media bg-color-pink">' +
-                    '                               <img id="windDirection" src="img/distance.svg">' +
-                    '                           </div>' +
-                    '                           <div class="chip-label" id="distancia">Distancia:</div>' +
-                    '                       </div>' +
-                    '                    </li>'+
-                    '                    <li>' +
-                    '                       <div class="chip chipClima">' +
-                    '                           <div class="chip-media bg-color-pink">' +
-                    '                               <img id="windDirection" src="img/desnivel.svg">' +
-                    '                           </div>' +
-                    '                           <div class="chip-label" id="desnivel">Desnivel:</div>' +
-                    '                       </div>' +
-                    '                    </li>'+
-                    '                    <li>' +
-                    '                       <div class="chip chipClima">' +
-                    '                           <div class="chip-media bg-color-pink">' +
-                    '                               <img id="windDirection" src="img/clock.svg">' +
-                    '                           </div>' +
-                    '                           <div class="chip-label" id="duracion">Duración total:</div>' +
-                    '                       </div>' +
-                    '                    </li>'+
-                    '                    <li>' +
-                    '                       <div class="chip chipClima">' +
-                    '                           <div class="chip-media bg-color-pink">' +
-                    '                               <img id="windDirection" src="img/cumbre.svg">' +
-                    '                           </div>' +
-                    '                           <div class="chip-label" id="altmaxima">Altura máxima:</div>' +
-                    '                       </div>' +
-                    '                    </li>'+
-                    '                </ul>' +
-                    '           </div>' +
-                    '   </div>' +
-                    '<br><button id="comollego" class="button button-raised button-fill">Como llegar al Sendero ? </button>'+
-                    '</div>';
+            '<br>' +
+            '<div id="btn_down_container"></div>' +
+            '<br>' +
+            '<div class="card">' +
+            '   <div id="nombre222" class="card-header mapaheader tituloSendero2"></div>'+
+            '   <div id ="mapid" class="card-content card-content-padding"></div>'+
+            '   <div id="elevChart"></div>' +
+            '   <button id="comollego" class="button button-raised button-fill"><i class="icon f7-icons">navigation_fill</i>Indicaciones para llegar </button>'+
+            '</div>' +
+            '<br>' +
+            '<div class="card">' +
+            '   <div class="card-header">Detalles del mapa</div>' +
+            '   <div class="card-content card-content-padding text-align-center">' +
+                detalle +
+            '   </div>' +
+            '</div>' +
+            '<br>' +
+            '<div class="card">' +
+            '<div class="card-header">Descripción</div>' +
+            '<div id="descripcion" class="card-content card-content-padding"></div>' +
+            '</div>' +
+            '<br>' +
+            '<div class="card">' +
+            '<div class="card-header">Información de interés</div>' +
+            '<div id="info" class="card-content card-content-padding"></div>' +
+            '</div>';
 
     $$("#senderoContainer").append(mapTemplate);
 
@@ -245,7 +247,7 @@ function onPopUpOpen(){
                 x = L.tileLayer(soucerMap+'/{z}/{x}/{y}.jpg', {maxZoom: 18, minZoom: 15}).addTo(mymap);
             }
             else{
-                $$("#btn_down_container").append('<button id="btn_download" class="button button-raised button-fill">Descargar mapa ('+ rs.rows.item(0).PesoZipMapa +')</button>');
+                $$("#btn_down_container").append('<button id="btn_download" class="button button-raised button-fill">Descargar mapa</button>');
                 x = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {maxZoom: 18, minZoom: 7,subdomains:['mt0','mt1','mt2','mt3']}).addTo(mymap);
             }
             gps_marker = L.marker([myLat,myLong]).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
@@ -274,20 +276,23 @@ function onPopUpOpen(){
 
             $$("#comollego").click(function(){
                 navigate([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud]);
-            })
+            });
+
         $$("#comollego").click(function(){
             navigate([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud]);
-        })
+        });
 
-
+        console.log("asdsdfdfsaadfsfsdaasfd")
 
         $$("#nombre").append(" " + rs.rows.item(0).Nombre);
         $$("#inicio").append(" " + rs.rows.item(0).LugarInicio);
         $$("#fin").append(" " +rs.rows.item(0).LugarFin);
-        $$("#distancia").append(" " +rs.rows.item(0).Distancia + " km");
-        $$("#desnivel").append(" " +rs.rows.item(0).Desnivel + " msnm");
+        $$("#distancia").append(" " +rs.rows.item(0).Distancia + "km");
+        $$("#desnivel").append(" " +rs.rows.item(0).Desnivel + "msnm");
         $$("#duracion").append(" " +rs.rows.item(0).DuracionTotal);
-        $$("#altmaxima").append(" " +rs.rows.item(0).AlturaMaxima + " m");
+        $$("#altmaxima").append(" " +rs.rows.item(0).AlturaMaxima + "m");
+        $$("#descripcion").append(" " +rs.rows.item(0).Descripcion);
+        $$("#info").append(" " +rs.rows.item(0).InfoInteres);
 
 
         for (var i = 0; i < rs.rows.length; i++) {

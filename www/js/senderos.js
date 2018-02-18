@@ -2,18 +2,22 @@
 var LeafIcon = L.Icon.extend({
     options: {
         //shadowUrl: 'leaf-shadow.png',
-        iconSize:     [22, 22],
+        iconSize:     [30, 40],
         //shadowSize:   [50, 64],
-        iconAnchor:   [22, 22],
-        //shadowAnchor: [4, 62],
-        popupAnchor:  [-3, -76]
+        iconAnchor:   [15, 40],
+        shadowAnchor: [4, 62],
+        popupAnchor:  [-12, -45]
     }
 });
 
-var mk_inicio = new LeafIcon({iconUrl: 'img/icons_gps/green.png'}),
-    mk_fin = new LeafIcon({iconUrl: 'img/icons_gps/red.png'}),
-    mk_gps = new LeafIcon({iconUrl: 'img/icons_gps/gps.png'}),
-    mk_elevation = new LeafIcon({iconUrl: 'img/icons_gps/elevation.png'});
+var mk_inicio = new LeafIcon({iconUrl: 'img/icons_gps/inicio.png'}),
+    mk_fin = new LeafIcon({iconUrl: 'img/icons_gps/fin.png'}),
+    mk_cumbre = new LeafIcon({iconUrl: 'img/icons_gps/cumbre.png'}),
+    mk_estacionamiento = new LeafIcon({iconUrl: 'img/icons_gps/estacionamiento.png'}),
+    mk_mirador = new LeafIcon({iconUrl: 'img/icons_gps/mirador.png'}),
+    mk_interes = new LeafIcon({iconUrl: 'img/icons_gps/interes.png'});
+    mk_maxima = new LeafIcon({iconUrl: 'img/icons_gps/maxima.png'});
+    mk_precaucion = new LeafIcon({iconUrl: 'img/icons_gps/precaucion.png'});
 
 L.icon = function (options) {
     return new L.Icon(options);
@@ -24,10 +28,8 @@ var senderosResult = [];
 var gps_marker = 0;
 
 $$(document).on('DOMContentLoaded', function(){
-
-    app.f7.popup.open('.popup-preloader')
-
-        loadSenderos();
+    app.f7.popup.open('.popup-preloader');
+    loadSenderos();
 });
 
 //Funcion que se ejecuta al cargar la vista senderos..
@@ -117,51 +119,6 @@ function loadSenderos(){
         }, function (error) {
             console.log('SELECT SQL statement ERROR: ' + error.message);
         });
-    // }
-    // else
-    // {
-    //     console.log("Con internet");
-    //     $.ajax({
-    //         url: senderosAPI,
-    //         cache: false,
-    //         type: 'get',
-    //         timeout: timeOut,
-    //         dataType: "json",
-    //         success: function (response) {
-    //             for (var i = 0; i < response.Senderos.length; i++) {
-    //                 var img = response.Senderos[i].RutaImagen;
-    //                 if (img == null) {
-    //                     img = "img/no_disponible.jpg";
-    //                 }
-    //                 else {
-    //                     img = RecursoWeb + response.Senderos[i].RutaImagen;
-    //                 }
-    //                 var tmp = '<div class="card demo-card-header-pic senderoCard" data-senderoid="' + response.Senderos[i].ID + '">' +
-    //                     '<div class="card-header align-items-flex-end lazy lazy-fade-in" style="background-image:url( ' + img + ' )"> ' +
-    //                     '       <div class="chip chipMapa">' +
-    //                     '           <div class="chip-label">Disponible</div>' +
-    //                     '       </div>' +
-    //                     '</div>' +
-    //                     '<div class="card-content card-content-padding">' +
-    //                     '<p class="titulonoticia">' + response.Senderos[i].Nombre + '</p>' +
-    //                     '<p>' + response.Senderos[i].Descripcion + '</p>' +
-    //                     '</div>' +
-    //                     '</div>';
-
-    //                 $$("#senderosResultDiv").append(tmp);
-
-    //             }
-    //             $$(".senderoCard").click(function () {
-    //                 app.f7.popup.open('.popup-senderos')
-    //                 senderoID = $(this).data().senderoid;
-    //             });
-    //         },
-    //         error: function(){
-    //         }
-    //     });
-
-    // }
-    //
 }
 
 
@@ -285,163 +242,91 @@ function onPopUpOpen(){
 
     // if(internet == 0) {
 
-        db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
+    db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
-        db.executeSql('SELECT spe.Latitud, spe.Longitud, spe.Altura,s.ID, s.Descripcion,smap.map,s.LugarInicio,s.LugarFin,s.Distancia,s.Desnivel,s.DuracionTotal,s.AlturaMaxima, s.Nombre FROM SenderoPuntoElevacion as spe left join Senderos as s on s.ID = spe.IDSendero left join SenderoRecursosMap as smap on smap.IDSendero = s.ID where spe.IDSendero=' + senderoID + ' order by spe.ID asc', [], function (rs) {
+    db.executeSql('SELECT spe.Latitud, spe.Longitud, spe.Altura,s.ID, s.Descripcion,smap.map,s.LugarInicio,s.LugarFin,s.Distancia,s.Desnivel,s.DuracionTotal,s.AlturaMaxima, s.Nombre FROM SenderoPuntoElevacion as spe left join Senderos as s on s.ID = spe.IDSendero left join SenderoRecursosMap as smap on smap.IDSendero = s.ID where spe.IDSendero=' + senderoID + ' order by spe.ID asc', [], function (rs) {
 
-            var soucerMap = rs.rows.item(0).map +  "Google Hibrido"
-            console.log("soucerMap " + soucerMap)
-            var mymap = L.map('mapid').setView([rs.rows.item(0).Latitud, rs.rows.item(0).Longitud], 16);
-            var x;
-            if(internet == 0) {
-                x = L.tileLayer(soucerMap+'/{z}/{x}/{y}.jpg', {maxZoom: 18, minZoom: 15}).addTo(mymap);
+        var soucerMap = rs.rows.item(0).map +  "Google Hibrido"
+        console.log("soucerMap " + soucerMap)
+        var mymap = L.map('mapid').setView([rs.rows.item(0).Latitud, rs.rows.item(0).Longitud], 16);
+        var x;
+        if(internet == 0) {
+            x = L.tileLayer(soucerMap+'/{z}/{x}/{y}.jpg', {maxZoom: 18, minZoom: 15}).addTo(mymap);
+        }
+        else{
+            x = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {maxZoom: 18, minZoom: 7,subdomains:['mt0','mt1','mt2','mt3']}).addTo(mymap);
+        }
+        var a = new L.LatLng(rs.rows.item(0).Latitud, rs.rows.item(0).Longitud);
+
+        //L.marker([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud], {icon: mk_inicio}).addTo(mymap).bindPopup("Este es punto de inicio del circuito..");
+        //L.marker([rs.rows.item(255).Latitud,rs.rows.item(255).Longitud], {icon: mk_fin}).addTo(mymap).bindPopup("Este es punto de fin del circuito..");
+        
+        db.executeSql('SELECT IDSendero, Descripcion, Latitud, Longitud, TipoPuntoInteresID FROM SenderoPuntoInteres WHERE IDSendero=' + senderoID, [], function (rs2) {
+            console.dir(rs2);
+            for (var i = 0; i < rs2.rows.length; i++) {
+                L.marker([rs2.rows.item(i).Latitud,rs2.rows.item(i).Longitud], {icon: MarcadorPuntoInteres(rs2.rows.item(i).TipoPuntoInteresID)}).addTo(mymap).bindPopup(rs2.rows.item(i).Descripcion);
+            }
+                
+        });
+
+        $$("#comollego").click(function(){
+            navigate([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud]);
+        })
+
+
+        var  _onSuccess = function(position) {
+
+            //L.marker([position.coords.latitude,position.coords.longitude], {icon: mk_gps}).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
+
+            if(gps_marker == 0){
+                gps_marker = L.marker([position.coords.latitude,position.coords.longitude]).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
             }
             else{
-                x = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {maxZoom: 18, minZoom: 7,subdomains:['mt0','mt1','mt2','mt3']}).addTo(mymap);
-            }
-            var a = new L.LatLng(rs.rows.item(0).Latitud, rs.rows.item(0).Longitud);
-
-            L.marker([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud], {icon: mk_inicio}).addTo(mymap).bindPopup("Este es punto de inicio del circuito..");
-            L.marker([rs.rows.item(255).Latitud,rs.rows.item(255).Longitud], {icon: mk_fin}).addTo(mymap).bindPopup("Este es punto de fin del circuito..");
-            //L.marker([51.495, -0.083], {icon: redIcon}).addTo(map).bindPopup("I am a red leaf.");
-            //L.marker([51.49, -0.1], {icon: orangeIcon}).addTo(map).bindPopup("I am an orange leaf.");
-            db.executeSql('SELECT IDSendero, Descripcion, Latitud, Longitud, TipoPuntoInteresID FROM SenderoPuntoInteres WHERE IDSendero=' + senderoID, [], function (rs2) {
-                console.dir(rs2);
-                for (var i = 0; i < rs2.rows.length; i++) {
-                    L.marker([rs2.rows.item(i).Latitud,rs2.rows.item(i).Longitud], {icon: mk_inicio}).addTo(mymap).bindPopup(rs2.rows.item(i).Descripcion);
-                }
-                    
-            });
-
-            $$("#comollego").click(function(){
-                navigate([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud]);
-            })
-
-
-            var  _onSuccess = function(position) {
-
-                //L.marker([position.coords.latitude,position.coords.longitude], {icon: mk_gps}).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
-
-                if(gps_marker == 0){
-                    gps_marker = L.marker([position.coords.latitude,position.coords.longitude]).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
-                }
-                else{
-                    gps_marker.setLatLng([position.coords.latitude,position.coords.longitude]);
-                }
-
-                //var element = document.getElementById('geolocation');
-                //element.innerHTML = 'Latitude: '  + position.coords.latitude      + '<br />' +
-                // 'Longitude: ' + position.coords.longitude     + '<br />' +
-                //    '<hr />'      + element.innerHTML;
-
+                gps_marker.setLatLng([position.coords.latitude,position.coords.longitude]);
             }
 
-            // onError Callback receives a PositionError object
-            //
-            var _onError = function (error) {
-                window.plugins.toast.show('Código: '+ error.code +'\n' +' Detalle: ' + error.message + '\n',"2000","bottom");
-            }
+            //var element = document.getElementById('geolocation');
+            //element.innerHTML = 'Latitude: '  + position.coords.latitude      + '<br />' +
+            // 'Longitude: ' + position.coords.longitude     + '<br />' +
+            //    '<hr />'      + element.innerHTML;
+
+        }
+
+        // onError Callback receives a PositionError object
+        //
+        var _onError = function (error) {
+            window.plugins.toast.show('Código: '+ error.code +'\n' +' Detalle: ' + error.message + '\n',"2000","bottom");
+        }
 
 
-            var watchID = navigator.geolocation.watchPosition(_onSuccess, _onError, {  optionsGPS });
+        var watchID = navigator.geolocation.watchPosition(_onSuccess, _onError, {  optionsGPS });
 
 
-            $$("#nombre").append(" " + rs.rows.item(0).Nombre);
-            $$("#inicio").append(" " + rs.rows.item(0).LugarInicio);
-            $$("#fin").append(" " +rs.rows.item(0).LugarFin);
-            $$("#distancia").append(" " +rs.rows.item(0).Distancia + " km");
-            $$("#desnivel").append(" " +rs.rows.item(0).Desnivel + " msnm");
-            $$("#duracion").append(" " +rs.rows.item(0).DuracionTotal);
-            $$("#altmaxima").append(" " +rs.rows.item(0).AlturaMaxima + " m");
+        $$("#nombre").append(" " + rs.rows.item(0).Nombre);
+        $$("#inicio").append(" " + rs.rows.item(0).LugarInicio);
+        $$("#fin").append(" " +rs.rows.item(0).LugarFin);
+        $$("#distancia").append(" " +rs.rows.item(0).Distancia + " km");
+        $$("#desnivel").append(" " +rs.rows.item(0).Desnivel + " msnm");
+        $$("#duracion").append(" " +rs.rows.item(0).DuracionTotal);
+        $$("#altmaxima").append(" " +rs.rows.item(0).AlturaMaxima + " m");
 
 
-            for (var i = 0; i < rs.rows.length; i++) {
-                plArray.push(new L.LatLng(rs.rows.item(i).Latitud, rs.rows.item(i).Longitud));
-            }
+        for (var i = 0; i < rs.rows.length; i++) {
+            plArray.push(new L.LatLng(rs.rows.item(i).Latitud, rs.rows.item(i).Longitud));
+        }
 
-            var DrawPolyline = new L.Polyline(plArray, {
-                color: '#ff9e00',
-                weight: 5,
-                opacity: 1,
-                smoothFactor: 1
-            });
-            DrawPolyline.addTo(mymap);
-            mymap.fitBounds(DrawPolyline.getBounds());
- 	        plotElevation(rs,1,rs.rows.item(0).Distancia,mymap,plArray);
-        }, function (error) {
-            console.log('SELECT SQL statement ERROR: ' + error.message);
+        var DrawPolyline = new L.Polyline(plArray, {
+            color: '#ff9e00',
+            weight: 5,
+            opacity: 1,
+            smoothFactor: 1
         });
-    // }
-    // else
-    // {
-
-    //     $.ajax({
-    //         url: senderosAPI,
-    //         cache: false,
-    //         type: 'get',
-    //         timeout: timeOut,
-    //         dataType: "json",
-    //         success: function (response) {
-    //             console.dir(response);
-    //             for (var i = 0; i < response.Senderos.length; i++) {
-    //                 if(senderoID == response.Senderos[i].ID) {
-
-    //                     var mymap = L.map('mapid').setView([response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud], 16);
-    //                     var x = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {maxZoom: 18, minZoom: 7,subdomains:['mt0','mt1','mt2','mt3']}).addTo(mymap);
-    //                     var a = new L.LatLng(response.Senderos[i].SenderoPuntoElevacion[i].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud);
-    //                     L.marker([response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud], {icon: mk_inicio}).addTo(mymap).bindPopup("Este es punto de inicio del circuito..");
-    //                     L.marker([response.Senderos[i].SenderoPuntoElevacion[255].Latitud, response.Senderos[i].SenderoPuntoElevacion[255].Longitud], {icon: mk_fin}).addTo(mymap).bindPopup("Este es punto de fin del circuito..");
-
-    //                     //Polygon.getBounds().contains
-    //                     var latlngs = [[response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud],
-    //                                    [response.Senderos[i].SenderoPuntoElevacion[255].Latitud, response.Senderos[i].SenderoPuntoElevacion[255].Longitud]];
-    //                     var polygon = L.polygon(latlngs, {color: 'red'}).addTo(mymap);
-    //                     mymap.fitBounds(polygon.getBounds());
-
-    //                     $$("#nombre").append(" " + response.Senderos[i].Nombre);
-    //                     $$("#inicio").append(" " + response.Senderos[i].LugarInicio);
-    //                     $$("#fin").append(" " +response.Senderos[i].LugarFin);
-    //                     $$("#distancia").append(" " +response.Senderos[i].Distancia);
-    //                     $$("#desnivel").append(" " +response.Senderos[i].Desnivel);
-    //                     $$("#duracion").append(" " +response.Senderos[i].DuracionTotal);
-    //                     $$("#altmaxima").append(" " +response.Senderos[i].AlturaMaxima);
-
-    //                     var urlmapa = RecursoWeb + response.Senderos[i].RutZipMapa;
-    //                     var namemapa = response.Senderos[i].ID
-    //                     $$("#btn_download").click(function(){
-    //                         alert(urlmapa);
-    //                         DownloadFile(urlmapa,"",namemapa,namemapa,1)
-    //                     });
-
-    //                     var elevationvar = [];
-    //                     elevationvar.push({rows : response.Senderos[i].SenderoPuntoElevacion})
-    //                     for (var x = 0; x < response.Senderos[i].SenderoPuntoElevacion.length; x++) {
-    //                         plArray.push(new L.LatLng(response.Senderos[i].SenderoPuntoElevacion[x].Latitud, response.Senderos[i].SenderoPuntoElevacion[x].Longitud));
-    //                     }
-    //                 }
-    //             }
-    //             var DrawPolyline = new L.Polyline(plArray, {
-    //                 color: '#00b3fd',
-    //                 weight: 4,
-    //                 opacity: 0.7,
-    //                 smoothFactor: 1
-    //             });
-    //             DrawPolyline.addTo(mymap)
-
-    //             plotElevation(elevationvar[0],0,response.Senderos[0].Distancia,mymap);
-    //         },
-    //         error: function(){
-    //         }
-    //     });
-    // }
-
-    //Traer desde API por primera vez luego sqlite.
-
-
-
-
-
-
+        DrawPolyline.addTo(mymap);
+        mymap.fitBounds(DrawPolyline.getBounds());
+        plotElevation(rs,1,rs.rows.item(0).Distancia,mymap,plArray);
+    }, function (error) {
+        console.log('SELECT SQL statement ERROR: ' + error.message);
+    });
 }
 
 function onPopUpClose(){
@@ -464,4 +349,21 @@ function fileDoesNotExist(){
 }
 function getFSFail(evt) {
     console.log(evt.target.error.code);
+}
+
+function MarcadorPuntoInteres(TipoPuntoInteresID){
+    switch (TipoPuntoInteresID) {
+        case 1: //Inicio
+            return mk_inicio;
+            break;
+        case 2: //Fin
+            return mk_fin;
+            break;
+        case 3: //Mirador
+            return mk_mirador;
+            break;
+        case 4: //Cumbre
+            return mk_cumbre;
+            break;
+    }
 }

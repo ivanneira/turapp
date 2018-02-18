@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }
     ];
 
-    //Framework7.use(Framework7WelcomescreenPlugin);
+    Framework7.use(Framework7WelcomescreenPlugin);
 
     var app  = new Framework7({
         root: '#app', // App root element
@@ -461,7 +461,7 @@ function syncSenderos()
                         var strSQL3 = "INSERT OR REPLACE INTO SenderoRecursosImg (IDSendero, img) VALUES ";
                         var strSQL4 = "INSERT OR REPLACE INTO RegistroActualizacion (FechaActualizacion) VALUES (" + FechaActualizacionResponse + ");";
                         var strSQL5 = "INSERT OR REPLACE INTO SenderoPuntoInteres (ID, IDSendero, Descripcion, Latitud, Longitud, TipoPuntoInteresID) VALUES ";
-                        var strSQL5Content = "";
+
                         for(var i=0;i<response.Senderos.length;i++) {
             
                             // DownloadFile(RecursoWeb+response.Senderos[i].RutaImagen,"",response.Senderos[i].ID,response.Senderos[i].ID,0)
@@ -473,9 +473,9 @@ function syncSenderos()
                             }
                             strSQL3 = strSQL3 + "(" + response.Senderos[i].ID + ",'" + response.Senderos[i].ImgBase64 +"'),";
 
-                            for(var y=0; x<response.Senderos[i].SenderoPuntoInteres.length;y++)
+                            for(var y=0; y<response.Senderos[i].SenderoPuntoInteres.length;y++)
                             {
-                                strSQL5Content = strSQL5Content + "(" + y + ","+response.Senderos[i].ID+", '"+response.Senderos[i].SenderoPuntoInteres[y].Descripcion+"', '"+response.Senderos[i].SenderoPuntoInteres[y].Latitud+"','"+response.Senderos[i].SenderoPuntoInteres[y].Longitud+"',"+response.Senderos[i].SenderoPuntoInteres[y].TipoPuntoInteresID+"),"
+                                strSQL5 = strSQL5 + "(" + y + ","+response.Senderos[i].ID+", '"+response.Senderos[i].SenderoPuntoInteres[y].Descripcion+"', '"+response.Senderos[i].SenderoPuntoInteres[y].Latitud+"','"+response.Senderos[i].SenderoPuntoInteres[y].Longitud+"',"+response.Senderos[i].SenderoPuntoInteres[y].TipoPuntoInteresID+"),"
                             }
                         }
                         
@@ -488,14 +488,8 @@ function syncSenderos()
                         strSQL3 = strSQL3.slice(0,-1);
                         strSQL3 = strSQL3 + ";";
 
-                        strSQL = strSQL + strSQL2 + strSQL3 + strSQL4;
-
-                        if (strSQL5Content != ""){
-                            strSQL5Content = strSQL5Content.slice(0,-1);
-                            strSQL5Content = strSQL5Content + ";";
-                            strSQL5 = strSQL5 + strSQL5Content;
-                            strSQL = strSQL + strSQL5;
-                        }
+                        strSQL5 = strSQL5.slice(0,-1);
+                        strSQL5 = strSQL5 + ";";
                         //Si Hay internet Sincronizo senderos limpiando la tabla.
                         db.sqlBatch([
                             // strDelSQL,
@@ -503,8 +497,8 @@ function syncSenderos()
                             strSQL,
                             strSQL2,
                             strSQL3,
-                            strSQL4
-                            //strSQL5
+                            strSQL4,
+                            strSQL5
                         ], function() {
                             //console.log('Clear database OK');
                             loadSenderos();     

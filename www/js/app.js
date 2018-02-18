@@ -19,8 +19,8 @@ var db = null;
 
 //GPS Basics
 
-var myLat = -31.536395;
-var myLong = -68.536976;
+var myLat = 0;
+var myLong = 0;
 
 var delayGPS = 30000;
 var optionsGPS = {
@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             console.log("welcome screen opened");
         },
         'onClosed': function () {
-            app.f7.dialog.preloader('Espere mientras se cargan los senderos');
+            //app.f7.dialog.preloader('Espere mientras se cargan los senderos');
             console.log("welcome screen closed");
         }
     };
@@ -162,11 +162,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 
 
-    app.f7.welcomescreen.open()
+    //app.f7.welcomescreen.open()
     var mainView = app.views.create('.view-main');
 
     Dom7(document).on('click', '.tutorial-close-btn', function () {
-        app.f7.welcomescreen.close();
+        //app.f7.welcomescreen.close();
     });
 
     Dom7('.tutorial-open-btn').click(function () {

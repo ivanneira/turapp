@@ -229,9 +229,6 @@ function onPopUpOpen(){
 
     console.log("Internet: " + internet);
 
-
-    llamaGPS = setInterval(function(){GPS();}, delayGPS);
-
     // if(internet == 0) {
 
     db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
@@ -251,6 +248,8 @@ function onPopUpOpen(){
                 $$("#btn_down_container").append('<button id="btn_download" class="button button-raised button-fill">Descargar mapa ('+ rs.rows.item(0).PesoZipMapa +')</button>');
                 x = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {maxZoom: 18, minZoom: 7,subdomains:['mt0','mt1','mt2','mt3']}).addTo(mymap);
             }
+            gps_marker = L.marker([myLat,myLong]).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
+
             var a = new L.LatLng(rs.rows.item(0).Latitud, rs.rows.item(0).Longitud);
             L.marker([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud], {icon: mk_inicio}).addTo(mymap).bindPopup("Este es punto de inicio del circuito..");
             L.marker([rs.rows.item(255).Latitud,rs.rows.item(255).Longitud], {icon: mk_fin}).addTo(mymap).bindPopup("Este es punto de fin del circuito..");
@@ -286,12 +285,6 @@ function onPopUpOpen(){
 
 
 
-
-
-            var watchID = navigator.geolocation.watchPosition(_onSuccess, _onError, {  optionsGPS });
-            var timeout = setTimeout( function() { navigator.geolocation.clearWatch( watchID ); }, 5000 );
-
-
         $$("#nombre").append(" " + rs.rows.item(0).Nombre);
         $$("#inicio").append(" " + rs.rows.item(0).LugarInicio);
         $$("#fin").append(" " +rs.rows.item(0).LugarFin);
@@ -317,9 +310,12 @@ function onPopUpOpen(){
     }, function (error) {
         console.log('SELECT SQL statement ERROR: ' + error.message);
     });
+
+    llamaGPS = setInterval(function(){GPS();}, delayGPS);
 }
 
 function onPopUpClose(){
+    gps_marker = 0;
     clearInterval(llamaGPS);
     $$("#senderoContainer").empty();
 
@@ -363,6 +359,9 @@ function _onSuccess(position) {
 
     //L.marker([position.coords.latitude,position.coords.longitude], {icon: mk_gps}).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
 
+    myLat = position.coords.latitude;
+    myLong = position.coords.longitude;
+
     if(gps_marker == 0){
         gps_marker = L.marker([position.coords.latitude,position.coords.longitude]).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
     }
@@ -375,7 +374,7 @@ function _onSuccess(position) {
 // onError Callback receives a PositionError object
 //
 function _onError(error) {
-    //window.plugins.toast.show('Código: '+ error.code +'\n' +' Detalle: ' + error.message + '\n',"2000","bottom");
+    window.plugins.toast.show('Código: '+ error.code +'\n' +' Detalle: ' + error.message + '\n',"2000","bottom");
 }
 
 

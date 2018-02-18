@@ -294,17 +294,21 @@ function download(URL, Folder_Name, File_Name,id,filetype) {
 
 function filetransfer(download_link, fp,id,filetype) {
     var fileTransfer = new FileTransfer();
-
+    app.f7.dialog.preloader('Descargando... ').open()
      fileTransfer.onprogress = function(result){
+
+
         var percent =  result.loaded / result.total * 100;
         percent = Math.round(percent);
         //console.log("Progreso de ID: " + id + " -> "+ percent + "%");
-        window.plugins.toast.show("Progreso de ID: " + id + " -> "+ percent + "%","250","bottom");
+        //window.plugins.toast.show("Progreso de ID: " + id + " -> "+ percent + "%","250","bottom");
+
     };
 
 // File download function with URL and local path
       fileTransfer.download(download_link, fp,
         function (entry) {
+            app.f7.dialog.close();
             //alert("download complete: " + entry.toURL());
             //$$("#view-home").append("<img src='"+entry.toURL()+"'>")
             console.log("complete")
@@ -319,8 +323,9 @@ function filetransfer(download_link, fp,id,filetype) {
             entry.toURL();
         },
          function (error) {
+             app.f7.dialog.close();
             //Download abort errors or download failed errors
-            //alert("download error source " + error.source);
+            alert("Error descargando el mapa.. " + error.source);
             return "download error source " + error.source;
             //alert("download error target " + error.target);
             //alert("upload error code" + error.code);
@@ -597,7 +602,7 @@ function UpdateFilePathDB(file, id,filetype){
 
         if(filetype == 1)
         {
-            alert("El mapa ha sido descargado, estara disponible sin conexion.");
+            alert("El mapa ha sido descargado, estará disponible sin conexion.");
         }
         return rs;
     }, function(error) {

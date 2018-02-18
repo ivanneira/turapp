@@ -248,7 +248,7 @@ function onPopUpOpen(){
 
 
 
-    var urlmapa = RecursoWeb + "/Content/Senderos/1/Mapa/senderoMapa_"+senderoID+".zip";
+    var urlmapa = RecursoWeb + "/Content/Senderos/"+senderoID+"/Mapa/senderoMapa_"+senderoID+".zip";
     var namemapa = senderoID
 
     db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
@@ -257,12 +257,14 @@ function onPopUpOpen(){
 
         if(rs.rows.length == 0) {
             $$("#btn_download").click(function () {
-                alert("El mapa sera descargado...")
+                console.log(urlmapa);
+                //alert("El mapa sera descargado...")
                 DownloadFile(urlmapa, "", namemapa, namemapa, 1)
             });
 
         }
         else{
+            $$("#btn_download").css("display","none");
             $$("#btn_download").click(function () {
                 alert("El ya ha sido descargado.")
             })

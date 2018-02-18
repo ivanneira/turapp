@@ -5,7 +5,7 @@ var RecursoWeb = "http://appsenderos.sanjuan.gov.ar";
 var ErrorAjax = "Debes tener una conexión activa.";
 var conn ="";
 var isOffline = 'onLine' in navigator && !navigator.onLine;
-
+var mapaExiste = "<p>Este mapa se encuentra disponible sin conexion.</p>";
 
 
 
@@ -24,7 +24,7 @@ var myLong = -68.536976;
 
 var optionsGPS = {
     enableHighAccuracy: true,
-    timeout: 15000,
+    timeout: 10000,
     maximumAge: 0
 };
 
@@ -187,6 +187,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 //variable global con el id de sendero
 var senderoID = 0;
+var sectorID = 0;
 
 
 $$('.popup-senderos').on('popup:opened', function (e, popup) {
@@ -386,15 +387,15 @@ function onBackKeyDown() {
 }
 
 function Database(db) {
-    db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
+    db = window.sqlitePlugin.openDatabase({name: 'turapp.db',vesrion: '1.0', location: 'default'});
 
     //Creo la tabla Senderos
     db.sqlBatch([
-        'CREATE TABLE IF NOT EXISTS Senderos ( ID integer PRIMARY KEY, Nombre, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima,TipoDificultadFisica,TipoDificultadTecnica,InfoInteres)',
+        'CREATE TABLE IF NOT EXISTS Senderos ( ID integer PRIMARY KEY, IDSector,DepartamentoNombre, SectorNombre, PesoZipMapa, Nombre, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima,TipoDificultadFisica,TipoDificultadTecnica,InfoInteres)',
         'CREATE TABLE IF NOT EXISTS SenderoPuntoElevacion ( ID, IDSendero, Latitud, Longitud, Altura, PRIMARY KEY (ID, IDSendero))',
         'CREATE TABLE IF NOT EXISTS SenderoPuntoInteres ( ID, IDSendero, Descripcion, Latitud, Longitud, TipoPuntoInteresID, PRIMARY KEY (ID, IDSendero))',
         'CREATE TABLE IF NOT EXISTS SenderoRecursosImg ( IDSendero PRIMARY KEY, img)',
-        'CREATE TABLE IF NOT EXISTS SenderoRecursosMap ( IDSendero PRIMARY KEY, map)',
+        'CREATE TABLE IF NOT EXISTS SenderoRecursosMap ( IDSector PRIMARY KEY, map)',
         'CREATE TABLE IF NOT EXISTS RegistroActualizacion ( FechaActualizacion )',
     ], function () {
                     console.log('Tablas OK');
@@ -456,7 +457,7 @@ function syncSenderos()
                         // var strDelSQL2 = "delete from SenderoPuntoElevacion;";
                          console.dir("--------------------------");
                          console.dir(response);
-                        var strSQL = "INSERT OR REPLACE INTO Senderos (ID, Nombre, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima,TipoDificultadFisica,TipoDificultadTecnica,InfoInteres) VALUES ";
+                        var strSQL = "INSERT OR REPLACE INTO Senderos (ID,IDSector,DepartamentoNombre, SectorNombre, PesoZipMapa, Nombre, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima,TipoDificultadFisica,TipoDificultadTecnica,InfoInteres) VALUES ";
                         var strSQL2 = "INSERT OR REPLACE INTO SenderoPuntoElevacion (ID, IDSendero, Latitud, Longitud, Altura) VALUES ";
                         var strSQL3 = "INSERT OR REPLACE INTO SenderoRecursosImg (IDSendero, img) VALUES ";
                         var strSQL4 = "INSERT OR REPLACE INTO RegistroActualizacion (FechaActualizacion) VALUES (" + FechaActualizacionResponse + ");";
@@ -466,7 +467,7 @@ function syncSenderos()
             
                             // DownloadFile(RecursoWeb+response.Senderos[i].RutaImagen,"",response.Senderos[i].ID,response.Senderos[i].ID,0)
             
-                            strSQL = strSQL + "(" + response.Senderos[i].ID + ",'" + response.Senderos[i].Nombre + "','"+response.Senderos[i].Descripcion+"','"+response.Senderos[i].LugarInicio+"','"+response.Senderos[i].LugarFin+"','"+response.Senderos[i].Distancia+"','"+response.Senderos[i].Desnivel+"','"+response.Senderos[i].DuracionTotal+"','"+response.Senderos[i].AlturaMaxima+"','"+response.Senderos[i].TipoDificultadFisica+"','"+response.Senderos[i].TipoDificultadTecnica+"',''),"
+                            strSQL = strSQL + "(" + response.Senderos[i].ID +"," + response.Senderos[i].SenderoSector.ID + ",'" + response.Senderos[i].SenderoSector.NombreDepartamento +  "','" +  response.Senderos[i].SenderoSector.Nombre + "','" + response.Senderos[i].SenderoSector.PesoZipMapa + "','" + response.Senderos[i].Nombre + "','"+response.Senderos[i].Descripcion+"','"+response.Senderos[i].LugarInicio+"','"+response.Senderos[i].LugarFin+"','"+response.Senderos[i].Distancia+"','"+response.Senderos[i].Desnivel+"','"+response.Senderos[i].DuracionTotal+"','"+response.Senderos[i].AlturaMaxima+"','"+response.Senderos[i].TipoDificultadFisica+"','"+response.Senderos[i].TipoDificultadTecnica+"',''),"
                             for(var x=0; x<response.Senderos[i].SenderoPuntoElevacion.length;x++)
                             {
                                 strSQL2 = strSQL2 + "(" + x + ","+response.Senderos[i].ID+", '"+response.Senderos[i].SenderoPuntoElevacion[x].Latitud+"','"+response.Senderos[i].SenderoPuntoElevacion[x].Longitud+"','"+response.Senderos[i].SenderoPuntoElevacion[x].Altura+"'),"
@@ -589,7 +590,7 @@ function UpdateFilePathDB(file, id,filetype){
     {
         //query =  "UPDATE Senderos Set RutZipMapa = '"+file+"'  where ID="+id;
         //query =  "INSERT into SenderoRecursosMap (IDSendero, map) VALUES ("+id+",'"+file+"')";
-        query = "insert or replace into SenderoRecursosMap (IDSendero, map) values ("+id+",'"+file+"');";
+        query = "insert or replace into SenderoRecursosMap (IDSector, map) values ("+id+",'"+file+"');";
     }
 
     db.executeSql(query, [], function(rs) {
@@ -597,6 +598,7 @@ function UpdateFilePathDB(file, id,filetype){
         if(filetype == 1)
         {
             alert("El mapa ha sido descargado, estará disponible sin conexion.");
+            $$("#btn_down_container").html(mapaExiste);
         }
         return rs;
     }, function(error) {

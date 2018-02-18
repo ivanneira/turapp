@@ -43,7 +43,7 @@ function loadSenderos(){
          console.log("Sin internet");
         db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
-        db.executeSql('SELECT sen.*,simg.img,(SELECT  Latitud FROM SenderoPuntoElevacion AS spe WHERE spe.IDSendero = sen.ID LIMIT 1) AS LATITUD, (SELECT  Longitud FROM SenderoPuntoElevacion AS spe WHERE spe.IDSendero = sen.ID LIMIT 1) AS LONGITUD FROM Senderos  as sen left join SenderoRecursosImg as simg on simg.IDSendero = sen.ID   ORDER BY sen.Nombre ASC', [], function (rs) {
+        db.executeSql('SELECT sen.*,simg.img,(SELECT  Latitud FROM SenderoPuntoElevacion AS spe WHERE spe.IDSendero = sen.ID LIMIT 1) AS LATITUD, (SELECT  Longitud FROM SenderoPuntoElevacion AS spe WHERE spe.IDSendero = sen.ID LIMIT 1) AS LONGITUD FROM Senderos  as sen left join SenderoRecursosImg as simg on simg.IDSendero = sen.ID   ORDER BY sen.DepartamentoNombre,sen.Nombre ASC', [], function (rs) {
 
         //db.executeSql('SELECT sen.*,simg.img FROM Senderos  as sen left join SenderoRecursosImg as simg on simg.IDSendero = sen.ID  ORDER BY sen.Nombre ASC', [], function (rs) {
             console.dir(rs);
@@ -58,7 +58,7 @@ function loadSenderos(){
                 }
 
                 var tmp =
-                    '<div class="card demo-card-header-pic senderoCard" data-senderoid="' + rs.rows.item(i).ID + '">' +
+                    '<div class="card demo-card-header-pic senderoCard" data-sectorid="' + rs.rows.item(i).IDSector + '" data-senderoid="' + rs.rows.item(i).ID + '"> <br>Sector:'+rs.rows.item(i).SectorNombre + '<br>Departamento: '+ rs.rows.item(i).DepartamentoNombre +
                     '   <div class="card-header align-items-flex-end headerSenderos" > ' +
                     '        <p class="tituloSendero">' + rs.rows.item(i).Nombre + '</p>' +
                     '   </div>' +
@@ -112,6 +112,7 @@ function loadSenderos(){
             $$(".senderoCard").click(function () {
                 app.f7.popup.open('.popup-senderos')
                 senderoID = $(this).data().senderoid;
+                sectorID = $(this).data().sectorid;
             });
 
         }, function (error) {
@@ -173,10 +174,11 @@ function onPopUpOpen(){
 
     //el id del sendero llega como variable global, va cambiando según el atributo data-senderoid del tag a
     console.log("El id del sendero es " + senderoID);
+    console.log("El id del sector es " + sectorID);
 
     var mapTemplate =
                     '<br>' +
-                    '<div id="btn_down_container"><button id="btn_download" class="button button-raised button-fill">Descargar mapa</button></div>' +
+                    '<div id="btn_down_container"></div>' +
                     '<br>' +
                     '<div class="card">' +
                     '   <div id="nombre" class="card-header mapaheader tituloSendero2"></div>'+
@@ -248,27 +250,19 @@ function onPopUpOpen(){
 
 
 
-    var urlmapa = RecursoWeb + "/Content/Senderos/"+senderoID+"/Mapa/senderoMapa_"+senderoID+".zip";
-    var namemapa = senderoID
+    var urlmapa = RecursoWeb + "/Content/Sector/"+sectorID+"/Mapa/sectorMapa_"+sectorID+".zip";
+    var namemapa = sectorID
+    var tieneMapa = 0;
 
-    db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
-
-    db.executeSql('select IDSendero from SenderoRecursosMap where IDSendero='+senderoID, [], function (rs) {
+    db = window.sqlitePlugin.openDatabase({name: 'turapp.db',version:'1.0', location: 'default'});
+//select srm.IDSector from SenderoRecursosMap as srm left join Senderos as s on s.IDSector = srm.IDSector
+    db.executeSql('select IDSector from SenderoRecursosMap where IDSector='+sectorID, [], function (rs) {
 
         if(rs.rows.length == 0) {
-            $$("#btn_download").click(function () {
-                console.log(urlmapa);
-                //alert("El mapa sera descargado...")
-                DownloadFile(urlmapa, "", namemapa, namemapa, 1)
-            });
-
+            tieneMapa = 1;
         }
         else{
-            $$("#btn_down_container").html("<p>Este mapa se encuentra disponible sin conexion.</p>");
-            //$$("#btn_download").css("display","none");
-            //$$("#btn_download").click(function () {
-            //    alert("El ya ha sido descargado.")
-            //})
+            tieneMapa = 0;
         }
 
     }, function(error) {
@@ -287,8 +281,10 @@ function onPopUpOpen(){
 
         db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
-        db.executeSql('SELECT spe.Latitud, spe.Longitud, spe.Altura,s.ID, s.Descripcion,smap.map,s.LugarInicio,s.LugarFin,s.Distancia,s.Desnivel,s.DuracionTotal,s.AlturaMaxima, s.Nombre FROM SenderoPuntoElevacion as spe left join Senderos as s on s.ID = spe.IDSendero left join SenderoRecursosMap as smap on smap.IDSendero = s.ID where spe.IDSendero=' + senderoID + ' order by spe.ID asc', [], function (rs) {
+        db.executeSql('SELECT spe.Latitud,s.DepartamentoNombre, spe.Longitud, spe.Altura,s.PesoZipMapa,s.ID, s.Descripcion,smap.map,s.LugarInicio,s.LugarFin,s.Distancia,s.Desnivel,s.DuracionTotal,s.AlturaMaxima, s.Nombre FROM SenderoPuntoElevacion as spe left join Senderos as s on s.ID = spe.IDSendero left join SenderoRecursosMap as smap on smap.IDSector = s.IDSector where spe.IDSendero=' + senderoID + ' order by spe.ID asc', [], function (rs) {
 
+            console.log("--dkjfhgdskjfhdskjfhjksdfhjkdsfk--")
+            console.dir(rs)
             var soucerMap = rs.rows.item(0).map +  "Google Hibrido"
             console.log("soucerMap " + soucerMap)
             var mymap = L.map('mapid').setView([rs.rows.item(0).Latitud, rs.rows.item(0).Longitud], 16);
@@ -297,10 +293,10 @@ function onPopUpOpen(){
                 x = L.tileLayer(soucerMap+'/{z}/{x}/{y}.jpg', {maxZoom: 18, minZoom: 15}).addTo(mymap);
             }
             else{
+                $$("#btn_down_container").append('<button id="btn_download" class="button button-raised button-fill">Descargar mapa ('+ rs.rows.item(0).PesoZipMapa +')</button>');
                 x = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {maxZoom: 18, minZoom: 7,subdomains:['mt0','mt1','mt2','mt3']}).addTo(mymap);
             }
             var a = new L.LatLng(rs.rows.item(0).Latitud, rs.rows.item(0).Longitud);
-
             L.marker([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud], {icon: mk_inicio}).addTo(mymap).bindPopup("Este es punto de inicio del circuito..");
             L.marker([rs.rows.item(255).Latitud,rs.rows.item(255).Longitud], {icon: mk_fin}).addTo(mymap).bindPopup("Este es punto de fin del circuito..");
             //L.marker([51.495, -0.083], {icon: redIcon}).addTo(map).bindPopup("I am a red leaf.");
@@ -312,6 +308,19 @@ function onPopUpOpen(){
                 }
                     
             });
+
+            if(tieneMapa == 1){
+                $$("#btn_download").click(function () {
+                    console.log(urlmapa);
+                    //alert("El mapa sera descargado...")
+
+                    DownloadFile(urlmapa, "", namemapa, namemapa, 1)
+                });
+            }
+            else
+            {
+                $$("#btn_down_container").html(mapaExiste);
+            }
 
             $$("#comollego").click(function(){
                 navigate([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud]);

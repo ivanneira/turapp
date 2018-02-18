@@ -10,6 +10,10 @@ var LeafIcon = L.Icon.extend({
     }
 });
 
+var llamaGPS = 0;
+
+
+
 var mk_inicio = new LeafIcon({iconUrl: 'img/icons_gps/inicio.png'}),
     mk_fin = new LeafIcon({iconUrl: 'img/icons_gps/fin.png'}),
     mk_cumbre = new LeafIcon({iconUrl: 'img/icons_gps/cumbre.png'}),
@@ -25,7 +29,6 @@ L.icon = function (options) {
 
 
 var senderosResult = [];
-var gps_marker = 0;
 
 $$(document).on('DOMContentLoaded', function(){
     //app.f7.popup.open('.popup-preloader');
@@ -230,6 +233,8 @@ function onPopUpOpen(){
     console.log("Internet: " + internet);
 
 
+    llamaGPS = setInterval(function(){GPS();}, delayGPS);
+
     // if(internet == 0) {
 
     db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
@@ -240,7 +245,7 @@ function onPopUpOpen(){
             console.dir(rs)
             var soucerMap = rs.rows.item(0).map +  "Google Hibrido"
             console.log("soucerMap " + soucerMap)
-            var mymap = L.map('mapid').setView([rs.rows.item(0).Latitud, rs.rows.item(0).Longitud], 16);
+             mymap = L.map('mapid').setView([rs.rows.item(0).Latitud, rs.rows.item(0).Longitud], 16);
             var x;
             if(internet == 0) {
                 x = L.tileLayer(soucerMap+'/{z}/{x}/{y}.jpg', {maxZoom: 18, minZoom: 15}).addTo(mymap);
@@ -283,32 +288,11 @@ function onPopUpOpen(){
         })
 
 
-        var  _onSuccess = function(position) {
-
-            //L.marker([position.coords.latitude,position.coords.longitude], {icon: mk_gps}).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
-
-            if(gps_marker == 0){
-                gps_marker = L.marker([position.coords.latitude,position.coords.longitude]).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
-            }
-            else{
-                gps_marker.setLatLng([position.coords.latitude,position.coords.longitude]);
-            }
-
-            //var element = document.getElementById('geolocation');
-            //element.innerHTML = 'Latitude: '  + position.coords.latitude      + '<br />' +
-            // 'Longitude: ' + position.coords.longitude     + '<br />' +
-            //    '<hr />'      + element.innerHTML;
-
-        }
-
-        // onError Callback receives a PositionError object
-        //
-        var _onError = function (error) {
-            window.plugins.toast.show('Código: '+ error.code +'\n' +' Detalle: ' + error.message + '\n',"2000","bottom");
-        }
 
 
-        var watchID = navigator.geolocation.watchPosition(_onSuccess, _onError, {  optionsGPS });
+
+            var watchID = navigator.geolocation.watchPosition(_onSuccess, _onError, {  optionsGPS });
+            var timeout = setTimeout( function() { navigator.geolocation.clearWatch( watchID ); }, 5000 );
 
 
         $$("#nombre").append(" " + rs.rows.item(0).Nombre);
@@ -339,7 +323,7 @@ function onPopUpOpen(){
 }
 
 function onPopUpClose(){
-
+    clearInterval(llamaGPS);
     $$("#senderoContainer").empty();
 
 }
@@ -375,4 +359,30 @@ function MarcadorPuntoInteres(TipoPuntoInteresID){
             return mk_cumbre;
             break;
     }
+}
+
+
+function _onSuccess(position) {
+
+    //L.marker([position.coords.latitude,position.coords.longitude], {icon: mk_gps}).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
+
+    if(gps_marker == 0){
+        gps_marker = L.marker([position.coords.latitude,position.coords.longitude]).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
+    }
+    else{
+        gps_marker.setLatLng([position.coords.latitude,position.coords.longitude]);
+    }
+
+}
+
+// onError Callback receives a PositionError object
+//
+function _onError(error) {
+    //window.plugins.toast.show('Código: '+ error.code +'\n' +' Detalle: ' + error.message + '\n',"2000","bottom");
+}
+
+
+function GPS() {
+    //window.plugins.toast.show('GPS',"2000","bottom");
+    navigator.geolocation.getCurrentPosition(_onSuccess, _onError, optionsGPS);
 }

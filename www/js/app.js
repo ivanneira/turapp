@@ -8,7 +8,8 @@ var isOffline = 'onLine' in navigator && !navigator.onLine;
 var mapaExiste = "<p>Este mapa se encuentra disponible sin conexion.</p>";
 
 
-
+var gps_marker = 0;
+var mymap= 0;
 var internet = 0;
 // Dom7
 var $$ = Dom7;
@@ -21,11 +22,10 @@ var db = null;
 var myLat = -31.536395;
 var myLong = -68.536976;
 
-
+var delayGPS = 30000;
 var optionsGPS = {
     enableHighAccuracy: true,
-    timeout: 10000,
-    maximumAge: 0
+    timeout: 5000,
 };
 
 
@@ -709,3 +709,5 @@ function navigate(hasta)
 
 
 }
+
+

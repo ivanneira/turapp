@@ -235,7 +235,7 @@ function onPopUpOpen(){
 
     db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
-        db.executeSql('SELECT spe.Latitud,s.DepartamentoNombre, spe.Longitud, spe.Altura,s.PesoZipMapa,s.ID, s.Descripcion,smap.map,s.LugarInicio,s.LugarFin,s.Distancia,s.Desnivel,s.DuracionTotal,s.AlturaMaxima, s.Nombre FROM SenderoPuntoElevacion as spe left join Senderos as s on s.ID = spe.IDSendero left join SenderoRecursosMap as smap on smap.IDSector = s.IDSector where spe.IDSendero=' + senderoID + ' order by spe.ID asc', [], function (rs) {
+        db.executeSql('SELECT spe.Latitud,s.DepartamentoNombre, spe.Longitud, spe.Altura,s.PesoZipMapa,s.ID, s.Descripcion,smap.map,s.LugarInicio,s.LugarFin,s.Distancia,s.Desnivel,s.DuracionTotal,s.AlturaMaxima, s.Nombre, s.InfoInteres FROM SenderoPuntoElevacion as spe left join Senderos as s on s.ID = spe.IDSendero left join SenderoRecursosMap as smap on smap.IDSector = s.IDSector where spe.IDSendero=' + senderoID + ' order by spe.ID asc', [], function (rs) {
 
             console.log("--dkjfhgdskjfhdskjfhjksdfhjkdsfk--")
             console.dir(rs)
@@ -256,7 +256,7 @@ function onPopUpOpen(){
             db.executeSql('SELECT IDSendero, Descripcion, Latitud, Longitud, TipoPuntoInteresID FROM SenderoPuntoInteres WHERE IDSendero=' + senderoID, [], function (rs2) {
                 console.dir(rs2);
                 for (var i = 0; i < rs2.rows.length; i++) {
-                    L.marker([rs2.rows.item(i).Latitud,rs2.rows.item(i).Longitud], {icon: mk_inicio}).addTo(mymap).bindPopup(rs2.rows.item(i).Descripcion);
+                    L.marker([rs2.rows.item(i).Latitud,rs2.rows.item(i).Longitud], {icon: MarcadorPuntoInteres(rs2.rows.item(i).TipoPuntoInteresID)}).addTo(mymap).bindPopup(rs2.rows.item(i).Descripcion);
                 }
                     
             });
@@ -282,7 +282,7 @@ function onPopUpOpen(){
             navigate([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud]);
         });
 
-        console.log("asdsdfdfsaadfsfsdaasfd")
+
 
         $$("#nombre").append(" " + rs.rows.item(0).Nombre);
         $$("#inicio").append(" " + rs.rows.item(0).LugarInicio);

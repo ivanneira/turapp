@@ -114,7 +114,7 @@
   "uk.co.workingedge.phonegap.plugin.launchnavigator": {
     "source": {
       "type": "registry",
-      "id": "uk.co.workingedge.phonegap.plugin.launchnavigator"
+      "id": "uk.co.workingedge.phonegap.plugin.launchnavigator@^4.1.3"
     },
     "is_top_level": true,
     "variables": {}

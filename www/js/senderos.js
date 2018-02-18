@@ -2,18 +2,22 @@
 var LeafIcon = L.Icon.extend({
     options: {
         //shadowUrl: 'leaf-shadow.png',
-        iconSize:     [22, 22],
+        iconSize:     [30, 40],
         //shadowSize:   [50, 64],
-        iconAnchor:   [22, 22],
-        //shadowAnchor: [4, 62],
-        popupAnchor:  [-3, -76]
+        iconAnchor:   [15, 40],
+        shadowAnchor: [4, 62],
+        popupAnchor:  [0, -45]
     }
 });
 
-var mk_inicio = new LeafIcon({iconUrl: 'img/icons_gps/green.png'}),
-    mk_fin = new LeafIcon({iconUrl: 'img/icons_gps/red.png'}),
-    mk_gps = new LeafIcon({iconUrl: 'img/icons_gps/gps.png'}),
-    mk_elevation = new LeafIcon({iconUrl: 'img/icons_gps/elevation.png'});
+var mk_inicio = new LeafIcon({iconUrl: 'img/icons_gps/inicio.png'}),
+    mk_fin = new LeafIcon({iconUrl: 'img/icons_gps/fin.png'}),
+    mk_cumbre = new LeafIcon({iconUrl: 'img/icons_gps/cumbre.png'}),
+    mk_estacionamiento = new LeafIcon({iconUrl: 'img/icons_gps/estacionamiento.png'}),
+    mk_mirador = new LeafIcon({iconUrl: 'img/icons_gps/mirador.png'}),
+    mk_interes = new LeafIcon({iconUrl: 'img/icons_gps/interes.png'});
+    mk_maxima = new LeafIcon({iconUrl: 'img/icons_gps/maxima.png'});
+    mk_precaucion = new LeafIcon({iconUrl: 'img/icons_gps/precaucion.png'});
 
 L.icon = function (options) {
     return new L.Icon(options);
@@ -24,8 +28,10 @@ var senderosResult = [];
 var gps_marker = 0;
 
 $$(document).on('DOMContentLoaded', function(){
+    //app.f7.popup.open('.popup-preloader');
+    loadSenderos();
 
-    app.f7.popup.open('.popup-preloader')
+
 
         loadSenderos();
 });
@@ -36,6 +42,10 @@ $$(document).on('DOMContentLoaded', function(){
 
 
 function loadSenderos(){
+
+
+
+
     document.getElementById('senderosResultDiv').innerHTML = "";
     internet = checkInternet();
 
@@ -60,46 +70,34 @@ function loadSenderos(){
                 var tmp =
                     '<div class="card demo-card-header-pic senderoCard" data-sectorid="' + rs.rows.item(i).IDSector + '" data-senderoid="' + rs.rows.item(i).ID + '"> <br>Sector:'+rs.rows.item(i).SectorNombre + '<br>Departamento: '+ rs.rows.item(i).DepartamentoNombre +
                     '   <div class="card-header align-items-flex-end headerSenderos" > ' +
-                    '        <p class="tituloSendero">' + rs.rows.item(i).Nombre + '</p>' +
+                    '        <span class="tituloSendero">' + rs.rows.item(i).Nombre + '</span>' +
                     '   </div>' +
                     '   <div class="card-content card-content-padding">' +
                     '       <div class="row">' +
                     '           <div class="col-50 card-header align-items-flex-end senderosImg" style="background-image:url('  + img + ' ")>' +
                     '           </div>' +
                     '           <div class="col-50 senderosInfo">' +
-                    '               <div class="list">' +
-                    '                <ul>' +
-                    '                   <li>' +
-                    '                       <div class="item-content">' +
-                    '                           <div class="item-inner">' +
-                    '                                   <div class="item-title chipSendero">Distancia</div>' +
-                    '                                   <div class="item-after">' + rs.rows.item(i).Distancia + ' km</div>' +
-                    '                            </div>' +
-                    '                       </div>' +
-                    '                    </li>' +
-                    '                    <li>' +
-                    '                       <div class="item-content">' +
-                    '                           <div class="item-inner">' +
-                    '                               <div class="item-title chipSendero">Dificultad</div>' +
-                    '                                   <div class="item-after">' + rs.rows.item(i).TipoDificultadFisica + '</div>' +
-                    '                               </div>' +
-                    '                           </div>' +
-                    '                    </li>' +
-                    '                    <li>' +
-                    '                       <div class="item-content">' +
-                    '                           <div class="item-inner">' +
-                    '                               <div class="item-title chipSendero">Duración</div>' +
-                    '                                   <div class="item-after">' + rs.rows.item(i).DuracionTotal + '</div>' +
-                    '                               </div>' +
-                    '                           </div>' +
-                    '                   </li>' +
-                    '                  </ul>' +
+                    '               <div class="chip chipSendero">' +
+                    '                   <div class="chip-media bg-color-pink">' +
+                    '                       <img src="img/distance.svg">' +
+                    '                   </div>' +
+                    '                  <div class="chip-label" id="distancia">Distancia: ' + rs.rows.item(i).Distancia + 'km</div>' +
                     '               </div>' +
+                    '               <div class="chip chipSendero">' +
+                    '                   <div class="chip-media bg-color-pink">' +
+                    '                       <img src="img/dificultad.svg">' +
+                    '                   </div>' +
+                    '                  <div class="chip-label" id="distancia">Dificultad: ' + rs.rows.item(i).TipoDificultadFisica + '</div>' +
+                    '               </div>' +
+                    '               <div class="chip chipSendero">' +
+                    '                   <div class="chip-media bg-color-pink">' +
+                    '                       <img src="img/clock.svg">' +
+                    '                   </div>' +
+                    '                  <div class="chip-label" id="distancia">Duración: ' + rs.rows.item(i).DuracionTotal + '</div>' +
                     '           </div>' +
                     '       </div>' +
                     '   </div>' +
-                    '</div>' +
-                    '<br>';
+                    '</div>';
 
                 $$("#senderosResultDiv").append(tmp);
 
@@ -107,8 +105,8 @@ function loadSenderos(){
             }
             
             //quita el preloader de senderos
-            app.f7.popup.close('.popup-preloader')
-
+            //app.f7.popup.close('.popup-preloader')
+            app.f7.dialog.close();
             $$(".senderoCard").click(function () {
                 app.f7.popup.open('.popup-senderos')
                 senderoID = $(this).data().senderoid;
@@ -118,51 +116,6 @@ function loadSenderos(){
         }, function (error) {
             console.log('SELECT SQL statement ERROR: ' + error.message);
         });
-    // }
-    // else
-    // {
-    //     console.log("Con internet");
-    //     $.ajax({
-    //         url: senderosAPI,
-    //         cache: false,
-    //         type: 'get',
-    //         timeout: timeOut,
-    //         dataType: "json",
-    //         success: function (response) {
-    //             for (var i = 0; i < response.Senderos.length; i++) {
-    //                 var img = response.Senderos[i].RutaImagen;
-    //                 if (img == null) {
-    //                     img = "img/no_disponible.jpg";
-    //                 }
-    //                 else {
-    //                     img = RecursoWeb + response.Senderos[i].RutaImagen;
-    //                 }
-    //                 var tmp = '<div class="card demo-card-header-pic senderoCard" data-senderoid="' + response.Senderos[i].ID + '">' +
-    //                     '<div class="card-header align-items-flex-end lazy lazy-fade-in" style="background-image:url( ' + img + ' )"> ' +
-    //                     '       <div class="chip chipMapa">' +
-    //                     '           <div class="chip-label">Disponible</div>' +
-    //                     '       </div>' +
-    //                     '</div>' +
-    //                     '<div class="card-content card-content-padding">' +
-    //                     '<p class="titulonoticia">' + response.Senderos[i].Nombre + '</p>' +
-    //                     '<p>' + response.Senderos[i].Descripcion + '</p>' +
-    //                     '</div>' +
-    //                     '</div>';
-
-    //                 $$("#senderosResultDiv").append(tmp);
-
-    //             }
-    //             $$(".senderoCard").click(function () {
-    //                 app.f7.popup.open('.popup-senderos')
-    //                 senderoID = $(this).data().senderoid;
-    //             });
-    //         },
-    //         error: function(){
-    //         }
-    //     });
-
-    // }
-    //
 }
 
 
@@ -279,7 +232,7 @@ function onPopUpOpen(){
 
     // if(internet == 0) {
 
-        db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
+    db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
         db.executeSql('SELECT spe.Latitud,s.DepartamentoNombre, spe.Longitud, spe.Altura,s.PesoZipMapa,s.ID, s.Descripcion,smap.map,s.LugarInicio,s.LugarFin,s.Distancia,s.Desnivel,s.DuracionTotal,s.AlturaMaxima, s.Nombre FROM SenderoPuntoElevacion as spe left join Senderos as s on s.ID = spe.IDSendero left join SenderoRecursosMap as smap on smap.IDSector = s.IDSector where spe.IDSendero=' + senderoID + ' order by spe.ID asc', [], function (rs) {
 
@@ -325,132 +278,64 @@ function onPopUpOpen(){
             $$("#comollego").click(function(){
                 navigate([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud]);
             })
+        $$("#comollego").click(function(){
+            navigate([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud]);
+        })
 
 
-            var  _onSuccess = function(position) {
+        var  _onSuccess = function(position) {
 
-                //L.marker([position.coords.latitude,position.coords.longitude], {icon: mk_gps}).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
+            //L.marker([position.coords.latitude,position.coords.longitude], {icon: mk_gps}).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
 
-                if(gps_marker == 0){
-                    gps_marker = L.marker([position.coords.latitude,position.coords.longitude]).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
-                }
-                else{
-                    gps_marker.setLatLng([position.coords.latitude,position.coords.longitude]);
-                }
-
-                //var element = document.getElementById('geolocation');
-                //element.innerHTML = 'Latitude: '  + position.coords.latitude      + '<br />' +
-                // 'Longitude: ' + position.coords.longitude     + '<br />' +
-                //    '<hr />'      + element.innerHTML;
-
+            if(gps_marker == 0){
+                gps_marker = L.marker([position.coords.latitude,position.coords.longitude]).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
+            }
+            else{
+                gps_marker.setLatLng([position.coords.latitude,position.coords.longitude]);
             }
 
-            // onError Callback receives a PositionError object
-            //
-            var _onError = function (error) {
-                window.plugins.toast.show('Código: '+ error.code +'\n' +' Detalle: ' + error.message + '\n',"2000","bottom");
-            }
+            //var element = document.getElementById('geolocation');
+            //element.innerHTML = 'Latitude: '  + position.coords.latitude      + '<br />' +
+            // 'Longitude: ' + position.coords.longitude     + '<br />' +
+            //    '<hr />'      + element.innerHTML;
+
+        }
+
+        // onError Callback receives a PositionError object
+        //
+        var _onError = function (error) {
+            window.plugins.toast.show('Código: '+ error.code +'\n' +' Detalle: ' + error.message + '\n',"2000","bottom");
+        }
 
 
-            var watchID = navigator.geolocation.watchPosition(_onSuccess, _onError, {  optionsGPS });
+        var watchID = navigator.geolocation.watchPosition(_onSuccess, _onError, {  optionsGPS });
 
 
-            $$("#nombre").append(" " + rs.rows.item(0).Nombre);
-            $$("#inicio").append(" " + rs.rows.item(0).LugarInicio);
-            $$("#fin").append(" " +rs.rows.item(0).LugarFin);
-            $$("#distancia").append(" " +rs.rows.item(0).Distancia + " km");
-            $$("#desnivel").append(" " +rs.rows.item(0).Desnivel + " msnm");
-            $$("#duracion").append(" " +rs.rows.item(0).DuracionTotal);
-            $$("#altmaxima").append(" " +rs.rows.item(0).AlturaMaxima + " m");
+        $$("#nombre").append(" " + rs.rows.item(0).Nombre);
+        $$("#inicio").append(" " + rs.rows.item(0).LugarInicio);
+        $$("#fin").append(" " +rs.rows.item(0).LugarFin);
+        $$("#distancia").append(" " +rs.rows.item(0).Distancia + " km");
+        $$("#desnivel").append(" " +rs.rows.item(0).Desnivel + " msnm");
+        $$("#duracion").append(" " +rs.rows.item(0).DuracionTotal);
+        $$("#altmaxima").append(" " +rs.rows.item(0).AlturaMaxima + " m");
 
 
-            for (var i = 0; i < rs.rows.length; i++) {
-                plArray.push(new L.LatLng(rs.rows.item(i).Latitud, rs.rows.item(i).Longitud));
-            }
+        for (var i = 0; i < rs.rows.length; i++) {
+            plArray.push(new L.LatLng(rs.rows.item(i).Latitud, rs.rows.item(i).Longitud));
+        }
 
-            var DrawPolyline = new L.Polyline(plArray, {
-                color: '#ff9e00',
-                weight: 5,
-                opacity: 1,
-                smoothFactor: 1
-            });
-            DrawPolyline.addTo(mymap);
-            mymap.fitBounds(DrawPolyline.getBounds());
- 	        plotElevation(rs,1,rs.rows.item(0).Distancia,mymap,plArray);
-        }, function (error) {
-            console.log('SELECT SQL statement ERROR: ' + error.message);
+        var DrawPolyline = new L.Polyline(plArray, {
+            color: '#ff9e00',
+            weight: 5,
+            opacity: 1,
+            smoothFactor: 1
         });
-    // }
-    // else
-    // {
-
-    //     $.ajax({
-    //         url: senderosAPI,
-    //         cache: false,
-    //         type: 'get',
-    //         timeout: timeOut,
-    //         dataType: "json",
-    //         success: function (response) {
-    //             console.dir(response);
-    //             for (var i = 0; i < response.Senderos.length; i++) {
-    //                 if(senderoID == response.Senderos[i].ID) {
-
-    //                     var mymap = L.map('mapid').setView([response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud], 16);
-    //                     var x = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {maxZoom: 18, minZoom: 7,subdomains:['mt0','mt1','mt2','mt3']}).addTo(mymap);
-    //                     var a = new L.LatLng(response.Senderos[i].SenderoPuntoElevacion[i].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud);
-    //                     L.marker([response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud], {icon: mk_inicio}).addTo(mymap).bindPopup("Este es punto de inicio del circuito..");
-    //                     L.marker([response.Senderos[i].SenderoPuntoElevacion[255].Latitud, response.Senderos[i].SenderoPuntoElevacion[255].Longitud], {icon: mk_fin}).addTo(mymap).bindPopup("Este es punto de fin del circuito..");
-
-    //                     //Polygon.getBounds().contains
-    //                     var latlngs = [[response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud],
-    //                                    [response.Senderos[i].SenderoPuntoElevacion[255].Latitud, response.Senderos[i].SenderoPuntoElevacion[255].Longitud]];
-    //                     var polygon = L.polygon(latlngs, {color: 'red'}).addTo(mymap);
-    //                     mymap.fitBounds(polygon.getBounds());
-
-    //                     $$("#nombre").append(" " + response.Senderos[i].Nombre);
-    //                     $$("#inicio").append(" " + response.Senderos[i].LugarInicio);
-    //                     $$("#fin").append(" " +response.Senderos[i].LugarFin);
-    //                     $$("#distancia").append(" " +response.Senderos[i].Distancia);
-    //                     $$("#desnivel").append(" " +response.Senderos[i].Desnivel);
-    //                     $$("#duracion").append(" " +response.Senderos[i].DuracionTotal);
-    //                     $$("#altmaxima").append(" " +response.Senderos[i].AlturaMaxima);
-
-    //                     var urlmapa = RecursoWeb + response.Senderos[i].RutZipMapa;
-    //                     var namemapa = response.Senderos[i].ID
-    //                     $$("#btn_download").click(function(){
-    //                         alert(urlmapa);
-    //                         DownloadFile(urlmapa,"",namemapa,namemapa,1)
-    //                     });
-
-    //                     var elevationvar = [];
-    //                     elevationvar.push({rows : response.Senderos[i].SenderoPuntoElevacion})
-    //                     for (var x = 0; x < response.Senderos[i].SenderoPuntoElevacion.length; x++) {
-    //                         plArray.push(new L.LatLng(response.Senderos[i].SenderoPuntoElevacion[x].Latitud, response.Senderos[i].SenderoPuntoElevacion[x].Longitud));
-    //                     }
-    //                 }
-    //             }
-    //             var DrawPolyline = new L.Polyline(plArray, {
-    //                 color: '#00b3fd',
-    //                 weight: 4,
-    //                 opacity: 0.7,
-    //                 smoothFactor: 1
-    //             });
-    //             DrawPolyline.addTo(mymap)
-
-    //             plotElevation(elevationvar[0],0,response.Senderos[0].Distancia,mymap);
-    //         },
-    //         error: function(){
-    //         }
-    //     });
-    // }
-
-    //Traer desde API por primera vez luego sqlite.
-
-
-
-
-
-
+        DrawPolyline.addTo(mymap);
+        mymap.fitBounds(DrawPolyline.getBounds());
+        plotElevation(rs,1,rs.rows.item(0).Distancia,mymap,plArray);
+    }, function (error) {
+        console.log('SELECT SQL statement ERROR: ' + error.message);
+    });
 }
 
 function onPopUpClose(){
@@ -473,4 +358,21 @@ function fileDoesNotExist(){
 }
 function getFSFail(evt) {
     console.log(evt.target.error.code);
+}
+
+function MarcadorPuntoInteres(TipoPuntoInteresID){
+    switch (TipoPuntoInteresID) {
+        case 1: //Inicio
+            return mk_inicio;
+            break;
+        case 2: //Fin
+            return mk_fin;
+            break;
+        case 3: //Mirador
+            return mk_mirador;
+            break;
+        case 4: //Cumbre
+            return mk_cumbre;
+            break;
+    }
 }

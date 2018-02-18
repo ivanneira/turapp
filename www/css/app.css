@@ -185,11 +185,12 @@ p {
 
 
 .chipSendero {
-
+  width: 100% !important;
+  height: 20% !important;
   color: #d83559 !important;
   font-family: 'Nunito' !important;
   font-weight: bold;
-  font-size: 16px !important;
+  font-size: 12px !important;
 }
 
 
@@ -199,21 +200,21 @@ p {
 }
 
 .tituloSendero2 {
-  /*color: #f2f2f2 !important;*/
+  color: #d83559 !important;
   font-family: 'Nunito' !important;
   font-weight: bold;
   font-size: 18px !important;
 }
 
 .tituloSendero {
-  color: #f2f2f2 !important;
+  color: #d83559 !important;
   font-family: 'Nunito' !important;
   font-weight: bold;
   font-size: 18px !important;
 }
 
 .headerSenderos {
-  background-color: #d83559;
+  /*background-color: #d83559;*/
   height: auto !important;
 }
 

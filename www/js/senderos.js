@@ -28,8 +28,12 @@ var senderosResult = [];
 var gps_marker = 0;
 
 $$(document).on('DOMContentLoaded', function(){
-    app.f7.popup.open('.popup-preloader');
+    //app.f7.popup.open('.popup-preloader');
     loadSenderos();
+
+
+
+        loadSenderos();
 });
 
 //Funcion que se ejecuta al cargar la vista senderos..
@@ -38,6 +42,10 @@ $$(document).on('DOMContentLoaded', function(){
 
 
 function loadSenderos(){
+
+
+
+
     document.getElementById('senderosResultDiv').innerHTML = "";
     internet = checkInternet();
 
@@ -62,46 +70,34 @@ function loadSenderos(){
                 var tmp =
                     '<div class="card demo-card-header-pic senderoCard" data-senderoid="' + rs.rows.item(i).ID + '">' +
                     '   <div class="card-header align-items-flex-end headerSenderos" > ' +
-                    '        <p class="tituloSendero">' + rs.rows.item(i).Nombre + '</p>' +
+                    '        <span class="tituloSendero">' + rs.rows.item(i).Nombre + '</span>' +
                     '   </div>' +
                     '   <div class="card-content card-content-padding">' +
                     '       <div class="row">' +
                     '           <div class="col-50 card-header align-items-flex-end senderosImg" style="background-image:url('  + img + ' ")>' +
                     '           </div>' +
                     '           <div class="col-50 senderosInfo">' +
-                    '               <div class="list">' +
-                    '                <ul>' +
-                    '                   <li>' +
-                    '                       <div class="item-content">' +
-                    '                           <div class="item-inner">' +
-                    '                                   <div class="item-title chipSendero">Distancia</div>' +
-                    '                                   <div class="item-after">' + rs.rows.item(i).Distancia + ' km</div>' +
-                    '                            </div>' +
-                    '                       </div>' +
-                    '                    </li>' +
-                    '                    <li>' +
-                    '                       <div class="item-content">' +
-                    '                           <div class="item-inner">' +
-                    '                               <div class="item-title chipSendero">Dificultad</div>' +
-                    '                                   <div class="item-after">' + rs.rows.item(i).TipoDificultadFisica + '</div>' +
-                    '                               </div>' +
-                    '                           </div>' +
-                    '                    </li>' +
-                    '                    <li>' +
-                    '                       <div class="item-content">' +
-                    '                           <div class="item-inner">' +
-                    '                               <div class="item-title chipSendero">Duración</div>' +
-                    '                                   <div class="item-after">' + rs.rows.item(i).DuracionTotal + '</div>' +
-                    '                               </div>' +
-                    '                           </div>' +
-                    '                   </li>' +
-                    '                  </ul>' +
+                    '               <div class="chip chipSendero">' +
+                    '                   <div class="chip-media bg-color-pink">' +
+                    '                       <img src="img/distance.svg">' +
+                    '                   </div>' +
+                    '                  <div class="chip-label" id="distancia">Distancia: ' + rs.rows.item(i).Distancia + 'km</div>' +
                     '               </div>' +
+                    '               <div class="chip chipSendero">' +
+                    '                   <div class="chip-media bg-color-pink">' +
+                    '                       <img src="img/dificultad.svg">' +
+                    '                   </div>' +
+                    '                  <div class="chip-label" id="distancia">Dificultad: ' + rs.rows.item(i).TipoDificultadFisica + '</div>' +
+                    '               </div>' +
+                    '               <div class="chip chipSendero">' +
+                    '                   <div class="chip-media bg-color-pink">' +
+                    '                       <img src="img/clock.svg">' +
+                    '                   </div>' +
+                    '                  <div class="chip-label" id="distancia">Duración: ' + rs.rows.item(i).DuracionTotal + '</div>' +
                     '           </div>' +
                     '       </div>' +
                     '   </div>' +
-                    '</div>' +
-                    '<br>';
+                    '</div>';
 
                 $$("#senderosResultDiv").append(tmp);
 
@@ -109,8 +105,8 @@ function loadSenderos(){
             }
             
             //quita el preloader de senderos
-            app.f7.popup.close('.popup-preloader')
-
+            //app.f7.popup.close('.popup-preloader')
+            app.f7.dialog.close();
             $$(".senderoCard").click(function () {
                 app.f7.popup.open('.popup-senderos')
                 senderoID = $(this).data().senderoid;
@@ -260,13 +256,13 @@ function onPopUpOpen(){
 
         //L.marker([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud], {icon: mk_inicio}).addTo(mymap).bindPopup("Este es punto de inicio del circuito..");
         //L.marker([rs.rows.item(255).Latitud,rs.rows.item(255).Longitud], {icon: mk_fin}).addTo(mymap).bindPopup("Este es punto de fin del circuito..");
-        
+
         db.executeSql('SELECT IDSendero, Descripcion, Latitud, Longitud, TipoPuntoInteresID FROM SenderoPuntoInteres WHERE IDSendero=' + senderoID, [], function (rs2) {
             console.dir(rs2);
             for (var i = 0; i < rs2.rows.length; i++) {
                 L.marker([rs2.rows.item(i).Latitud,rs2.rows.item(i).Longitud], {icon: MarcadorPuntoInteres(rs2.rows.item(i).TipoPuntoInteresID)}).addTo(mymap).bindPopup(rs2.rows.item(i).Descripcion);
             }
-                
+
         });
 
         $$("#comollego").click(function(){

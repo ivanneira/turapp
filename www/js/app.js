@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             console.log("welcome screen opened");
         },
         'onClosed': function () {
-            app.f7.popup.open('.popup-preloader')
+            app.f7.dialog.preloader('Espere mientras se cargan los senderos');
             console.log("welcome screen closed");
         }
     };
@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 
 
-    //app.f7.welcomescreen.open() Abre el wellcome screen
+    app.f7.welcomescreen.open()
     var mainView = app.views.create('.view-main');
 
     Dom7(document).on('click', '.tutorial-close-btn', function () {

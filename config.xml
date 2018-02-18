@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="tur.app.TurismoSJ" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>TurApp</name>
+    <name>Senderismo San Juan</name>
     <description>
         Ministerio de Turismo y Cultura - San Juan Argentina.
     </description>
@@ -17,6 +17,7 @@
     <allow-intent href="geo:*" />
     <preference name="loadUrlTimeoutValue" value="0" />
     <preference name="ShowSplashScreenSpinner" value="false" />
+    <preference name="SplashScreenDelay" value="8000" />
     <platform name="android">
         <allow-intent href="market:*" />
     </platform>

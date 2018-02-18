@@ -304,7 +304,13 @@ function onPopUpOpen(){
             L.marker([rs.rows.item(255).Latitud,rs.rows.item(255).Longitud], {icon: mk_fin}).addTo(mymap).bindPopup("Este es punto de fin del circuito..");
             //L.marker([51.495, -0.083], {icon: redIcon}).addTo(map).bindPopup("I am a red leaf.");
             //L.marker([51.49, -0.1], {icon: orangeIcon}).addTo(map).bindPopup("I am an orange leaf.");
-
+            db.executeSql('SELECT IDSendero, Descripcion, Latitud, Longitud, TipoPuntoInteresID FROM SenderoPuntoInteres WHERE IDSendero=' + senderoID, [], function (rs2) {
+                console.dir(rs2);
+                for (var i = 0; i < rs2.rows.length; i++) {
+                    L.marker([rs2.rows.item(i).Latitud,rs2.rows.item(i).Longitud], {icon: mk_inicio}).addTo(mymap).bindPopup(rs2.rows.item(i).Descripcion);
+                }
+                    
+            });
 
             $$("#comollego").click(function(){
                 navigate([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud]);

@@ -6,7 +6,7 @@ var LeafIcon = L.Icon.extend({
         //shadowSize:   [50, 64],
         iconAnchor:   [15, 40],
         shadowAnchor: [4, 62],
-        popupAnchor:  [-12, -45]
+        popupAnchor:  [0, -45]
     }
 });
 

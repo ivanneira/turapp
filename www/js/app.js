@@ -315,7 +315,7 @@ function filetransfer(download_link, fp,id,filetype) {
             console.log("complete")
             app.f7.preloader.hide();
             if(filetype == 0){
-            UpdateFilePathDB(entry.toURL(),id,filetype)
+                UpdateFilePathDB(entry.toURL(),id,filetype)
             }else
             {
                 console.log(" RUTA "+ entry.toURL() + " ID " + id + " TYPE " +  filetype)
@@ -468,7 +468,7 @@ function syncSenderos()
                 
                                 // DownloadFile(RecursoWeb+response.Senderos[i].RutaImagen,"",response.Senderos[i].ID,response.Senderos[i].ID,0)
                 
-                                strSQL = strSQL + "(" + response.Senderos[i].ID +"," + response.Senderos[i].SenderoSector.ID + ",'" + response.Senderos[i].SenderoSector.NombreDepartamento +  "','" +  response.Senderos[i].SenderoSector.Nombre + "','" + response.Senderos[i].SenderoSector.PesoZipMapa + "','" + response.Senderos[i].Nombre + "','"+response.Senderos[i].Descripcion+"','"+response.Senderos[i].LugarInicio+"','"+response.Senderos[i].LugarFin+"','"+response.Senderos[i].Distancia+"','"+response.Senderos[i].Desnivel+"','"+response.Senderos[i].DuracionTotal+"','"+response.Senderos[i].AlturaMaxima+"','"+response.Senderos[i].TipoDificultadFisica+"','"+response.Senderos[i].TipoDificultadTecnica+"',''),"
+                                strSQL = strSQL + "(" + response.Senderos[i].ID +"," + response.Senderos[i].SenderoSector.ID + ",'" + response.Senderos[i].SenderoSector.NombreDepartamento +  "','" +  response.Senderos[i].SenderoSector.Nombre + "','" + response.Senderos[i].SenderoSector.PesoZipMapa + "','" + response.Senderos[i].Nombre + "','"+response.Senderos[i].Descripcion+"','"+response.Senderos[i].LugarInicio+"','"+response.Senderos[i].LugarFin+"','"+response.Senderos[i].Distancia+"','"+response.Senderos[i].Desnivel+"','"+response.Senderos[i].DuracionTotal+"','"+response.Senderos[i].AlturaMaxima+"','"+response.Senderos[i].TipoDificultadFisica+"','"+response.Senderos[i].TipoDificultadTecnica+"','"+response.Senderos[i].InfoInteres+"'),"
                                 for(var x=0; x<response.Senderos[i].SenderoPuntoElevacion.length;x++)
                                 {
                                     strSQL2 = strSQL2 + "(" + x + ","+response.Senderos[i].ID+", '"+response.Senderos[i].SenderoPuntoElevacion[x].Latitud+"','"+response.Senderos[i].SenderoPuntoElevacion[x].Longitud+"','"+response.Senderos[i].SenderoPuntoElevacion[x].Altura+"'),"

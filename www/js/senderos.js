@@ -34,9 +34,6 @@ $$(document).on('DOMContentLoaded', function(){
     //app.f7.popup.open('.popup-preloader');
     loadSenderos();
 
-
-
-        loadSenderos();
 });
 
 //Funcion que se ejecuta al cargar la vista senderos..

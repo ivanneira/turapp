@@ -176,7 +176,7 @@ function onPopUpOpen(){
 
     var mapTemplate =
                     '<br>' +
-                    '<button id="btn_download" class="button button-raised button-fill">Descargar mapa</button>' +
+                    '<div id="btn_down_container"><button id="btn_download" class="button button-raised button-fill">Descargar mapa</button></div>' +
                     '<br>' +
                     '<div class="card">' +
                     '   <div id="nombre" class="card-header mapaheader tituloSendero2"></div>'+
@@ -264,10 +264,11 @@ function onPopUpOpen(){
 
         }
         else{
-            $$("#btn_download").css("display","none");
-            $$("#btn_download").click(function () {
-                alert("El ya ha sido descargado.")
-            })
+            $$("#btn_down_container").html("<p>Este mapa se encuentra disponible sin conexion.</p>");
+            //$$("#btn_download").css("display","none");
+            //$$("#btn_download").click(function () {
+            //    alert("El ya ha sido descargado.")
+            //})
         }
 
     }, function(error) {

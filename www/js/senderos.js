@@ -185,7 +185,7 @@ function onPopUpOpen(){
             '               <div class="item-inner">' +
             '                   <div class="item-title">' +
             '                       <div class="item-header " id="departamento"></div>' +
-            '                       <span id="sector"></span>' +
+            '                       <span id="sector" style="white-space: inherit;"></span>' +
             '                   </div>' +
             '               </div>' +
             '           </a>' +

@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }
     ];
 
-    //Framework7.use(Framework7WelcomescreenPlugin);
+    Framework7.use(Framework7WelcomescreenPlugin);
 
     var app  = new Framework7({
         root: '#app', // App root element
@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 
 
-    //app.f7.welcomescreen.open()
+    app.f7.welcomescreen.open()
     var mainView = app.views.create('.view-main');
 
     Dom7(document).on('click', '.tutorial-close-btn', function () {

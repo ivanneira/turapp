@@ -177,26 +177,41 @@ function onPopUpOpen(){
             '<div id="btn_down_container"></div>' +
             '<br>' +
             '<div class="card">' +
-            '   <div id="nombre222" class="card-header mapaheader tituloSendero2"></div>'+
+            '   <div class="card-header mapaheader">' +
+            '       <div class="list">' +
+            '         <ul>' +
+            '           <li>' +
+            '           <a href="#" class="item-content">' +
+            '               <div class="item-inner">' +
+            '                   <div class="item-title">' +
+            '                       <div class="item-header " id="departamento"></div>' +
+            '                       <span id="sector"></span>' +
+            '                   </div>' +
+            '               </div>' +
+            '           </a>' +
+            '           </li>' +
+            '       </ul>' +
+            '   </div>' +
+            '   </div>'+
             '   <div id ="mapid" class="card-content card-content-padding"></div>'+
             '   <div id="elevChart"></div>' +
             '   <button id="comollego" class="button button-raised button-fill"><i class="icon f7-icons">navigation_fill</i>Indicaciones para llegar </button>'+
             '</div>' +
             '<br>' +
             '<div class="card">' +
-            '   <div class="card-header">Detalles del mapa</div>' +
+            '   <div class="card-header tituloSendero headerSenderos">Detalles del mapa</div>' +
             '   <div class="card-content card-content-padding text-align-center">' +
                 detalle +
             '   </div>' +
             '</div>' +
             '<br>' +
             '<div class="card">' +
-            '<div class="card-header">Descripción</div>' +
+            '<div class="card-header tituloSendero headerSenderos">Descripción</div>' +
             '<div id="descripcion" class="card-content card-content-padding"></div>' +
             '</div>' +
             '<br>' +
             '<div class="card">' +
-            '<div class="card-header">Información de interés</div>' +
+            '<div class="card-header tituloSendero headerSenderos">Información de interés</div>' +
             '<div id="info" class="card-content card-content-padding"></div>' +
             '</div>';
 
@@ -235,19 +250,25 @@ function onPopUpOpen(){
 
     db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
-        db.executeSql('SELECT spe.Latitud,s.DepartamentoNombre, spe.Longitud, spe.Altura,s.PesoZipMapa,s.ID, s.Descripcion,smap.map,s.LugarInicio,s.LugarFin,s.Distancia,s.Desnivel,s.DuracionTotal,s.AlturaMaxima, s.Nombre, s.InfoInteres FROM SenderoPuntoElevacion as spe left join Senderos as s on s.ID = spe.IDSendero left join SenderoRecursosMap as smap on smap.IDSector = s.IDSector where spe.IDSendero=' + senderoID + ' order by spe.ID asc', [], function (rs) {
+        db.executeSql('SELECT spe.Latitud,s.DepartamentoNombre, spe.Longitud, spe.Altura,s.PesoZipMapa,s.ID, s.Descripcion,smap.map,s.LugarInicio,s.LugarFin,s.Distancia,s.Desnivel,s.DuracionTotal,s.AlturaMaxima, s.Nombre, s.InfoInteres, s.SectorNombre FROM SenderoPuntoElevacion as spe left join Senderos as s on s.ID = spe.IDSendero left join SenderoRecursosMap as smap on smap.IDSector = s.IDSector where spe.IDSendero=' + senderoID + ' order by spe.ID asc', [], function (rs) {
 
-            console.log("--dkjfhgdskjfhdskjfhjksdfhjkdsfk--")
-            console.dir(rs)
+            //console.log("--dkjfhgdskjfhdskjfhjksdfhjkdsfk--")
+            //console.dir(rs)
             var soucerMap = rs.rows.item(0).map +  "Google Hibrido"
-            console.log("soucerMap " + soucerMap)
+            //console.log("soucerMap " + soucerMap)
              mymap = L.map('mapid').setView([rs.rows.item(0).Latitud, rs.rows.item(0).Longitud], 16);
             var x;
             if(internet == 0) {
                 x = L.tileLayer(soucerMap+'/{z}/{x}/{y}.jpg', {maxZoom: 18, minZoom: 15}).addTo(mymap);
             }
             else{
-                $$("#btn_down_container").append('<button id="btn_download" class="button button-raised button-fill">Descargar mapa</button>');
+                var mapSize = (rs.rows.item(0).PesoZipMapa !== '') ? '('+ rs.rows.item(0).PesoZipMapa +')' : '';
+                console.log("peso")
+                console.log(rs.rows.item(0).PesoZipMapa)
+
+                $$("#btn_down_container").append('<button id="btn_download" class="button button-raised button-fill"><i class="icon f7-icons color-white">download</i>&nbsp Descargar mapa'+ mapSize +'</button>');
+
+
                 x = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {maxZoom: 18, minZoom: 7,subdomains:['mt0','mt1','mt2','mt3']}).addTo(mymap);
             }
             gps_marker = L.marker([myLat,myLong]).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
@@ -293,6 +314,8 @@ function onPopUpOpen(){
         $$("#altmaxima").append(" " +rs.rows.item(0).AlturaMaxima + "m");
         $$("#descripcion").append(" " +rs.rows.item(0).Descripcion);
         $$("#info").append(" " +rs.rows.item(0).InfoInteres);
+        $$("#departamento").append(" " +rs.rows.item(0).DepartamentoNombre);
+        $$("#sector").append(" " +rs.rows.item(0).SectorNombre);
 
 
         for (var i = 0; i < rs.rows.length; i++) {

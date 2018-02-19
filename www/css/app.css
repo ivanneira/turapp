@@ -53,6 +53,8 @@ p {
 .card {
   color: #000;
   background-color: #fff !important;
+  margin-left: 15px !important;
+  margin-right: 15px !important;
 }
 /*noticias cards*/
 .demo-card-header-pic .card-header {
@@ -161,7 +163,7 @@ p {
 
   font-family: 'Nunito';
   color: #f2f2f2;
-  background-color: #d83559;
+  background-color: #d83559 !important;
 }
 
 #elevChart{
@@ -209,14 +211,14 @@ p {
 }
 
 .tituloSendero {
-  color: #d83559 !important;
+  color: #FFF !important;
   font-family: 'Nunito' !important;
   font-weight: bold;
   font-size: 18px !important;
 }
 
 .headerSenderos {
-  background-color: #dddddd;
+  background-color: #5dd1b7;
   height: auto !important;
 }
 
@@ -251,4 +253,19 @@ p {
 .guiatitulo {
 
     font-size: 14px !important;
+}
+
+.btnemergencias {
+
+    padding: 10px !important;
+}
+
+.item-subtitle {
+
+  color: #f2f2f2 !important;
+}
+
+.mapaheader {
+
+  background-color: #55b9a1 !important;
 }

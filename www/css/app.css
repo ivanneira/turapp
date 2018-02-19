@@ -135,7 +135,7 @@ p {
 .item-title{
 
   color: #f2f2f2 !important;
-
+  white-space: inherit;
 }
 
 .menuImg {

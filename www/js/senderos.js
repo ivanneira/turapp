@@ -44,7 +44,7 @@ $$(document).on('DOMContentLoaded', function(){
 function loadSenderos(){
 
 
-
+    
 
     document.getElementById('senderosResultDiv').innerHTML = "";
     internet = checkInternet();

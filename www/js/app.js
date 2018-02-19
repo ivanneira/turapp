@@ -7,6 +7,9 @@ var conn ="";
 var isOffline = 'onLine' in navigator && !navigator.onLine;
 var mapaExiste =
     '<div class="chip color-green">' +
+    '<div class="chip-media">'+
+    '<i class="icon f7-icons color-white">download</i>'+
+    '</div>' +
     '    <div class="chip-label">Mapa descargado</div>' +
     '</div>';
 
@@ -141,6 +144,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     var homeView = app.views.create('#view-home', {
         url: '/',
+        on: {
+            BeforeIn: function(){
+
+                console.log("sdfa")
+
+            }
+        }
     });
     var noticiasView = app.views.create('#view-noticias', {
         url: '/noticias/'
@@ -247,7 +257,7 @@ function onDeviceReady() {
     document.addEventListener( 'pause',onPause, false );
     document.addEventListener( 'resume', onResume, false );
 
-    // TODO: Cordova se ha cargado. Haga aquí las inicializaciones que necesiten Cordova.
+
 
 };
 //First step check parameters mismatch and checking network connection if available call    download function
@@ -257,7 +267,7 @@ function DownloadFile(URL, Folder_Name, File_Name,id,filetype) {
         return;
     }
     else {
-        internet = checkInternet()
+        //internet = checkInternet()
         if(internet == 1) {
             download(URL, Folder_Name, File_Name, id, filetype); //If available download function call
         }
@@ -534,7 +544,7 @@ function syncSenderos()
 
 function checkInternet() //devuelve 0 si no hay conexion , 1 si hay conexion.
 {
-    app.f7.dialog.preloader("Espere por favor");
+    //app.f7.dialog.preloader("Espere por favor");
     try {
     
         var isOffline = 'onLine' in navigator && !navigator.onLine;
@@ -567,19 +577,23 @@ function checkInternet() //devuelve 0 si no hay conexion , 1 si hay conexion.
                     return 1;
                 }
             }
+        app.f7.dialog.preloader.close();
             return 0;
     }
     catch(err) {
         var isOffline = 'onLine' in navigator && !navigator.onLine;
         if(isOffline){
             console.log("offline");
+            app.f7.dialog.preloader.close();
             return 0;
         }
         else{
             console.log("online");
+            app.f7.dialog.preloader.close();
             return 1;
         }
     }
+    app.f7.dialog.preloader.close();
 
 }
 

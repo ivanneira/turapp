@@ -18,7 +18,8 @@
       "cordova-plugin-x-toast": {},
       "call-number": {},
       "uk.co.workingedge.phonegap.plugin.launchnavigator": {},
-      "mx.ferreyra.callnumber": {}
+      "mx.ferreyra.callnumber": {},
+      "cordova-plugin-file-transfer": {}
     }
   },
   "dependencies": {
@@ -38,6 +39,7 @@
     "cordova-plugin-zeep": "0.0.4",
     "cordova-sqlite-storage": "^2.2.1",
     "gradle": "^1.0.9",
+    "mx.ferreyra.callnumber": "~0.0.2",
     "uk.co.workingedge.phonegap.plugin.launchnavigator": "^4.1.3"
   }
 }

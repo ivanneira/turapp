@@ -120,6 +120,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }
     ];
 
+
     Framework7.use(Framework7WelcomescreenPlugin);
 
     var app  = new Framework7({
@@ -127,16 +128,22 @@ document.addEventListener("DOMContentLoaded", function(event) {
         id: 'io.sanjuansalud.turApp', // App bundle ID
         name: 'turApp', // App name
         theme: 'auto', // Automatic theme detection
-        welcomescreen: {
+        /*welcomescreen: {
             slides: welcomescreen_slides,
             options: options,
-        },
+        },*/
 
         routes: routes,
     });
 
     var homeView = app.views.create('#view-home', {
-        url: '/'
+        url: '/',
+        on: {
+            pageBeforeIn: function(){
+                //app.f7.welcomescreen.open();
+            }
+        }
+
     });
     var noticiasView = app.views.create('#view-noticias', {
         url: '/noticias/'
@@ -165,16 +172,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 
 
-    app.f7.welcomescreen.open()
+
     var mainView = app.views.create('.view-main');
 
     Dom7(document).on('click', '.tutorial-close-btn', function () {
-        //app.f7.welcomescreen.close();
+        app.f7.welcomescreen.close();
     });
 
-    Dom7('.tutorial-open-btn').click(function () {
+    /*
+        Dom7('.tutorial-open-btn').click(function () {
+
         app.welcomescreen.open();
     });
+    */
 
     Dom7(document).on('click', '.tutorial-next-link', function (e) {
         app.welcomescreen.next();

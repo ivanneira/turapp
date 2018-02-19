@@ -12,49 +12,101 @@
     </div>
     <div class="page-content">
         <br>
-        <div class="card tituloSendero padding">
-            Toque cualquiera de los botones en rojo para llamar ahora a un servicio de emergencia
+        <div class="card advertencia padding">
+            Toque cualquiera de los botones  para llamar ahora a un servicio de emergencia
         </div>
 
         <div class="card">
 
             <div class="list">
                 <ul>
-                    <li>
-                        <a href="#" class="item-content">
-                            <div class="item-media"><i class="icon f7-icons">phone_round_fill</i></div>
+                    <li class="btnemergencias">
+                        <a href="#" onclick="javascript:CallPhone(911);" class="item-link item-content">
+                            <div class="item-media"><i class="icon f7-icons color-white">phone_round_fill</i></div>
                             <div class="item-inner">
                                 <div class="item-title">
-                                    <div class="item-header guiatitulo">Abriendo Huellas</div>
-                                    <span class="phone guianumero">+549 264 154156215</span>
+                                    <div class="item-header guiatitulo">Emergencias</div>
+                                    <span class="phone guianumero">911</span>
                                 </div>
                             </div>
                         </a>
                     </li>
-
                     <li class="btnemergencias">
-                        <button onclick="javascript:CallPhone(911);" class="col button button-big button-raised button-fill color-red "><i class="icon f7-icons color-white">phone_round_fill</i> Emergencias</button>
+                        <a href="#" onclick="javascript:CallPhone(101);" class="item-link item-content">
+                            <div class="item-media"><i class="icon f7-icons color-white">phone_round_fill</i></div>
+                            <div class="item-inner">
+                                <div class="item-title">
+                                    <div class="item-header guiatitulo">Policía</div>
+                                    <span class="phone guianumero">101</span>
+                                </div>
+                            </div>
+                        </a>
                     </li>
                     <li class="btnemergencias">
-                        <button onclick="javascript:CallPhone(101);" class="col button button-big button-raised button-fill color-red "><i class="icon f7-icons color-white">phone_round_fill</i> Policía</button>
+                        <a href="#" onclick="javascript:CallPhone(100);" class="item-link item-content">
+                            <div class="item-media"><i class="icon f7-icons color-white">phone_round_fill</i></div>
+                            <div class="item-inner">
+                                <div class="item-title">
+                                    <div class="item-header guiatitulo">Bomberos</div>
+                                    <span class="phone guianumero">100</span>
+                                </div>
+                            </div>
+                        </a>
                     </li>
                     <li class="btnemergencias">
-                        <button onclick="javascript:CallPhone(100);" class="col button button-big button-raised button-fill color-red "><i class="icon f7-icons color-white">phone_round_fill</i> Bomberos</button>
+                        <a href="#" onclick="javascript:CallPhone(107);" class="item-link item-content">
+                            <div class="item-media"><i class="icon f7-icons color-white">phone_round_fill</i></div>
+                            <div class="item-inner">
+                                <div class="item-title">
+                                    <div class="item-header guiatitulo">Emergencias Médicas</div>
+                                    <span class="phone guianumero">107</span>
+                                </div>
+                            </div>
+                        </a>
                     </li>
                     <li class="btnemergencias">
-                        <button onclick="javascript:CallPhone(107);" class="col button button-big button-raised button-fill color-red "><i class="icon f7-icons color-white">phone_round_fill</i> Emergencias Médicas</button>
+                        <a href="#" onclick="javascript:CallPhone(4217070);" class="item-link item-content">
+                            <div class="item-media"><i class="icon f7-icons color-white">phone_round_fill</i></div>
+                            <div class="item-inner">
+                                <div class="item-title">
+                                    <div class="item-header guiatitulo">AME Emergencias</div>
+                                    <span class="phone guianumero">+54 264 4217070</span>
+                                </div>
+                            </div>
+                        </a>
                     </li>
                     <li class="btnemergencias">
-                        <button onclick="javascript:CallPhone(4217070);" class="col button button-big button-raised button-fill color-red "><i class="icon f7-icons color-white">phone_round_fill</i> AME Emergencias</button>
+                        <a href="#" onclick="javascript:CallPhone(4200911);" class="item-link item-content">
+                            <div class="item-media"><i class="icon f7-icons color-white">phone_round_fill</i></div>
+                            <div class="item-inner">
+                                <div class="item-title">
+                                    <div class="item-header guiatitulo">ECI Emergencias</div>
+                                    <span class="phone guianumero">+54 264 4200911</span>
+                                </div>
+                            </div>
+                        </a>
                     </li>
                     <li class="btnemergencias">
-                        <button onclick="javascript:CallPhone(4200911);" class="col button button-big button-raised button-fill color-red "><i class="icon f7-icons color-white">phone_round_fill</i> ECI Emergencias</button>
+                        <a href="#" onclick="javascript:CallPhone(4336000);" class="item-link item-content">
+                            <div class="item-media"><i class="icon f7-icons color-white">phone_round_fill</i></div>
+                            <div class="item-inner">
+                                <div class="item-title">
+                                    <div class="item-header guiatitulo">Hospital. M. Quiroga</div>
+                                    <span class="phone guianumero">+54 264 4336000</span>
+                                </div>
+                            </div>
+                        </a>
                     </li>
                     <li class="btnemergencias">
-                        <button onclick="javascript:CallPhone(4336000);" class="col button button-big button-raised button-fill color-red "><i class="icon f7-icons color-white">phone_round_fill</i> Hospital. M. Quiroga</button>
-                    </li>
-                    <li class="btnemergencias">
-                        <button onclick="javascript:CallPhone(4227777);" class="col button button-big button-raised button-fill color-red "><i class="icon f7-icons color-white">phone_round_fill</i> Hospital G. Rawson</button>
+                        <a href="#" onclick="javascript:CallPhone(4227777);" class="item-link item-content">
+                            <div class="item-media"><i class="icon f7-icons color-white">phone_round_fill</i></div>
+                            <div class="item-inner">
+                                <div class="item-title">
+                                    <div class="item-header guiatitulo">Hospital G. Rawson</div>
+                                    <span class="phone guianumero">+54 264 4227777</span>
+                                </div>
+                            </div>
+                        </a>
                     </li>
                 </ul>
             </div>

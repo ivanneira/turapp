@@ -31,7 +31,7 @@ var Framework7WelcomescreenPlugin = {
         pagination: true,         // swiper pagination, 
         navigation: false,        // swiper navigation
         loop: false,              // swiper loop
-        open: true,               // open welcome screen on init
+        open: false,               // open welcome screen on init
         parallax: false,          // adds parallax capabilities
         parallaxSpeed: 600,       // parallax default speed
         parallaxBackgroundImage: 'http://lorempixel.com/900/600/nightlife/2/', // parallax default background image

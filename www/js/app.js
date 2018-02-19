@@ -79,6 +79,7 @@ var timeOut = 30000;
 
 document.addEventListener("DOMContentLoaded", function(event) {
 
+
     var options = {
         'bgcolor': '#55b9a1',
         'fontcolor': '#fff',
@@ -98,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             id: 'slide0',
             title: 'Bienvenido',
             picture: '<div class="tutorialicon"><img src="img/inicio.svg" height="80px"></div>',
-            text: 'Gracias por descargar <b>TurApp</b>  Descubre Senderos, Circuitos y  rutas, descarga mapas topográficos con todo detalle y disfruta tus aventuras al aire libre con el sistema de navegación integrada.<br><br>Desliza para continuar →'
+            text: 'Gracias por descargar <b>Senderismo San Juan</b>  Descubre Senderos, Circuitos y  rutas, descarga mapas topográficos con todo detalle y disfruta tus aventuras al aire libre con el sistema de navegación integrada.<br><br>Desliza para continuar →'
         },
         {
             id: 'slide1',
@@ -110,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             id: 'slide2',
             title: 'Tips - Información',
             picture: '<div class="tutorialicon"><img src="img/inicio.svg" height="80px"></div>',
-            text: 'TurApp te da la opción de Descargar los mapas de los circuitos publicados para que no tengas que requerir de algun tipo de conectividad en tus aventuras al aire libre.Es importante que <b><u>Descargues</u></b> el mapa que sea de tu interés antes de comenzar una aventura.<br><br>Desliza para continuar →'
+            text: 'Senderismo San Juan te da la opción de Descargar los mapas de los circuitos publicados para que no tengas que requerir de algun tipo de conectividad en tus aventuras al aire libre.Es importante que <b><u>Descargues</u></b> el mapa que sea de tu interés antes de comenzar una aventura.<br><br>Desliza para continuar →'
         },
         {
             id: 'slide3',
@@ -128,22 +129,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
         id: 'io.sanjuansalud.turApp', // App bundle ID
         name: 'turApp', // App name
         theme: 'auto', // Automatic theme detection
-        /*welcomescreen: {
+        welcomescreen: {
             slides: welcomescreen_slides,
             options: options,
-        },*/
+        },
 
         routes: routes,
     });
 
+
+
     var homeView = app.views.create('#view-home', {
         url: '/',
-        on: {
-            pageBeforeIn: function(){
-                //app.f7.welcomescreen.open();
-            }
-        }
-
     });
     var noticiasView = app.views.create('#view-noticias', {
         url: '/noticias/'
@@ -537,7 +534,7 @@ function syncSenderos()
 
 function checkInternet() //devuelve 0 si no hay conexion , 1 si hay conexion.
 {
-
+    app.f7.dialog.preloader("Espere por favor");
     try {
     
         var isOffline = 'onLine' in navigator && !navigator.onLine;
@@ -561,12 +558,12 @@ function checkInternet() //devuelve 0 si no hay conexion , 1 si hay conexion.
             {
                 if ( isOffline ) {
                     //local db
-                    window.plugins.toast.show("Offline","3000","bottom");
+                    //window.plugins.toast.show("Offline","3000","bottom");
                     return 0;
                 }
                 else {
                     console.log("toast online");
-                    window.plugins.toast.show("Online","3000","bottom");
+                    //window.plugins.toast.show("Online","3000","bottom");
                     return 1;
                 }
             }
@@ -717,7 +714,7 @@ function navigate(hasta)
     // onError Callback receives a PositionError object
     //
     var _onError = function (error) {
-        window.plugins.toast.show('Código: '+ error.code +'\n' +' Detalle: ' + error.message + '\n',"2000","bottom");
+        //window.plugins.toast.show('Código: '+ error.code +'\n' +' Detalle: ' + error.message + '\n',"2000","bottom");
     }
 
 

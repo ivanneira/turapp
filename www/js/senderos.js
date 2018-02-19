@@ -31,7 +31,7 @@ L.icon = function (options) {
 var senderosResult = [];
 
 $$(document).on('DOMContentLoaded', function(){
-    //app.f7.popup.open('.popup-preloader');
+    
     loadSenderos();
 
 });
@@ -102,13 +102,15 @@ function loadSenderos(){
                     '<br>';
 
                 $$("#senderosResultDiv").append(tmp);
+                app.f7.dialog.close();
 
 
             }
-            
+            app.f7.welcomescreen.open();
             //quita el preloader de senderos
             //app.f7.popup.close('.popup-preloader')
-            app.f7.dialog.close();
+            //app.f7.dialog.close()
+
             $$(".senderoCard").click(function () {
                 app.f7.popup.open('.popup-senderos')
                 senderoID = $(this).data().senderoid;
@@ -116,6 +118,7 @@ function loadSenderos(){
             });
 
         }, function (error) {
+            app.f7.dialog.close();
             console.log('SELECT SQL statement ERROR: ' + error.message);
         });
 }
@@ -317,6 +320,7 @@ function onPopUpOpen(){
         $$("#departamento").append(" " +rs.rows.item(0).DepartamentoNombre);
         $$("#sector").append(" " +rs.rows.item(0).SectorNombre);
 
+            app.f7.dialog.close()
 
         for (var i = 0; i < rs.rows.length; i++) {
             plArray.push(new L.LatLng(rs.rows.item(i).Latitud, rs.rows.item(i).Longitud));
@@ -340,6 +344,11 @@ function onPopUpOpen(){
 
 function onPopUpClose(){
     gps_marker = 0;
+
+    myLat = 0;
+    myLong = 0;
+
+    mymap = 0;
     clearInterval(llamaGPS);
     $$("#senderoContainer").empty();
 

@@ -46,15 +46,16 @@ function loadSenderos(){
 
     
 
-    document.getElementById('senderosResultDiv').innerHTML = "";
     internet = checkInternet();
 
-    // if(internet == 0) {
+     if(internet == 0) {
+        document.getElementById('senderosResultDiv').innerHTML = "";
+     }
          console.log("Sin internet");
         db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
         db.executeSql('SELECT sen.*,simg.img,(SELECT  Latitud FROM SenderoPuntoElevacion AS spe WHERE spe.IDSendero = sen.ID LIMIT 1) AS LATITUD, (SELECT  Longitud FROM SenderoPuntoElevacion AS spe WHERE spe.IDSendero = sen.ID LIMIT 1) AS LONGITUD FROM Senderos  as sen left join SenderoRecursosImg as simg on simg.IDSendero = sen.ID   ORDER BY sen.DepartamentoNombre,sen.Nombre ASC', [], function (rs) {
-
+            document.getElementById('senderosResultDiv').innerHTML = "";
         //db.executeSql('SELECT sen.*,simg.img FROM Senderos  as sen left join SenderoRecursosImg as simg on simg.IDSendero = sen.ID  ORDER BY sen.Nombre ASC', [], function (rs) {
             console.dir(rs);
             for (var i = 0; i < rs.rows.length; i++) {

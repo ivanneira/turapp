@@ -77,7 +77,7 @@ function successGPS(pos) {
 }
 
 //AJAX timeout
-var timeOut = 30000;
+var timeOutApi = 120000;
 
 
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -460,7 +460,7 @@ function syncSenderos()
             url: updateSenderosAPI,
             cache: false,
             type: 'get',
-            timeout: timeOut,
+            timeout: timeOutApi,
             dataType: "json",
             success: function (response) { 
                 console.log(response)
@@ -471,7 +471,7 @@ function syncSenderos()
                         url: senderosAPI,
                         cache: false,
                         type: 'get',
-                        timeout: timeOut,
+                        timeout: timeOutApi,
                         dataType: "json",
                         success: function (response) {
                             db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
@@ -577,23 +577,23 @@ function checkInternet() //devuelve 0 si no hay conexion , 1 si hay conexion.
                     return 1;
                 }
             }
-        app.f7.dialog.preloader.close();
+        //app.f7.dialog.preloader.close();
             return 0;
     }
     catch(err) {
         var isOffline = 'onLine' in navigator && !navigator.onLine;
         if(isOffline){
             console.log("offline");
-            app.f7.dialog.preloader.close();
+            //app.f7.dialog.preloader.close();
             return 0;
         }
         else{
             console.log("online");
-            app.f7.dialog.preloader.close();
+            //app.f7.dialog.preloader.close();
             return 1;
         }
     }
-    app.f7.dialog.preloader.close();
+    //app.f7.dialog.preloader.close();
 
 }
 

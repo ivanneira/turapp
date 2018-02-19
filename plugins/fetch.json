@@ -18,7 +18,7 @@
   "cordova-sqlite-storage": {
     "source": {
       "type": "registry",
-      "id": "cordova-sqlite-storage@^2.2.0"
+      "id": "cordova-sqlite-storage@^2.2.1"
     },
     "is_top_level": true,
     "variables": {}
@@ -90,7 +90,31 @@
   "mx.ferreyra.callnumber": {
     "source": {
       "type": "registry",
-      "id": "call-number"
+      "id": "call-number@^1.0.1"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-plugin-actionsheet": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-actionsheet@2"
+    },
+    "is_top_level": false,
+    "variables": {}
+  },
+  "cordova-plugin-dialogs": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-dialogs@*"
+    },
+    "is_top_level": false,
+    "variables": {}
+  },
+  "uk.co.workingedge.phonegap.plugin.launchnavigator": {
+    "source": {
+      "type": "registry",
+      "id": "uk.co.workingedge.phonegap.plugin.launchnavigator@^4.1.3"
     },
     "is_top_level": true,
     "variables": {}

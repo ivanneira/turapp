@@ -26,7 +26,7 @@ var Framework7WelcomescreenPlugin = {
       swiperContainer,
       defaults = {
         closeButton: true,        // enabled/disable close button
-        closeButtonText : 'Skip', // close button text
+        closeButtonText : 'Omitir', // close button text
         cssClass: '',             // additional class on container
         pagination: true,         // swiper pagination, 
         navigation: false,        // swiper navigation

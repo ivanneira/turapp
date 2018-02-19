@@ -2,18 +2,26 @@
 var LeafIcon = L.Icon.extend({
     options: {
         //shadowUrl: 'leaf-shadow.png',
-        iconSize:     [22, 22],
+        iconSize:     [30, 40],
         //shadowSize:   [50, 64],
-        iconAnchor:   [22, 22],
-        //shadowAnchor: [4, 62],
-        popupAnchor:  [-3, -76]
+        iconAnchor:   [15, 40],
+        shadowAnchor: [4, 62],
+        popupAnchor:  [0, -45]
     }
 });
 
-var mk_inicio = new LeafIcon({iconUrl: 'img/icons_gps/green.png'}),
-    mk_fin = new LeafIcon({iconUrl: 'img/icons_gps/red.png'}),
-    mk_gps = new LeafIcon({iconUrl: 'img/icons_gps/gps.png'}),
-    mk_elevation = new LeafIcon({iconUrl: 'img/icons_gps/elevation.png'});
+var llamaGPS = 0;
+
+
+
+var mk_inicio = new LeafIcon({iconUrl: 'img/icons_gps/inicio.png'}),
+    mk_fin = new LeafIcon({iconUrl: 'img/icons_gps/fin.png'}),
+    mk_cumbre = new LeafIcon({iconUrl: 'img/icons_gps/cumbre.png'}),
+    mk_estacionamiento = new LeafIcon({iconUrl: 'img/icons_gps/estacionamiento.png'}),
+    mk_mirador = new LeafIcon({iconUrl: 'img/icons_gps/mirador.png'}),
+    mk_interes = new LeafIcon({iconUrl: 'img/icons_gps/interes.png'});
+    mk_maxima = new LeafIcon({iconUrl: 'img/icons_gps/maxima.png'});
+    mk_precaucion = new LeafIcon({iconUrl: 'img/icons_gps/precaucion.png'});
 
 L.icon = function (options) {
     return new L.Icon(options);
@@ -21,11 +29,11 @@ L.icon = function (options) {
 
 
 var senderosResult = [];
-var gps_marker = 0;
 
 $$(document).on('DOMContentLoaded', function(){
+    //app.f7.popup.open('.popup-preloader');
+    loadSenderos();
 
-        loadSenderos();
 });
 
 //Funcion que se ejecuta al cargar la vista senderos..
@@ -35,27 +43,35 @@ $$(document).on('DOMContentLoaded', function(){
 
 function loadSenderos(){
 
+
+
+
+    document.getElementById('senderosResultDiv').innerHTML = "";
     internet = checkInternet();
 
     // if(internet == 0) {
          console.log("Sin internet");
         db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
-        db.executeSql('SELECT sen.*,simg.img FROM Senderos  as sen left join SenderoRecursosImg as simg on simg.IDSendero = sen.ID  ORDER BY sen.Nombre ASC', [], function (rs) {
+        db.executeSql('SELECT sen.*,simg.img,(SELECT  Latitud FROM SenderoPuntoElevacion AS spe WHERE spe.IDSendero = sen.ID LIMIT 1) AS LATITUD, (SELECT  Longitud FROM SenderoPuntoElevacion AS spe WHERE spe.IDSendero = sen.ID LIMIT 1) AS LONGITUD FROM Senderos  as sen left join SenderoRecursosImg as simg on simg.IDSendero = sen.ID   ORDER BY sen.DepartamentoNombre,sen.Nombre ASC', [], function (rs) {
 
+        //db.executeSql('SELECT sen.*,simg.img FROM Senderos  as sen left join SenderoRecursosImg as simg on simg.IDSendero = sen.ID  ORDER BY sen.Nombre ASC', [], function (rs) {
+            console.dir(rs);
             for (var i = 0; i < rs.rows.length; i++) {
 
-                console.dir(rs.rows.item(i))
+
                 var img = rs.rows.item(i).img;
-                console.log();
+                console.log("acxa");
+
                 if (img == null){
                     img = "img/no_disponible.jpg";
                 }
 
                 var tmp =
-                    '<div class="card demo-card-header-pic senderoCard" data-senderoid="' + rs.rows.item(i).ID + '">' +
+                    '<div class="card demo-card-header-pic senderoCard" data-sectorid="' + rs.rows.item(i).IDSector + '" data-senderoid="' + rs.rows.item(i).ID + '">'+
                     '   <div class="card-header align-items-flex-end headerSenderos" > ' +
-                    '        <p class="tituloSendero">' + rs.rows.item(i).Nombre + '</p>' +
+                    '        <span class="tituloSendero">' + rs.rows.item(i).Nombre + '</span>' +
+                    '           <div class="item-subtitle">' + rs.rows.item(i).DepartamentoNombre + '</div>' +
                     '   </div>' +
                     '   <div class="card-content card-content-padding">' +
                     '       <div class="row">' +
@@ -64,190 +80,159 @@ function loadSenderos(){
                     '           <div class="col-50 senderosInfo">' +
                     '               <div class="chip chipSendero">' +
                     '                   <div class="chip-media bg-color-pink">' +
-                    '                       <img id="windDirection" src="img/distance.svg">' +
+                    '                       <img src="img/distance.svg">' +
                     '                   </div>' +
-                    '                  <div class="chip-label" id="distancia">Distancia: ' + rs.rows.item(i).Distancia + ' km</div>' +
+                    '                  <div class="chip-label"><b>Distancia:</b> ' + rs.rows.item(i).Distancia + 'km</div>' +
                     '               </div>' +
                     '               <div class="chip chipSendero">' +
                     '                   <div class="chip-media bg-color-pink">' +
-                    '                       <img id="windDirection" src="img/dificultad.svg">' +
+                    '                       <img src="img/dificultad.svg">' +
                     '                   </div>' +
-                    '                  <div class="chip-label" id="distancia">Dificultad: ' + rs.rows.item(i).TipoDificultadFisica + '</div>' +
+                    '                  <div class="chip-label"><b>Dificultad:</b> ' + rs.rows.item(i).TipoDificultadFisica + '</div>' +
                     '               </div>' +
                     '               <div class="chip chipSendero">' +
                     '                   <div class="chip-media bg-color-pink">' +
-                    '                       <img id="windDirection" src="img/clock.svg">' +
+                    '                       <img src="img/clock.svg">' +
                     '                   </div>' +
-                    '                  <div class="chip-label" id="distancia">Duración: ' + rs.rows.item(i).DuracionTotal + '</div>' +
-                    '               </div>' +
+                    '                  <div class="chip-label"><b>Duración:</b> ' + rs.rows.item(i).DuracionTotal + '</div>' +
                     '           </div>' +
                     '       </div>' +
                     '   </div>' +
-                    '</div>';
+                    '</div>' +
+                    '<br>';
 
                 $$("#senderosResultDiv").append(tmp);
+
+
             }
             
             //quita el preloader de senderos
-            $$(".senderoLoader").remove();
-            
+            //app.f7.popup.close('.popup-preloader')
+            app.f7.dialog.close();
             $$(".senderoCard").click(function () {
                 app.f7.popup.open('.popup-senderos')
                 senderoID = $(this).data().senderoid;
+                sectorID = $(this).data().sectorid;
             });
 
         }, function (error) {
             console.log('SELECT SQL statement ERROR: ' + error.message);
         });
-    // }
-    // else
-    // {
-    //     console.log("Con internet");
-    //     $.ajax({
-    //         url: senderosAPI,
-    //         cache: false,
-    //         type: 'get',
-    //         timeout: timeOut,
-    //         dataType: "json",
-    //         success: function (response) {
-    //             for (var i = 0; i < response.Senderos.length; i++) {
-    //                 var img = response.Senderos[i].RutaImagen;
-    //                 if (img == null) {
-    //                     img = "img/no_disponible.jpg";
-    //                 }
-    //                 else {
-    //                     img = RecursoWeb + response.Senderos[i].RutaImagen;
-    //                 }
-    //                 var tmp = '<div class="card demo-card-header-pic senderoCard" data-senderoid="' + response.Senderos[i].ID + '">' +
-    //                     '<div class="card-header align-items-flex-end lazy lazy-fade-in" style="background-image:url( ' + img + ' )"> ' +
-    //                     '       <div class="chip chipMapa">' +
-    //                     '           <div class="chip-label">Disponible</div>' +
-    //                     '       </div>' +
-    //                     '</div>' +
-    //                     '<div class="card-content card-content-padding">' +
-    //                     '<p class="titulonoticia">' + response.Senderos[i].Nombre + '</p>' +
-    //                     '<p>' + response.Senderos[i].Descripcion + '</p>' +
-    //                     '</div>' +
-    //                     '</div>';
-
-    //                 $$("#senderosResultDiv").append(tmp);
-
-    //             }
-    //             $$(".senderoCard").click(function () {
-    //                 app.f7.popup.open('.popup-senderos')
-    //                 senderoID = $(this).data().senderoid;
-    //             });
-    //         },
-    //         error: function(){
-    //         }
-    //     });
-
-    // }
-    //
 }
 
 
 
 function onPopUpOpen(){
 
-    console.log("open popup")
-
-
+    //console.log("open popup")
 
 
     //el id del sendero llega como variable global, va cambiando según el atributo data-senderoid del tag a
-    console.log("El id del sendero es " + senderoID);
+    //console.log("El id del sendero es " + senderoID);
+    //console.log("El id del sector es " + sectorID);
+
+
+    var detalle =
+        '                       <div class="chip chipDetalle">' +
+        '                           <div class="chip-media bg-color-pink">' +
+        '                               <img src="img/inicio.svg">' +
+        '                           </div>' +
+        '                           <div class="chip-label" id="inicio"><b>Inicio:</b></div>' +
+        '                       </div>' +
+        '                       <div class="chip chipDetalle">' +
+        '                           <div class="chip-media bg-color-pink">' +
+        '                               <img src="img/fin.svg">' +
+        '                           </div>' +
+        '                           <div class="chip-label" id="fin"><b>Fin:</b></div>' +
+        '                       </div>' +
+        '                       <div class="chip chipDetalle">' +
+        '                           <div class="chip-media bg-color-pink">' +
+        '                               <img src="img/distance.svg">' +
+        '                           </div>' +
+        '                           <div class="chip-label" id="distancia"><b>Distancia:</b></div>' +
+        '                       </div>' +
+        '                       <div class="chip chipDetalle">' +
+        '                           <div class="chip-media bg-color-pink">' +
+        '                               <img src="img/desnivel.svg">' +
+        '                           </div>' +
+        '                           <div class="chip-label" id="desnivel"><b>Desnivel:</b></div>' +
+        '                       </div>' +
+        '                       <div class="chip chipDetalle">' +
+        '                           <div class="chip-media bg-color-pink">' +
+        '                               <img src="img/clock.svg">' +
+        '                           </div>' +
+        '                           <div class="chip-label" id="duracion"><b>Duración:</b></div>' +
+        '                       </div>' +
+        '                       <div class="chip chipDetalle">' +
+        '                           <div class="chip-media bg-color-pink">' +
+        '                               <img src="img/maxima.svg">' +
+        '                           </div>' +
+        '                           <div class="chip-label" id="altmaxima"><b>Altura Max:</b></div>' +
+        '                       </div>' +
+        '' +
+        '';
 
     var mapTemplate =
-                    '<br>' +
-                    '<button id="btn_download" class="button button-raised button-fill">Descargar mapa</button>' +
-                    '<br>' +
-                    '<div class="card">' +
-                    '   <div id="nombre" class="card-header mapaheader tituloSendero"></div>'+
-                    '   <div id ="mapid" class="card-content card-content-padding"></div>'+
-                    '</div>' +
-                    '' +
-                    '<div id="elevChart"></div>' +
-                    '<div class="card">' +
-                    '   <div class="card-header">Detalles del mapa</div>' +
-                    '   <div class="card-content card-content-padding text-align-center">' +
-                    '           <div class="list simple-list ">'+
-                    '               <ul>' +
-                    '                    <li>' +
-                    '                       <div class="chip chipClima">' +
-                    '                           <div class="chip-media bg-color-pink">' +
-                    '                               <img id="windDirection" src="img/inicio.svg">' +
-                    '                           </div>' +
-                    '                           <div class="chip-label" id="inicio">Lugar de inicio:</div>' +
-                    '                       </div>' +
-                    '                    </li>'+
-                    '                    <li>' +
-                    '                       <div class="chip chipClima">' +
-                    '                           <div class="chip-media bg-color-pink">' +
-                    '                               <img id="windDirection" src="img/fin.svg">' +
-                    '                           </div>' +
-                    '                           <div class="chip-label" id="fin">Lugar de fin:</div>' +
-                    '                       </div>' +
-                    '                    </li>'+
-                    '                    <li>' +
-                    '                       <div class="chip chipClima">' +
-                    '                           <div class="chip-media bg-color-pink">' +
-                    '                               <img id="windDirection" src="img/distance.svg">' +
-                    '                           </div>' +
-                    '                           <div class="chip-label" id="distancia">Distancia:</div>' +
-                    '                       </div>' +
-                    '                    </li>'+
-                    '                    <li>' +
-                    '                       <div class="chip chipClima">' +
-                    '                           <div class="chip-media bg-color-pink">' +
-                    '                               <img id="windDirection" src="img/desnivel.svg">' +
-                    '                           </div>' +
-                    '                           <div class="chip-label" id="desnivel">Desnivel:</div>' +
-                    '                       </div>' +
-                    '                    </li>'+
-                    '                    <li>' +
-                    '                       <div class="chip chipClima">' +
-                    '                           <div class="chip-media bg-color-pink">' +
-                    '                               <img id="windDirection" src="img/clock.svg">' +
-                    '                           </div>' +
-                    '                           <div class="chip-label" id="duracion">Duración total:</div>' +
-                    '                       </div>' +
-                    '                    </li>'+
-                    '                    <li>' +
-                    '                       <div class="chip chipClima">' +
-                    '                           <div class="chip-media bg-color-pink">' +
-                    '                               <img id="windDirection" src="img/cumbre.svg">' +
-                    '                           </div>' +
-                    '                           <div class="chip-label" id="altmaxima">Altura máxima:</div>' +
-                    '                       </div>' +
-                    '                    </li>'+
-                    '                </ul>' +
-                    '           </div>' +
-                    '   </div>' +
-                    '</div>';
+            '<br>' +
+            '<div id="btn_down_container"></div>' +
+            '<br>' +
+            '<div class="card">' +
+            '   <div class="card-header mapaheader">' +
+            '       <div class="list">' +
+            '         <ul>' +
+            '           <li>' +
+            '           <a href="#" class="item-content">' +
+            '               <div class="item-inner">' +
+            '                   <div class="item-title">' +
+            '                       <div class="item-header " id="departamento"></div>' +
+            '                       <span id="sector" style="white-space: inherit;"></span>' +
+            '                   </div>' +
+            '               </div>' +
+            '           </a>' +
+            '           </li>' +
+            '       </ul>' +
+            '   </div>' +
+            '   </div>'+
+            '   <div id ="mapid" class="card-content card-content-padding"></div>'+
+            '   <div id="elevChart"></div>' +
+            '   <button id="comollego" class="button button-raised button-fill"><i class="icon f7-icons">navigation_fill</i>Indicaciones para llegar </button>'+
+            '</div>' +
+            '<br>' +
+            '<div class="card">' +
+            '   <div class="card-header tituloSendero headerSenderos">Detalles del mapa</div>' +
+            '   <div class="card-content card-content-padding text-align-center">' +
+                detalle +
+            '   </div>' +
+            '</div>' +
+            '<br>' +
+            '<div class="card">' +
+            '<div class="card-header tituloSendero headerSenderos">Descripción</div>' +
+            '<div id="descripcion" class="card-content card-content-padding"></div>' +
+            '</div>' +
+            '<br>' +
+            '<div class="card">' +
+            '<div class="card-header tituloSendero headerSenderos">Información de interés</div>' +
+            '<div id="info" class="card-content card-content-padding"></div>' +
+            '</div>';
 
     $$("#senderoContainer").append(mapTemplate);
 
 
 
-    var urlmapa = RecursoWeb + "/Content/Senderos/1/Mapa/senderoMapa_"+senderoID+".zip";
-    var namemapa = senderoID
 
-    db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
+    var urlmapa = RecursoWeb + "/Content/Sector/"+sectorID+"/Mapa/sectorMapa_"+sectorID+".zip";
+    var namemapa = sectorID
+    var tieneMapa = 0;
 
-    db.executeSql('select IDSendero from SenderoRecursosMap where IDSendero='+senderoID, [], function (rs) {
+    db = window.sqlitePlugin.openDatabase({name: 'turapp.db',version:'1.0', location: 'default'});
+//select srm.IDSector from SenderoRecursosMap as srm left join Senderos as s on s.IDSector = srm.IDSector
+    db.executeSql('select IDSector from SenderoRecursosMap where IDSector='+sectorID, [], function (rs) {
 
         if(rs.rows.length == 0) {
-            $$("#btn_download").click(function () {
-                alert("El mapa sera descargado...")
-                DownloadFile(urlmapa, "", namemapa, namemapa, 1)
-            });
-
+            tieneMapa = 1;
         }
         else{
-            $$("#btn_download").click(function () {
-                alert("El ya ha sido descargado.")
-            })
+            tieneMapa = 0;
         }
 
     }, function(error) {
@@ -261,159 +246,101 @@ function onPopUpOpen(){
 
     console.log("Internet: " + internet);
 
-
     // if(internet == 0) {
 
-        db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
+    db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
 
-        db.executeSql('SELECT spe.Latitud, spe.Longitud, spe.Altura,s.ID, s.Descripcion,smap.map,s.LugarInicio,s.LugarFin,s.Distancia,s.Desnivel,s.DuracionTotal,s.AlturaMaxima, s.Nombre FROM SenderoPuntoElevacion as spe left join Senderos as s on s.ID = spe.IDSendero left join SenderoRecursosMap as smap on smap.IDSendero = s.ID where spe.IDSendero=' + senderoID + ' order by spe.ID asc', [], function (rs) {
+        db.executeSql('SELECT spe.Latitud,s.DepartamentoNombre, spe.Longitud, spe.Altura,s.PesoZipMapa,s.ID, s.Descripcion,smap.map,s.LugarInicio,s.LugarFin,s.Distancia,s.Desnivel,s.DuracionTotal,s.AlturaMaxima, s.Nombre, s.InfoInteres, s.SectorNombre FROM SenderoPuntoElevacion as spe left join Senderos as s on s.ID = spe.IDSendero left join SenderoRecursosMap as smap on smap.IDSector = s.IDSector where spe.IDSendero=' + senderoID + ' order by spe.ID asc', [], function (rs) {
 
+            //console.log("--dkjfhgdskjfhdskjfhjksdfhjkdsfk--")
+            //console.dir(rs)
             var soucerMap = rs.rows.item(0).map +  "Google Hibrido"
-            console.log("soucerMap " + soucerMap)
-            var mymap = L.map('mapid').setView([rs.rows.item(0).Latitud, rs.rows.item(0).Longitud], 16);
+            //console.log("soucerMap " + soucerMap)
+             mymap = L.map('mapid').setView([rs.rows.item(0).Latitud, rs.rows.item(0).Longitud], 16);
             var x;
             if(internet == 0) {
                 x = L.tileLayer(soucerMap+'/{z}/{x}/{y}.jpg', {maxZoom: 18, minZoom: 15}).addTo(mymap);
             }
             else{
+                var mapSize = (rs.rows.item(0).PesoZipMapa !== '') ? '('+ rs.rows.item(0).PesoZipMapa +')' : '';
+                console.log("peso")
+                console.log(rs.rows.item(0).PesoZipMapa)
+
+                $$("#btn_down_container").append('<button id="btn_download" class="button button-raised button-fill"><i class="icon f7-icons color-white">download</i>&nbsp Descargar mapa'+ mapSize +'</button>');
+
+
                 x = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {maxZoom: 18, minZoom: 7,subdomains:['mt0','mt1','mt2','mt3']}).addTo(mymap);
             }
+            gps_marker = L.marker([myLat,myLong]).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
+
             var a = new L.LatLng(rs.rows.item(0).Latitud, rs.rows.item(0).Longitud);
-
-            L.marker([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud], {icon: mk_inicio}).addTo(mymap).bindPopup("Este es punto de inicio del circuito..");
-            L.marker([rs.rows.item(255).Latitud,rs.rows.item(255).Longitud], {icon: mk_fin}).addTo(mymap).bindPopup("Este es punto de fin del circuito..");
-            //L.marker([51.495, -0.083], {icon: redIcon}).addTo(map).bindPopup("I am a red leaf.");
-            //L.marker([51.49, -0.1], {icon: orangeIcon}).addTo(map).bindPopup("I am an orange leaf.");
-
-
-            var  _onSuccess = function(position) {
-
-                //L.marker([position.coords.latitude,position.coords.longitude], {icon: mk_gps}).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
-
-                if(gps_marker == 0){
-                    gps_marker = L.marker([position.coords.latitude,position.coords.longitude]).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
+            db.executeSql('SELECT IDSendero, Descripcion, Latitud, Longitud, TipoPuntoInteresID FROM SenderoPuntoInteres WHERE IDSendero=' + senderoID, [], function (rs2) {
+                console.dir(rs2);
+                for (var i = 0; i < rs2.rows.length; i++) {
+                    L.marker([rs2.rows.item(i).Latitud,rs2.rows.item(i).Longitud], {icon: MarcadorPuntoInteres(rs2.rows.item(i).TipoPuntoInteresID)}).addTo(mymap).bindPopup(rs2.rows.item(i).Descripcion);
                 }
-                else{
-                    gps_marker.setLatLng([position.coords.latitude,position.coords.longitude]);
-                }
-
-                //var element = document.getElementById('geolocation');
-                //element.innerHTML = 'Latitude: '  + position.coords.latitude      + '<br />' +
-                // 'Longitude: ' + position.coords.longitude     + '<br />' +
-                //    '<hr />'      + element.innerHTML;
-
-            }
-
-            // onError Callback receives a PositionError object
-            //
-            var _onError = function (error) {
-                window.plugins.toast.show('Código: '+ error.code +'\n' +' Detalle: ' + error.message + '\n',"2000","bottom");
-            }
-
-
-            var watchID = navigator.geolocation.watchPosition(_onSuccess, _onError, {  optionsGPS });
-
-
-            $$("#nombre").append(" " + rs.rows.item(0).Nombre);
-            $$("#inicio").append(" " + rs.rows.item(0).LugarInicio);
-            $$("#fin").append(" " +rs.rows.item(0).LugarFin);
-            $$("#distancia").append(" " +rs.rows.item(0).Distancia + " km");
-            $$("#desnivel").append(" " +rs.rows.item(0).Desnivel + " msnm");
-            $$("#duracion").append(" " +rs.rows.item(0).DuracionTotal);
-            $$("#altmaxima").append(" " +rs.rows.item(0).AlturaMaxima + " m");
-
-
-            for (var i = 0; i < rs.rows.length; i++) {
-                plArray.push(new L.LatLng(rs.rows.item(i).Latitud, rs.rows.item(i).Longitud));
-            }
-
-            var DrawPolyline = new L.Polyline(plArray, {
-                color: '#ff9e00',
-                weight: 5,
-                opacity: 1,
-                smoothFactor: 1
+                    
             });
-            DrawPolyline.addTo(mymap);
-            mymap.fitBounds(DrawPolyline.getBounds());
- 	        plotElevation(rs,1,rs.rows.item(0).Distancia,mymap,plArray);
-        }, function (error) {
-            console.log('SELECT SQL statement ERROR: ' + error.message);
+
+            if(tieneMapa == 1){
+                $$("#btn_download").click(function () {
+                    console.log(urlmapa);
+                    //alert("El mapa sera descargado...")
+
+                    DownloadFile(urlmapa, "", namemapa, namemapa, 1)
+                });
+            }
+            else
+            {
+                $$("#btn_down_container").html(mapaExiste);
+            }
+
+            $$("#comollego").click(function(){
+                navigate([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud]);
+            });
+
+        $$("#comollego").click(function(){
+            navigate([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud]);
         });
-    // }
-    // else
-    // {
-
-    //     $.ajax({
-    //         url: senderosAPI,
-    //         cache: false,
-    //         type: 'get',
-    //         timeout: timeOut,
-    //         dataType: "json",
-    //         success: function (response) {
-    //             console.dir(response);
-    //             for (var i = 0; i < response.Senderos.length; i++) {
-    //                 if(senderoID == response.Senderos[i].ID) {
-
-    //                     var mymap = L.map('mapid').setView([response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud], 16);
-    //                     var x = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {maxZoom: 18, minZoom: 7,subdomains:['mt0','mt1','mt2','mt3']}).addTo(mymap);
-    //                     var a = new L.LatLng(response.Senderos[i].SenderoPuntoElevacion[i].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud);
-    //                     L.marker([response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud], {icon: mk_inicio}).addTo(mymap).bindPopup("Este es punto de inicio del circuito..");
-    //                     L.marker([response.Senderos[i].SenderoPuntoElevacion[255].Latitud, response.Senderos[i].SenderoPuntoElevacion[255].Longitud], {icon: mk_fin}).addTo(mymap).bindPopup("Este es punto de fin del circuito..");
-
-    //                     //Polygon.getBounds().contains
-    //                     var latlngs = [[response.Senderos[i].SenderoPuntoElevacion[0].Latitud, response.Senderos[i].SenderoPuntoElevacion[0].Longitud],
-    //                                    [response.Senderos[i].SenderoPuntoElevacion[255].Latitud, response.Senderos[i].SenderoPuntoElevacion[255].Longitud]];
-    //                     var polygon = L.polygon(latlngs, {color: 'red'}).addTo(mymap);
-    //                     mymap.fitBounds(polygon.getBounds());
-
-    //                     $$("#nombre").append(" " + response.Senderos[i].Nombre);
-    //                     $$("#inicio").append(" " + response.Senderos[i].LugarInicio);
-    //                     $$("#fin").append(" " +response.Senderos[i].LugarFin);
-    //                     $$("#distancia").append(" " +response.Senderos[i].Distancia);
-    //                     $$("#desnivel").append(" " +response.Senderos[i].Desnivel);
-    //                     $$("#duracion").append(" " +response.Senderos[i].DuracionTotal);
-    //                     $$("#altmaxima").append(" " +response.Senderos[i].AlturaMaxima);
-
-    //                     var urlmapa = RecursoWeb + response.Senderos[i].RutZipMapa;
-    //                     var namemapa = response.Senderos[i].ID
-    //                     $$("#btn_download").click(function(){
-    //                         alert(urlmapa);
-    //                         DownloadFile(urlmapa,"",namemapa,namemapa,1)
-    //                     });
-
-    //                     var elevationvar = [];
-    //                     elevationvar.push({rows : response.Senderos[i].SenderoPuntoElevacion})
-    //                     for (var x = 0; x < response.Senderos[i].SenderoPuntoElevacion.length; x++) {
-    //                         plArray.push(new L.LatLng(response.Senderos[i].SenderoPuntoElevacion[x].Latitud, response.Senderos[i].SenderoPuntoElevacion[x].Longitud));
-    //                     }
-    //                 }
-    //             }
-    //             var DrawPolyline = new L.Polyline(plArray, {
-    //                 color: '#00b3fd',
-    //                 weight: 4,
-    //                 opacity: 0.7,
-    //                 smoothFactor: 1
-    //             });
-    //             DrawPolyline.addTo(mymap)
-
-    //             plotElevation(elevationvar[0],0,response.Senderos[0].Distancia,mymap);
-    //         },
-    //         error: function(){
-    //         }
-    //     });
-    // }
-
-    //Traer desde API por primera vez luego sqlite.
 
 
 
+        $$("#nombre").append(" " + rs.rows.item(0).Nombre);
+        $$("#inicio").append(" " + rs.rows.item(0).LugarInicio);
+        $$("#fin").append(" " +rs.rows.item(0).LugarFin);
+        $$("#distancia").append(" " +rs.rows.item(0).Distancia + "km");
+        $$("#desnivel").append(" " +rs.rows.item(0).Desnivel + "msnm");
+        $$("#duracion").append(" " +rs.rows.item(0).DuracionTotal);
+        $$("#altmaxima").append(" " +rs.rows.item(0).AlturaMaxima + "m");
+        $$("#descripcion").append(" " +rs.rows.item(0).Descripcion);
+        $$("#info").append(" " +rs.rows.item(0).InfoInteres);
+        $$("#departamento").append(" " +rs.rows.item(0).DepartamentoNombre);
+        $$("#sector").append(" " +rs.rows.item(0).SectorNombre);
 
 
+        for (var i = 0; i < rs.rows.length; i++) {
+            plArray.push(new L.LatLng(rs.rows.item(i).Latitud, rs.rows.item(i).Longitud));
+        }
 
+        var DrawPolyline = new L.Polyline(plArray, {
+            color: '#ff9e00',
+            weight: 5,
+            opacity: 1,
+            smoothFactor: 1
+        });
+        DrawPolyline.addTo(mymap);
+        mymap.fitBounds(DrawPolyline.getBounds());
+        plotElevation(rs,1,rs.rows.item(0).Distancia,mymap,plArray);
+    }, function (error) {
+        console.log('SELECT SQL statement ERROR: ' + error.message);
+    });
+
+    llamaGPS = setInterval(function(){GPS();}, delayGPS);
 }
 
 function onPopUpClose(){
-
+    gps_marker = 0;
+    clearInterval(llamaGPS);
     $$("#senderoContainer").empty();
 
 }
@@ -432,4 +359,50 @@ function fileDoesNotExist(){
 }
 function getFSFail(evt) {
     console.log(evt.target.error.code);
+}
+
+function MarcadorPuntoInteres(TipoPuntoInteresID){
+    switch (TipoPuntoInteresID) {
+        case 1: //Inicio
+            return mk_inicio;
+            break;
+        case 2: //Fin
+            return mk_fin;
+            break;
+        case 3: //Mirador
+            return mk_mirador;
+            break;
+        case 4: //Cumbre
+            return mk_cumbre;
+            break;
+    }
+}
+
+
+function _onSuccess(position) {
+
+    //L.marker([position.coords.latitude,position.coords.longitude], {icon: mk_gps}).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
+
+    myLat = position.coords.latitude;
+    myLong = position.coords.longitude;
+
+    if(gps_marker == 0){
+        gps_marker = L.marker([position.coords.latitude,position.coords.longitude]).addTo(mymap).bindPopup("Esta es tu ubicación actual..");
+    }
+    else{
+        gps_marker.setLatLng([position.coords.latitude,position.coords.longitude]);
+    }
+
+}
+
+// onError Callback receives a PositionError object
+//
+function _onError(error) {
+    //window.plugins.toast.show('Código: '+ error.code +'\n' +' Detalle: ' + error.message + '\n',"2000","bottom");
+}
+
+
+function GPS() {
+    //window.plugins.toast.show('GPS',"2000","bottom");
+    navigator.geolocation.getCurrentPosition(_onSuccess, _onError, optionsGPS);
 }

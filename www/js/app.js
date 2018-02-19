@@ -1,14 +1,18 @@
 //Variables
-var senderosAPI = "http://economiayciencia.com/api/SenderosAPI";
-var updateSenderosAPI = "http://economiayciencia.com/UpdateSenderosAPI";
-var RecursoWeb = "http://economiayciencia.com";
+var senderosAPI = "http://appsenderos.sanjuan.gov.ar/api/SenderosGZip";
+var updateSenderosAPI = "http://appsenderos.sanjuan.gov.ar/UpdateSenderosAPI";
+var RecursoWeb = "http://appsenderos.sanjuan.gov.ar";
 var ErrorAjax = "Debes tener una conexión activa.";
 var conn ="";
 var isOffline = 'onLine' in navigator && !navigator.onLine;
+var mapaExiste =
+    '<div class="chip color-green">' +
+    '    <div class="chip-label">Mapa descargado</div>' +
+    '</div>';
 
 
-
-
+var gps_marker = 0;
+var mymap= 0;
 var internet = 0;
 // Dom7
 var $$ = Dom7;
@@ -18,14 +22,13 @@ var db = null;
 
 //GPS Basics
 
-var myLat = -31.536395;
-var myLong = -68.536976;
+var myLat = 0;
+var myLong = 0;
 
-
+var delayGPS = 30000;
 var optionsGPS = {
     enableHighAccuracy: true,
-    timeout: 150000,
-    maximumAge: 0
+    timeout: 5000,
 };
 
 
@@ -77,7 +80,7 @@ var timeOut = 30000;
 document.addEventListener("DOMContentLoaded", function(event) {
 
     var options = {
-        'bgcolor': '#0da6ec',
+        'bgcolor': '#55b9a1',
         'fontcolor': '#fff',
 
 
@@ -85,38 +88,40 @@ document.addEventListener("DOMContentLoaded", function(event) {
             console.log("welcome screen opened");
         },
         'onClosed': function () {
+            //app.f7.dialog.preloader('Espere mientras se cargan los senderos');
             console.log("welcome screen closed");
         }
     };
 
     var welcomescreen_slides = [
-        {
+        {//<img src="img/img_wc_1.jpg" height="150px">
             id: 'slide0',
             title: 'Bienvenido',
-            picture: '<div class="tutorialicon">♥</div>',
-            text: 'Welcome to this tutorial. In the <a class="tutorial-next-link" href="#">next steps</a> we will guide you through a manual that will teach you how to use this app.<br><br>Swipe to continue →'
+            picture: '<div class="tutorialicon"><img src="img/inicio.svg" height="80px"></div>',
+            text: 'Gracias por descargar <b>TurApp</b>  Descubre Senderos, Circuitos y  rutas, descarga mapas topográficos con todo detalle y disfruta tus aventuras al aire libre con el sistema de navegación integrada.<br><br>Desliza para continuar →'
         },
         {
             id: 'slide1',
-            title: 'Slide 2',
-            picture: '<div class="tutorialicon">✲</div>',
-            text: 'This is slide 2<br><br>Swipe to continue →'
+            title: 'Funcionamiento...',
+            picture: '<div class="tutorialicon"><img src="img/inicio.svg" height="80px"></div>',
+            text: 'La aplicación te guiara haciendo uso del tu GPS, por ello es importante otorgar los permisos de ubicacion / geolocalizacion cuando te sean solicitados.<br><br>Desliza para continuar →'
         },
         {
             id: 'slide2',
-            title: 'Slide 3',
-            picture: '<div class="tutorialicon">♫</div>',
-            text: 'This is slide 3<br><br>Swipe to continue →'
+            title: 'Tips - Información',
+            picture: '<div class="tutorialicon"><img src="img/inicio.svg" height="80px"></div>',
+            text: 'TurApp te da la opción de Descargar los mapas de los circuitos publicados para que no tengas que requerir de algun tipo de conectividad en tus aventuras al aire libre.Es importante que <b><u>Descargues</u></b> el mapa que sea de tu interés antes de comenzar una aventura.<br><br>Desliza para continuar →'
         },
         {
             id: 'slide3',
             // title: 'NO TITLE',
-            picture: '<div class="tutorialicon">☆</div>',
-            text: 'Thanks for reading! Enjoy this app or go to <a class="tutorial-previous-slide" href="#">previous slide</a>.<br><br><a class="tutorial-close-btn" href="#">End Tutorial</a>'
+            picture: '<div class="tutorialicon"><img src="img/inicio.svg" height="80px"></div>',
+            text: 'Gracias por tu atención, No olvides comentar tu experiencia, sugerencias u otros.<br><br><a class="tutorial-close-btn" href="javascript:app.f7.welcomescreen.close();">Comenzar</a>'
         }
     ];
 
-    //Framework7.use(Framework7WelcomescreenPlugin);
+
+    Framework7.use(Framework7WelcomescreenPlugin);
 
     var app  = new Framework7({
         root: '#app', // App root element
@@ -132,7 +137,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 
     var homeView = app.views.create('#view-home', {
-        url: '/'
+        url: '/',
+        on: {
+            pageBeforeIn: function(){
+                //app.f7.welcomescreen.open();
+            }
+        }
+
     });
     var noticiasView = app.views.create('#view-noticias', {
         url: '/noticias/'
@@ -149,8 +160,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     var ayudaView = app.views.create('#view-ayuda', {
         url: '/ayuda/'
     });
-    var acercaView = app.views.create('#view-acerca', {
-        url: '/acerca/'
+    var guiaView = app.views.create('#view-guias', {
+        url: '/guias/'
     });
 
     app.on('pageAfterIn', function(tab){
@@ -161,16 +172,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 
 
-    //app.f7.welcomescreen.open() Abre el wellcome screen
+
     var mainView = app.views.create('.view-main');
 
     Dom7(document).on('click', '.tutorial-close-btn', function () {
-        app.welcomescreen.close();
+        app.f7.welcomescreen.close();
     });
 
-    Dom7('.tutorial-open-btn').click(function () {
+    /*
+        Dom7('.tutorial-open-btn').click(function () {
+
         app.welcomescreen.open();
     });
+    */
 
     Dom7(document).on('click', '.tutorial-next-link', function (e) {
         app.welcomescreen.next();
@@ -186,6 +200,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 //variable global con el id de sendero
 var senderoID = 0;
+var sectorID = 0;
 
 
 $$('.popup-senderos').on('popup:opened', function (e, popup) {
@@ -293,23 +308,28 @@ function download(URL, Folder_Name, File_Name,id,filetype) {
 
 function filetransfer(download_link, fp,id,filetype) {
     var fileTransfer = new FileTransfer();
-
+    app.f7.dialog.preloader('Descargando... ').open()
+    //app.f7.progressbar.show(app.f7.theme === 'md' ? 'yellow' : 'blue');
      fileTransfer.onprogress = function(result){
+
+
         var percent =  result.loaded / result.total * 100;
         percent = Math.round(percent);
         //console.log("Progreso de ID: " + id + " -> "+ percent + "%");
-        window.plugins.toast.show("Progreso de ID: " + id + " -> "+ percent + "%","250","bottom");
+        //window.plugins.toast.show("Progreso de ID: " + id + " -> "+ percent + "%","250","bottom");
+
     };
 
 // File download function with URL and local path
       fileTransfer.download(download_link, fp,
         function (entry) {
+            app.f7.dialog.close();
             //alert("download complete: " + entry.toURL());
             //$$("#view-home").append("<img src='"+entry.toURL()+"'>")
             console.log("complete")
             app.f7.preloader.hide();
             if(filetype == 0){
-            UpdateFilePathDB(entry.toURL(),id,filetype)
+                UpdateFilePathDB(entry.toURL(),id,filetype)
             }else
             {
                 console.log(" RUTA "+ entry.toURL() + " ID " + id + " TYPE " +  filetype)
@@ -318,8 +338,9 @@ function filetransfer(download_link, fp,id,filetype) {
             entry.toURL();
         },
          function (error) {
+             app.f7.dialog.close();
             //Download abort errors or download failed errors
-            //alert("download error source " + error.source);
+            alert("Error descargando el mapa.. " + error.source);
             return "download error source " + error.source;
             //alert("download error target " + error.target);
             //alert("upload error code" + error.code);
@@ -380,15 +401,16 @@ function onBackKeyDown() {
 }
 
 function Database(db) {
-    db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
+    db = window.sqlitePlugin.openDatabase({name: 'turapp.db',vesrion: '1.0', location: 'default'});
 
     //Creo la tabla Senderos
     db.sqlBatch([
-        'CREATE TABLE IF NOT EXISTS Senderos ( ID PRIMARY KEY, Nombre, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima)',
-        'CREATE TABLE IF NOT EXISTS SenderoPuntoElevacion ( ID, IDSendero, Latitud,Longitud,Altura, PRIMARY KEY (ID, IDSendero))',
+        'CREATE TABLE IF NOT EXISTS Senderos ( ID integer PRIMARY KEY, IDSector,DepartamentoNombre, SectorNombre, PesoZipMapa, Nombre, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima,TipoDificultadFisica,TipoDificultadTecnica,InfoInteres)',
+        'CREATE TABLE IF NOT EXISTS SenderoPuntoElevacion ( ID, IDSendero, Latitud, Longitud, Altura, PRIMARY KEY (ID, IDSendero))',
+        'CREATE TABLE IF NOT EXISTS SenderoPuntoInteres ( ID, IDSendero, Descripcion, Latitud, Longitud, TipoPuntoInteresID, PRIMARY KEY (ID, IDSendero))',
         'CREATE TABLE IF NOT EXISTS SenderoRecursosImg ( IDSendero PRIMARY KEY, img)',
-        'CREATE TABLE IF NOT EXISTS SenderoRecursosMap ( IDSendero PRIMARY KEY, map)',
-        'CREATE TABLE IF NOT EXISTS RegistroActualizacion ( FechaActualizacion )',
+        'CREATE TABLE IF NOT EXISTS SenderoRecursosMap ( IDSector PRIMARY KEY, map)',
+        'CREATE TABLE IF NOT EXISTS RegistroActualizacion ( ID integer PRIMARY KEY, FechaActualizacion )',
     ], function () {
                     console.log('Tablas OK');
                     syncSenderos();
@@ -424,80 +446,92 @@ function syncSenderos()
         console.log(rs.rows.length);
         if(rs.rows.length > 0){
             FechaActualizacionDB = rs.rows.item(0).FechaActualizacion;
+
         }
-    });
-    console.log(FechaActualizacionDB);
-    $.ajax({
-        url: updateSenderosAPI,
-        cache: false,
-        type: 'get',
-        timeout: timeOut,
-        dataType: "json",
-        success: function (response) { 
-            console.log(response)
-            if(FechaActualizacionDB == undefined || response.FechaActualizacion > FechaActualizacionDB){
-                FechaActualizacionResponse = response.FechaActualizacion
-                $.ajax({
-                    url: senderosAPI,
-                    cache: false,
-                    type: 'get',
-                    timeout: timeOut,
-                    dataType: "json",
-                    success: function (response) {
-                        db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
-                        // var strDelSQL = "delete from Senderos;";
-                        // var strDelSQL2 = "delete from SenderoPuntoElevacion;";
-                        // console.dir(response);
-                        var strSQL = "INSERT OR REPLACE INTO Senderos (ID, Nombre, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima) VALUES ";
-                        var strSQL2 = "INSERT OR REPLACE INTO SenderoPuntoElevacion (ID, IDSendero, Latitud, Longitud, Altura) VALUES ";
-                        var strSQL3 = "INSERT OR REPLACE INTO SenderoRecursosImg (IDSendero, img) VALUES ";
-                        var strSQL4 = "INSERT OR REPLACE INTO RegistroActualizacion (FechaActualizacion) VALUES (" + FechaActualizacionResponse + ")";
-                        console.log(strSQL4);
-                        for(var i=0;i<response.Senderos.length;i++) {
-            
-                            // DownloadFile(RecursoWeb+response.Senderos[i].RutaImagen,"",response.Senderos[i].ID,response.Senderos[i].ID,0)
-            
-                            strSQL = strSQL + "(" + response.Senderos[i].ID + ",'" + response.Senderos[i].Nombre + "','"+response.Senderos[i].Descripcion+"','"+response.Senderos[i].LugarInicio+"','"+response.Senderos[i].LugarFin+"','"+response.Senderos[i].Distancia+"','"+response.Senderos[i].Desnivel+"','"+response.Senderos[i].DuracionTotal+"','"+response.Senderos[i].AlturaMaxima+"'),"
-                            for(var x=0; x<response.Senderos[i].SenderoPuntoElevacion.length;x++)
-                            {
-                                strSQL2 = strSQL2 + "(" + x + ","+response.Senderos[i].ID+", '"+response.Senderos[i].SenderoPuntoElevacion[x].Latitud+"','"+response.Senderos[i].SenderoPuntoElevacion[x].Longitud+"','"+response.Senderos[i].SenderoPuntoElevacion[x].Altura+"'),"
+        console.log(FechaActualizacionDB);
+        $.ajax({
+            url: updateSenderosAPI,
+            cache: false,
+            type: 'get',
+            timeout: timeOut,
+            dataType: "json",
+            success: function (response) { 
+                console.log(response)
+                if(FechaActualizacionDB == undefined || response.FechaActualizacion > FechaActualizacionDB){
+                    FechaActualizacionResponse = response.FechaActualizacion                
+                    console.log("Actualizando");
+                    $.ajax({
+                        url: senderosAPI,
+                        cache: false,
+                        type: 'get',
+                        timeout: timeOut,
+                        dataType: "json",
+                        success: function (response) {
+                            db = window.sqlitePlugin.openDatabase({name: 'turapp.db', location: 'default'});
+                            // var strDelSQL = "delete from Senderos;";
+                            // var strDelSQL2 = "delete from SenderoPuntoElevacion;";
+                            console.dir("--------------------------");
+                            console.dir(response);
+                            var strSQL = "INSERT OR REPLACE INTO Senderos (ID,IDSector,DepartamentoNombre, SectorNombre, PesoZipMapa, Nombre, Descripcion,LugarInicio,LugarFin,Distancia,Desnivel,DuracionTotal,AlturaMaxima,TipoDificultadFisica,TipoDificultadTecnica,InfoInteres) VALUES ";
+                            var strSQL2 = "INSERT OR REPLACE INTO SenderoPuntoElevacion (ID, IDSendero, Latitud, Longitud, Altura) VALUES ";
+                            var strSQL3 = "INSERT OR REPLACE INTO SenderoRecursosImg (IDSendero, img) VALUES ";
+                            var strSQL4 = "INSERT OR REPLACE INTO RegistroActualizacion (ID, FechaActualizacion) VALUES (1," + FechaActualizacionResponse + ");";
+                            var strSQL5 = "INSERT OR REPLACE INTO SenderoPuntoInteres (ID, IDSendero, Descripcion, Latitud, Longitud, TipoPuntoInteresID) VALUES ";
+
+                            for(var i=0;i<response.Senderos.length;i++) {
+                
+                                // DownloadFile(RecursoWeb+response.Senderos[i].RutaImagen,"",response.Senderos[i].ID,response.Senderos[i].ID,0)
+                
+                                strSQL = strSQL + "(" + response.Senderos[i].ID +"," + response.Senderos[i].SenderoSector.ID + ",'" + response.Senderos[i].SenderoSector.NombreDepartamento +  "','" +  response.Senderos[i].SenderoSector.Nombre + "','" + response.Senderos[i].SenderoSector.PesoZipMapa + "','" + response.Senderos[i].Nombre + "','"+response.Senderos[i].Descripcion+"','"+response.Senderos[i].LugarInicio+"','"+response.Senderos[i].LugarFin+"','"+response.Senderos[i].Distancia+"','"+response.Senderos[i].Desnivel+"','"+response.Senderos[i].DuracionTotal+"','"+response.Senderos[i].AlturaMaxima+"','"+response.Senderos[i].TipoDificultadFisica+"','"+response.Senderos[i].TipoDificultadTecnica+"','"+response.Senderos[i].InfoInteres+"'),"
+                                for(var x=0; x<response.Senderos[i].SenderoPuntoElevacion.length;x++)
+                                {
+                                    strSQL2 = strSQL2 + "(" + x + ","+response.Senderos[i].ID+", '"+response.Senderos[i].SenderoPuntoElevacion[x].Latitud+"','"+response.Senderos[i].SenderoPuntoElevacion[x].Longitud+"','"+response.Senderos[i].SenderoPuntoElevacion[x].Altura+"'),"
+                                }
+                                strSQL3 = strSQL3 + "(" + response.Senderos[i].ID + ",'" + response.Senderos[i].ImgBase64 +"'),";
+
+                                for(var y=0; y<response.Senderos[i].SenderoPuntoInteres.length;y++)
+                                {
+                                    strSQL5 = strSQL5 + "(" + y + ","+response.Senderos[i].ID+", '"+response.Senderos[i].SenderoPuntoInteres[y].Descripcion+"', '"+response.Senderos[i].SenderoPuntoInteres[y].Latitud+"','"+response.Senderos[i].SenderoPuntoInteres[y].Longitud+"',"+response.Senderos[i].SenderoPuntoInteres[y].TipoPuntoInteresID+"),"
+                                }
                             }
-                            strSQL3 = strSQL3 + "(" + response.Senderos[i].ID + ",'" + response.Senderos[i].ImgBase64 +"'),";
+                            
+                            strSQL = strSQL.slice(0,-1);
+                            strSQL = strSQL + ";";
+                
+                            strSQL2 = strSQL2.slice(0,-1);
+                            strSQL2 = strSQL2 + ";";
+                
+                            strSQL3 = strSQL3.slice(0,-1);
+                            strSQL3 = strSQL3 + ";";
+
+                            strSQL5 = strSQL5.slice(0,-1);
+                            strSQL5 = strSQL5 + ";";
+                            //Si Hay internet Sincronizo senderos limpiando la tabla.
+                            db.sqlBatch([
+                                // strDelSQL,
+                                // strDelSQL2,
+                                strSQL,
+                                strSQL2,
+                                strSQL3,
+                                strSQL4,
+                                strSQL5
+                            ], function() {
+                                //console.log('Clear database OK');
+                                loadSenderos();     
+                                //window.plugins.toast.show("Los Senderos estan siendo Actualizados ","3000","bottom");
+                            }, function(error) {
+                                console.log('SQL batch ERROR: ' + error.message);
+                            });
+                        },
+                        error: function () {
+                            //window.plugins.toast.show(ErrorAjax,"3000","bottom");
                         }
-                        strSQL = strSQL.slice(0,-1);
-                        strSQL = strSQL + ";";
-            
-                        strSQL2 = strSQL2.slice(0,-1);
-                        strSQL2 = strSQL2 + ";";
-            
-                        strSQL3 = strSQL3.slice(0,-1);
-                        strSQL3 = strSQL3 + ";";
-            
-                        //Si Hay internet Sincronizo senderos limpiando la tabla.
-            
-                        db.sqlBatch([
-                            // strDelSQL,
-                            // strDelSQL2,
-                            strSQL,
-                            strSQL2,
-                            strSQL3,
-                            strSQL4
-                        ], function() {
-                            //console.log('Clear database OK');
-                            loadSenderos();     
-                            //window.plugins.toast.show("Los Senderos estan siendo Actualizados ","3000","bottom");
-                        }, function(error) {
-                            console.log('SQL batch ERROR: ' + error.message);
-                        });
-                    },
-                    error: function () {
-                        //window.plugins.toast.show(ErrorAjax,"3000","bottom");
-                    }
-            
-                });
+                
+                    });
+                }
             }
-        }
-    });    
+        });    
+    });
 }
 
 
@@ -572,14 +606,15 @@ function UpdateFilePathDB(file, id,filetype){
     {
         //query =  "UPDATE Senderos Set RutZipMapa = '"+file+"'  where ID="+id;
         //query =  "INSERT into SenderoRecursosMap (IDSendero, map) VALUES ("+id+",'"+file+"')";
-        query = "insert or replace into SenderoRecursosMap (IDSendero, map) values ("+id+",'"+file+"');";
+        query = "insert or replace into SenderoRecursosMap (IDSector, map) values ("+id+",'"+file+"');";
     }
 
     db.executeSql(query, [], function(rs) {
 
         if(filetype == 1)
         {
-            alert("El mapa ha sido descargado, estara disponible sin conexion.");
+            alert("El mapa ha sido descargado, estará disponible sin conexion.");
+            $$("#btn_down_container").html(mapaExiste);
         }
         return rs;
     }, function(error) {
@@ -667,3 +702,28 @@ function onSuccess(result){
 function onError(result) {
     console.log("Error:"+result);
 }
+
+function navigate(hasta)
+{
+
+    var  _onSuccess = function(position) {
+
+        launchnavigator.navigate([hasta[0], hasta[1]], {
+            start: ""+position.coords.latitude+","+position.coords.longitude+""
+        });
+
+    }
+
+    // onError Callback receives a PositionError object
+    //
+    var _onError = function (error) {
+        window.plugins.toast.show('Código: '+ error.code +'\n' +' Detalle: ' + error.message + '\n',"2000","bottom");
+    }
+
+
+     navigator.geolocation.getCurrentPosition(_onSuccess, _onError,   optionsGPS );
+
+
+}
+
+

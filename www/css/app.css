@@ -52,7 +52,9 @@ p {
 
 .card {
   color: #000;
-  background-color: #fff;
+  background-color: #fff !important;
+  margin-left: 15px !important;
+  margin-right: 15px !important;
 }
 /*noticias cards*/
 .demo-card-header-pic .card-header {
@@ -160,7 +162,7 @@ p {
 
   font-family: 'Nunito';
   color: #f2f2f2;
-  background-color: #d83559;
+  background-color: #d83559 !important;
 }
 
 #elevChart{
@@ -185,20 +187,95 @@ p {
 
 
 .chipSendero {
-
-  width: auto;
+  background-color: #333 !important;
+  width: 100% !important;
+  height: 20% !important;
+  color: #f2f2f2 !important;
+  font-family: 'Nunito' !important;
+  font-weight: bold;
+  font-size: 12px !important;
 }
 
 
+.welcomescreen-text a{
+  color: #fff !important;
+  font-weight: bold;
+}
 
-.tituloSendero {
+.tituloSendero2 {
   color: #d83559 !important;
   font-family: 'Nunito' !important;
   font-weight: bold;
   font-size: 18px !important;
 }
 
-.headerSenderos {
+.tituloSendero {
+  color: #FFF !important;
+  font-family: 'Nunito' !important;
+  font-weight: bold;
+  font-size: 18px !important;
+}
 
+.headerSenderos {
+  background-color: #5dd1b7;
   height: auto !important;
+}
+
+.senderoLoader {
+
+  margin-top: 40vh !important;
+  background-color: #f2f2f2 !important;
+  color: #f2f2f2 !important;
+}
+
+.popup-preloader {
+
+  background-color: #55b9a1 !important;
+}
+
+.chipDetalle{
+  font-family: 'Nunito' !important;
+  font-size: 11px !important;
+  width: 100% !important;
+}
+
+.chip-label {
+
+  margin-left: 5vw !important;
+}
+
+.phone, .guianumero {
+
+    color: black !important;
+}
+
+.guiatitulo {
+    color: white !important;
+    font-size: 18px !important;
+}
+
+.btnemergencias {
+    font-family: 'Nunito' !important;
+    font-size: 30px !important;
+    margin-bottom: 10px !important;
+    margin-top: 10px !important;
+    background-color: #d83559;
+}
+
+.item-subtitle {
+
+  color: #f2f2f2 !important;
+}
+
+.mapaheader {
+
+  background-color: #55b9a1 !important;
+}
+
+.advertencia {
+
+    color: white !important;
+    background-color: #55b9a1 !important;
+    font-size: 20px !important;
+
 }

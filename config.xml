@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="tur.app.TurismoSJ" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>TurApp</name>
+    <name>Senderismo San Juan</name>
     <description>
         Ministerio de Turismo y Cultura - San Juan Argentina.
     </description>
@@ -17,10 +17,10 @@
     <allow-intent href="geo:*" />
     <preference name="loadUrlTimeoutValue" value="0" />
     <preference name="ShowSplashScreenSpinner" value="false" />
+    <preference name="SplashScreenDelay" value="8000" />
     <platform name="android">
         <allow-intent href="market:*" />
     </platform>
-    <preference name="Orientation" value="portrait" />
     <platform name="android">
         <icon density="ldpi" src="www/res/icon/android/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="www/res/icon/android/drawable-mdpi-icon.png" />
@@ -50,10 +50,11 @@
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
     <plugin name="cordova-plugin-request-location-accuracy" spec="^2.2.2" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
-    <plugin name="cordova-sqlite-storage" spec="^2.2.0" />
     <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
     <plugin name="cordova-plugin-x-toast" spec="^2.6.0" />
-    <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
+    <plugin name="call-number" spec="^1.0.1" />
+    <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" spec="^4.1.3" />
+    <plugin name="cordova-sqlite-storage" spec="^2.2.1" />
     <engine name="browser" spec="^5.0.3" />
     <engine name="android" spec="^7.0.0" />
 </widget>

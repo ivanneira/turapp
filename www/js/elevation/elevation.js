@@ -76,6 +76,7 @@ function plotElevation(returnedElevations,source, distance, mymap, LatLng) {
             }
         },
         series: [{
+            showInLegend: false,
             name: ' ',
             data: elevations,
             color: '#55b9a1'

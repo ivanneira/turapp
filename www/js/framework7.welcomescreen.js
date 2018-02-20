@@ -31,7 +31,7 @@ var Framework7WelcomescreenPlugin = {
         pagination: true,         // swiper pagination, 
         navigation: false,        // swiper navigation
         loop: false,              // swiper loop
-        open: false,               // open welcome screen on init
+        open: true,               // open welcome screen on init
         parallax: false,          // adds parallax capabilities
         parallaxSpeed: 600,       // parallax default speed
         parallaxBackgroundImage: 'http://lorempixel.com/900/600/nightlife/2/', // parallax default background image
@@ -149,15 +149,26 @@ var Framework7WelcomescreenPlugin = {
      * @memberof module:Framework7/prototype/plugins/welcomescreen
      */
     self.open = function () {
-      container = Dom7(template({options: options, slides: slides}));
-      swiperContainer = container.find('.welcomescreen-swiper');
-      setColors();
-      Dom7('body').append(container);
-      initSwiper();
-      container[0].f7Welcomescreen = self;
-      if (typeof options.onOpened === 'function') { options.onOpened(); }
+      if(OpenWelcomeScreen()){
+        container = Dom7(template({options: options, slides: slides}));
+        swiperContainer = container.find('.welcomescreen-swiper');
+        setColors();
+        Dom7('body').append(container);
+        initSwiper();
+        container[0].f7Welcomescreen = self;
+        if (typeof options.onOpened === 'function') { options.onOpened(); }
+      }
     };
 
+    function OpenWelcomeScreen(){
+      var welcome = window.localStorage.getItem("welcome");
+      console.log("OpenWelcomeScreen");
+      if(!welcome){
+          window.localStorage.setItem("welcome", "1");
+          return true;
+      }
+      return false;
+  }
     /**
      * Hides the welcome screen
      *

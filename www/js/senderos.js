@@ -32,7 +32,7 @@ var senderosResult = [];
 
 $$(document).on('DOMContentLoaded', function(){
     
-    loadSenderos();
+    //loadSenderos();
 
 });
 
@@ -103,11 +103,10 @@ function loadSenderos(){
                     '<br>';
 
                 $$("#senderosResultDiv").append(tmp);
-                app.f7.dialog.close();
 
 
             }
-            app.f7.welcomescreen.open();
+            
             //quita el preloader de senderos
             //app.f7.popup.close('.popup-preloader')
             //app.f7.dialog.close()
@@ -119,7 +118,6 @@ function loadSenderos(){
             });
 
         }, function (error) {
-            app.f7.dialog.close();
             console.log('SELECT SQL statement ERROR: ' + error.message);
         });
 }
@@ -128,6 +126,7 @@ function loadSenderos(){
 
 function onPopUpOpen(){
 
+    requestPermissionGPS();
     //console.log("open popup")
 
 
@@ -185,14 +184,12 @@ function onPopUpOpen(){
             '       <div class="list">' +
             '         <ul>' +
             '           <li>' +
-            '           <a href="#" class="item-content">' +
             '               <div class="item-inner">' +
             '                   <div class="item-title">' +
             '                       <div class="item-header " id="departamento"></div>' +
-            '                       <span id="sector" style="white-space: inherit;"></span>' +
+            '                       <span id="sector"></span>' +
             '                   </div>' +
             '               </div>' +
-            '           </a>' +
             '           </li>' +
             '       </ul>' +
             '   </div>' +
@@ -309,7 +306,7 @@ function onPopUpOpen(){
 
 
 
-        $$("#nombre").append(" " + rs.rows.item(0).Nombre);
+        $$("#nombre").html(rs.rows.item(0).Nombre);
         $$("#inicio").append(" " + rs.rows.item(0).LugarInicio);
         $$("#fin").append(" " +rs.rows.item(0).LugarFin);
         $$("#distancia").append(" " +rs.rows.item(0).Distancia + "km");
@@ -321,7 +318,6 @@ function onPopUpOpen(){
         $$("#departamento").append(" " +rs.rows.item(0).DepartamentoNombre);
         $$("#sector").append(" " +rs.rows.item(0).SectorNombre);
 
-            app.f7.dialog.close()
 
         for (var i = 0; i < rs.rows.length; i++) {
             plArray.push(new L.LatLng(rs.rows.item(i).Latitud, rs.rows.item(i).Longitud));

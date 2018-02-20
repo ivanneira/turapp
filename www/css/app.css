@@ -193,7 +193,7 @@ p {
   color: #f2f2f2 !important;
   font-family: 'Nunito' !important;
   font-weight: bold;
-  font-size: 12px !important;
+  font-size: 10px !important;
 }
 
 
@@ -241,7 +241,7 @@ p {
 
 .chip-label {
 
-  margin-left: 5vw !important;
+  /* margin-left: 5vw !important; */
 }
 
 .phone, .guianumero {
@@ -284,4 +284,9 @@ p {
 
   color: black !important;
   font-size: 18px !important;
+}
+
+.sectorTitulo{
+  white-space: normal; 
+  font-size: 14px
 }

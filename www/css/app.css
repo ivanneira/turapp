@@ -1,4 +1,16 @@
 /* Your app styles here */
+
+*:not(input):not(textarea) {
+  -webkit-touch-callout: none;    /* prevent callout to copy image, etc when tap to hold */
+  -webkit-text-size-adjust: none; /* prevent webkit from resizing text to fit */
+  -webkit-user-select: none;      /* prevent copy paste, to allow, change 'none' to 'text' */
+  -ms-touch-callout: none;
+  -ms-user-select: none;
+  -ms-text-size-adjust: none;
+  -moz-touch-callout: none;
+  -moz-user-select: none;
+  -moz-text-size-adjust: none;
+}
 .ios .tabbar-labels .tab-link:not(.tab-link-active) .icon-ios-fill {
   display: none;
 }
@@ -289,4 +301,26 @@ p {
 .sectorTitulo{
   white-space: normal; 
   font-size: 14px
+}
+
+.imgAyuda {
+
+  padding-top: 10vh;
+  height: 5em;
+  width: auto;
+}
+
+.contentAyuda {
+  background-color: #55b9a1 !important;
+  padding-top: 5em !important;
+  padding-left: 2em !important;
+  padding-right: 2em !important;
+}
+
+.textAyuda {
+  font-family: 'Nunito' !important;
+  color: white !important;
+  font-size: 20px !important;
+  text-align: justify !important;
+
 }

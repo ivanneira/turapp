@@ -310,9 +310,9 @@ function onPopUpOpen(){
         $$("#inicio").append(" " + rs.rows.item(0).LugarInicio);
         $$("#fin").append(" " +rs.rows.item(0).LugarFin);
         $$("#distancia").append(" " +rs.rows.item(0).Distancia + "km");
-        $$("#desnivel").append(" " +rs.rows.item(0).Desnivel + "msnm");
+        $$("#desnivel").append(" " +rs.rows.item(0).Desnivel + "m");
         $$("#duracion").append(" " +rs.rows.item(0).DuracionTotal);
-        $$("#altmaxima").append(" " +rs.rows.item(0).AlturaMaxima + "m");
+        $$("#altmaxima").append(" " +rs.rows.item(0).AlturaMaxima + "msnm");
         $$("#descripcion").append(" " +rs.rows.item(0).Descripcion);
         $$("#info").append(" " +rs.rows.item(0).InfoInteres);
         $$("#departamento").append(" " +rs.rows.item(0).DepartamentoNombre);

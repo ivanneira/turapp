@@ -195,6 +195,10 @@ function onPopUpOpen(){
             '   </div>' +
             '   </div>'+
             '   <div id ="mapid" class="card-content card-content-padding"></div>'+
+            '   <div id ="buttons" class="card-content card-content-padding">'+
+            '    <button id="btn_MyPos"  class="button button-raised button-fill"><i class="icon f7-icons">navigation_fill</i>Ir a mi posición actual</button>'+
+            '    <button id="btn_StartPos"  class="button button-raised button-fill"><i class="icon f7-icons">navigation_fill</i>Ir a Punto de Inicio</button>'+
+            '</div>'+
             '   <div id="elevChart"></div>' +
             '   <button id="comollego" class="button button-raised button-fill"><i class="icon f7-icons">navigation_fill</i>Indicaciones para llegar </button>'+
             '</div>' +
@@ -277,6 +281,11 @@ function onPopUpOpen(){
             var a = new L.LatLng(rs.rows.item(0).Latitud, rs.rows.item(0).Longitud);
             db.executeSql('SELECT IDSendero, Descripcion, Latitud, Longitud, TipoPuntoInteresID FROM SenderoPuntoInteres WHERE IDSendero=' + senderoID, [], function (rs2) {
                 console.dir(rs2);
+
+                $$("#btn_StartPos").click(function(){
+                    CenterMap(rs2.rows.item(0).Latitud,rs2.rows.item(0).Longitud);
+                });
+
                 for (var i = 0; i < rs2.rows.length; i++) {
                     L.marker([rs2.rows.item(i).Latitud,rs2.rows.item(i).Longitud], {icon: MarcadorPuntoInteres(rs2.rows.item(i).TipoPuntoInteresID)}).addTo(mymap).bindPopup(rs2.rows.item(i).Descripcion);
                 }
@@ -296,14 +305,22 @@ function onPopUpOpen(){
                 $$("#btn_down_container").html(mapaExiste);
             }
 
+
+            $$("#btn_MyPos").click(function(){
+                CenterMap(myLat,myLong);
+            });
+
+
+
+
             $$("#comollego").click(function(){
                 navigate([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud]);
             });
 
+
         $$("#comollego").click(function(){
             navigate([rs.rows.item(0).Latitud,rs.rows.item(0).Longitud]);
         });
-
 
 
         $$("#nombre").html(rs.rows.item(0).Nombre);
@@ -384,7 +401,12 @@ function MarcadorPuntoInteres(TipoPuntoInteresID){
     }
 }
 
-
+function CenterMap(lat, lon)
+{
+    if(lat !=0 && lon !=0) {
+        mymap.panTo(new L.LatLng(lat, lon));
+    }
+}
 function _onSuccess(position) {
 
     //L.marker([position.coords.latitude,position.coords.longitude], {icon: mk_gps}).addTo(mymap).bindPopup("Esta es tu ubicación actual..");

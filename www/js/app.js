@@ -35,7 +35,6 @@ var optionsGPS = {
 
 
 
-
 function requestPermissionGPS()
 {
     console.log("permisos");
@@ -235,7 +234,7 @@ $$('.popup-noticias').on('popup:close', function (e, popup) {
 
 (function () {
     "use strict";
-    document.addEventListener('deviceready', onDeviceReady.bind(this), false);
+    document.addEventListener('deviceready', onDeviceReady, false);
     document.addEventListener("offline", offline, false);
     document.addEventListener("online", online, false);
 

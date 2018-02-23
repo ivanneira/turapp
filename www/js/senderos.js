@@ -196,7 +196,7 @@ function onPopUpOpen(){
             '   </div>'+
             '   <div id ="mapid" class="card-content card-content-padding"></div>'+
             '   <div id ="buttons" class="card-content card-content-padding">'+
-            '    <button id="btn_MyPos"  class="button button-raised button-fill"><i class="icon f7-icons">navigation_fill</i>Ir a mi posición actual</button>'+
+            '    <button id="btn_MyPos"  class="button button-raised button-fill"><i class="icon f7-icons">navigation_fill</i>Ir a mi posición actual</button><br>'+
             '    <button id="btn_StartPos"  class="button button-raised button-fill"><i class="icon f7-icons">navigation_fill</i>Ir a Punto de Inicio</button>'+
             '</div>'+
             '   <div id="elevChart"></div>' +

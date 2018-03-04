@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "537218243815",
+    "firebase_url": "https://turapp-d7955.firebaseio.com",
+    "project_id": "turapp-d7955",
+    "storage_bucket": "turapp-d7955.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:537218243815:android:b949a3258d5ca025",
+        "android_client_info": {
+          "package_name": "tur.app.TurismoSJ"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "537218243815-au87n7b8t2ogkuv2jk1bn9k0bfa2levm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB46R-ha0FX5nsrrdCeyIhlk2dcUDA7DIQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

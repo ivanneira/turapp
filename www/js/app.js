@@ -232,6 +232,7 @@ $$('.popup-noticias').on('popup:close', function (e, popup) {
 
 
 
+
 (function () {
     "use strict";
     document.addEventListener('deviceready', onDeviceReady, false);
@@ -245,6 +246,7 @@ function onDeviceReady() {
     //alert(checkInternet());
     document.addEventListener("backbutton", onBackKeyDown, false);
     //FORZADO DE ACTIVACION DE GPS EN LAS PLATAFORMAS
+    Push();
 
     Database(db);
 
@@ -739,3 +741,39 @@ function navigate(hasta)
 }
 
 
+function Push() {
+
+    var push = PushNotification.init({
+        android: {
+            senderID: 537218243815,
+            alert: true,
+            badge: true,
+            sound: true,
+            topics: ['all'],
+            icon: 'push_icon',
+            forceShow: true
+        },
+
+
+    });
+
+    push.on('registration', (data) => {
+        console.dir(data.registrationId)
+    });
+
+    push.on('notification', (data) => {
+
+    console.dir(data)
+    // data.message,
+    // data.title,
+    // data.count,
+    // data.sound,
+    // data.image,
+    // data.additionalData
+});
+
+    push.on('error', (e) => {
+        // e.message
+        console.dir(e)
+});
+}
